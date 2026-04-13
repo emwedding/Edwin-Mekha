@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mekha & Edwin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  background:#06091a;
+  font-family:'Cormorant Garamond', serif;
+}
+
+/* ================= ENVELOPE ================= */
+
+.envelope-scene{
+  width:90vw;
+  max-width:420px;
+  aspect-ratio:1.4;
+  margin:80px auto;
+  position:relative;
+  cursor:pointer;
+}
+
+.env-body{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(160deg,#0b1f2a,#050d16);
+  border-radius:4px;
+}
+
+.env-flap{
+  position:absolute;
+  top:0;
+  width:100%;
+  height:50%;
+  transform-origin:top;
+  transition:1s;
+  background:linear-gradient(170deg,#0f2a36,#050d16);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+}
+
+.open .env-flap{
+  transform:rotateX(-180deg);
+}
+
+/* initials */
+
+.env-initials{
+  position:absolute;
+  top:15%;
+  left:50%;
+  transform:translateX(-50%);
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  color:#d4af37;
+  font-size:2rem;
+  letter-spacing:4px;
+}
+
+/* wax seal */
+
+#wax{
+  position:absolute;
+  top:45%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:radial-gradient(circle,#e6c57a,#6e4e1c);
+  box-shadow:0 10px 25px rgba(0,0,0,0.6);
+}
+
+#wax::before{
+  content:'';
+  position:absolute;
+  inset:-20px;
+  background:radial-gradient(circle,rgba(212,175,55,0.3),transparent);
+  border-radius:50%;
+  filter:blur(10px);
+  animation:glow 3s infinite;
+}
+
+@keyframes glow{
+  0%,100%{opacity:.4;transform:scale(.9)}
+  50%{opacity:1;transform:scale(1.2)}
+}
+
+/* ================= PAGE ================= */
+
+#page{
+  display:none;
+  opacity:0;
+  transition:1.5s;
+}
+
+/* FIRST PAGE DESIGN */
+
+.hero{
+  background:#f5efdf;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px;
+}
+
+.hero-inner{
+  display:flex;
+  justify-content:space-between;
+  width:100%;
+  max-width:900px;
+}
+
+.names{
+  font-family:'Cinzel', serif;
+  font-size:4rem;
+  color:#0b1f2a;
+  line-height:0.9;
+}
+
+.names span{
+  font-size:3rem;
+  font-family:'Cormorant Garamond', serif;
+}
+
+.quote{
+  margin-top:20px;
+  font-size:1rem;
+}
+
+.date{
+  margin-top:10px;
+  font-family:'Cinzel';
+  letter-spacing:2px;
+}
+
+/* cake simple */
+
+.cake{
+  border:2px solid #0b1f2a;
+  width:120px;
+  height:160px;
+}
+
+/* mobile */
+
+@media(max-width:600px){
+  .hero-inner{flex-direction:column;gap:30px;text-align:center}
+  .names{font-size:2.5rem}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="sound">
+<source src="open.mp3">
+</audio>
+
+<div id="landing">
+  <div class="envelope-scene" id="env">
+    <div class="env-body"></div>
+    <div class="env-flap"></div>
+    <div class="env-initials">E & M</div>
+    <div id="wax"></div>
+  </div>
+</div>
+
+<div id="page">
+
+  <!-- FIRST PAGE -->
+  <div class="hero">
+    <div class="hero-inner">
+
+      <div>
+        <div class="names">
+          MEKHA<br>
+          <span>&</span> EDWIN
+        </div>
+
+        <div class="quote">
+          He has made everything beautiful in its time<br>
+          Ecclesiastes 3:11
+        </div>
+
+        <div class="date">
+          17<sup>th</sup> JULY 2026
+        </div>
+      </div>
+
+      <div class="cake"></div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+const env=document.getElementById('env');
+const page=document.getElementById('page');
+const sound=document.getElementById('sound');
+
+env.onclick=()=>{
+  env.classList.add('open');
+
+  sound.volume=.3;
+  sound.play().catch(()=>{});
+
+  setTimeout(()=>{
+    document.getElementById('landing').style.display='none';
+    page.style.display='block';
+
+    setTimeout(()=>{
+      page.style.opacity=1;
+    },100);
+
+  },900);
+}
+</script>
+
+</body>
+</html>
