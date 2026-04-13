@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Mekha & Edwin</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Cinzel:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
-body {
+
+body{
   margin:0;
   background:#06091a;
   font-family:'Cormorant Garamond', serif;
@@ -34,38 +36,34 @@ body {
 
 .env-flap{
   position:absolute;
-  top:0;
   width:100%;
   height:50%;
-  transform-origin:top;
-  transition:1s;
   background:linear-gradient(170deg,#0f2a36,#050d16);
   clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top;
+  transition:1s;
 }
 
 .open .env-flap{
   transform:rotateX(-180deg);
 }
 
-/* initials */
-
 .env-initials{
   position:absolute;
-  top:15%;
+  top:18%;
   left:50%;
   transform:translateX(-50%);
-  font-family:'Cormorant Garamond', serif;
-  font-style:italic;
   color:#d4af37;
   font-size:2rem;
   letter-spacing:4px;
+  font-style:italic;
 }
 
-/* wax seal */
+/* wax */
 
 #wax{
   position:absolute;
-  top:45%;
+  top:48%;
   left:50%;
   transform:translate(-50%,-50%);
   width:90px;
@@ -90,15 +88,13 @@ body {
   50%{opacity:1;transform:scale(1.2)}
 }
 
-/* ================= PAGE ================= */
+/* ================= PAGES ================= */
 
-#page{
+#pages{
   display:none;
-  opacity:0;
-  transition:1.5s;
 }
 
-/* FIRST PAGE DESIGN */
+/* hero page */
 
 .hero{
   background:#f5efdf;
@@ -112,47 +108,89 @@ body {
 .hero-inner{
   display:flex;
   justify-content:space-between;
-  width:100%;
   max-width:900px;
+  width:100%;
 }
 
 .names{
-  font-family:'Cinzel', serif;
+  font-family:'Cinzel';
   font-size:4rem;
   color:#0b1f2a;
-  line-height:0.9;
+  line-height:.9;
 }
 
 .names span{
+  font-family:'Cormorant Garamond';
   font-size:3rem;
-  font-family:'Cormorant Garamond', serif;
 }
 
 .quote{
   margin-top:20px;
-  font-size:1rem;
 }
 
 .date{
-  margin-top:10px;
+  margin-top:15px;
   font-family:'Cinzel';
-  letter-spacing:2px;
 }
 
-/* cake simple */
+/* page style */
 
-.cake{
-  border:2px solid #0b1f2a;
-  width:120px;
-  height:160px;
+.page{
+  opacity:0;
+  transform:translateY(40px);
+  transition:1.2s;
+  padding:60px;
+}
+
+.page.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* blue page */
+
+.blue{
+  background:#0b1f5a;
+  color:white;
+  text-align:center;
+}
+
+/* details */
+
+.details{
+  background:#f5efdf;
+  color:#0b1f2a;
+}
+
+h1{
+  font-family:'Cinzel';
+}
+
+/* buttons */
+
+.rsvp-btn{
+  display:inline-block;
+  padding:12px 30px;
+  background:#f5efdf;
+  color:#0b1f2a;
+  text-decoration:none;
+  border-radius:30px;
+  margin-top:20px;
+}
+
+.map-btn{
+  display:inline-block;
+  margin-top:10px;
+  color:#0b1f2a;
 }
 
 /* mobile */
 
 @media(max-width:600px){
-  .hero-inner{flex-direction:column;gap:30px;text-align:center}
+  .hero-inner{flex-direction:column;text-align:center}
   .names{font-size:2.5rem}
 }
+
 </style>
 </head>
 
@@ -162,6 +200,7 @@ body {
 <source src="open.mp3">
 </audio>
 
+<!-- ENVELOPE -->
 <div id="landing">
   <div class="envelope-scene" id="env">
     <div class="env-body"></div>
@@ -171,56 +210,109 @@ body {
   </div>
 </div>
 
-<div id="page">
+<!-- PAGES -->
+<div id="pages">
 
-  <!-- FIRST PAGE -->
-  <div class="hero">
+  <!-- PAGE 1 -->
+  <div class="hero page">
     <div class="hero-inner">
-
       <div>
-        <div class="names">
-          MEKHA<br>
-          <span>&</span> EDWIN
-        </div>
-
+        <div class="names">MEKHA<br><span>&</span> EDWIN</div>
         <div class="quote">
           He has made everything beautiful in its time<br>
           Ecclesiastes 3:11
         </div>
-
-        <div class="date">
-          17<sup>th</sup> JULY 2026
-        </div>
+        <div class="date">17th JULY 2026</div>
       </div>
-
-      <div class="cake"></div>
-
     </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="blue page">
+    <h1>You are Invited</h1>
+    <p>
+      We, Reji Thomas Mathew & Lekha Reji Thomas<br>
+      request the honour of your presence at<br>
+      the holy matrimony of our daughter,<br><br>
+
+      <b>Mekha Susan Thomas</b><br>
+      with<br>
+      <b>Edwin Roger Bright</b>
+    </p>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="details page">
+    <h1>DETAILS</h1>
+
+    <p>
+      <b>Date & Time</b><br>
+      July 17, 2026<br>
+      4:30pm – Wedding<br>
+      7:00pm – Reception
+    </p>
+
+    <p>
+      <b>Venue</b><br>
+      The Kings Meadows<br>
+      Harvest AG Church<br>
+      Bangalore
+    </p>
+
+    <!-- MAP LINK -->
+    <a href="https://maps.google.com/?q=The+Kings+Meadows+Bangalore"
+       target="_blank"
+       class="map-btn">
+       📍 View Location
+    </a>
+
+  </div>
+
+  <!-- PAGE 4 -->
+  <div class="blue page">
+    <h1>RSVP soon!</h1>
+    <p>We can't wait to celebrate with you!</p>
+
+    <!-- RSVP LINK -->
+    <a href="https://forms.gle/YOUR_LINK_HERE"
+       target="_blank"
+       class="rsvp-btn">
+       RSVP HERE
+    </a>
+
+    <p style="margin-top:40px">
+      With best compliments from<br>
+      <b>Shimon Mathew Thomas</b>
+    </p>
   </div>
 
 </div>
 
 <script>
+
 const env=document.getElementById('env');
-const page=document.getElementById('page');
+const pages=document.getElementById('pages');
 const sound=document.getElementById('sound');
+const pageEls=document.querySelectorAll('.page');
 
 env.onclick=()=>{
+
   env.classList.add('open');
 
-  sound.volume=.3;
+  sound.volume=0.3;
   sound.play().catch(()=>{});
 
   setTimeout(()=>{
     document.getElementById('landing').style.display='none';
-    page.style.display='block';
+    pages.style.display='block';
 
-    setTimeout(()=>{
-      page.style.opacity=1;
-    },100);
+    pageEls.forEach((p,i)=>{
+      setTimeout(()=>p.classList.add('visible'),400+i*400);
+    });
 
   },900);
 }
+
 </script>
 
 </body>
