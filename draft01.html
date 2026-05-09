@@ -5,29 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Mekha & Edwin | Wedding Invitation</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Tangerine:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --midnight: #081B2C;
-            --navy: #102A43;
-            --slate: #486581;
-            --ivory: #F7F4EC;
-            --stone: #D2C7B3;
+            --dark-navy: #081B2C;
+            --champagne: #F7E7CE;
             --gold: #C8A96B;
             --white: #ffffff;
+            /* Font Mapping */
+            --font-woodland: 'Cinzel', serif;
+            --font-amoresa: 'Tangerine', cursive;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        body { 
-            font-family: 'Cormorant Garamond', serif; 
-            background: linear-gradient(to bottom, #f8f5ef, #f1ece2);
-            color: var(--midnight); 
-            overflow-x: hidden; 
+        body, html { 
+            height: 100%; 
+            background-color: var(--champagne);
+            scroll-behavior: smooth;
         }
 
-        /* ─── LANDING SCREEN ─── */
+        /* ─── FULL SCREEN LANDING ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -35,164 +34,152 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
-            background-color: var(--ivory);
-            transition: transform 1s cubic-bezier(.4, 0, .2, 1), opacity .8s ease;
+            background-color: var(--champagne);
+            transition: transform 1s cubic-bezier(.4, 0, .2, 1), opacity 0.8s ease;
         }
 
         .envelope {
             position: relative;
-            width: min(340px, 90vw);
-            aspect-ratio: 1.45;
-            background: linear-gradient(145deg, #18344d, var(--midnight));
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--dark-navy);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
         }
 
         .flap {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(145deg, #1b3d5b, var(--navy));
-            clip-path: polygon(0 0, 100% 0, 50% 52%);
+            top: 0; width: 100%; height: 50%;
+            background-color: var(--dark-navy);
+            clip-path: polygon(0 0, 100% 0, 50% 50%);
             transform-origin: top;
-            transition: transform 1s cubic-bezier(.4, 0, .2, 1);
+            transition: transform 1s ease;
             z-index: 2;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .wax-seal-img {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 95px;
-            height: auto;
             z-index: 3;
-            transition: transform .3s ease;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+            width: 120px;
+            transition: transform 0.5s ease;
         }
 
         .open-flap .flap { transform: rotateX(180deg); }
-        .hide-landing { transform: translateY(-100%); opacity: 0; }
+        .hide-landing { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
-        /* ─── MAIN CONTENT ─── */
-        #main-content { 
-            display: none; 
-            max-width: 600px; 
-            margin: auto; 
-            padding: 40px 18px 80px; 
-        }
+        /* ─── CARD SECTIONS (FULL SCREEN) ─── */
+        #main-content { display: none; }
 
         .card {
-            background: var(--white);
-            margin-bottom: 30px;
-            padding: 50px 30px;
-            text-align: center;
-            border-radius: 4px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.06);
-            opacity: 0;
-            transform: translateY(30px);
-            transition: 0.9s ease all;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10%;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card.visible { opacity: 1; transform: translateY(0); }
+        /* Card 1 Specifics */
+        .card-1 { background-color: var(--champagne); color: var(--dark-navy); text-align: left; align-items: flex-start; }
+        .card-1 .title { font-family: var(--font-woodland); font-size: 4rem; line-height: 1; }
+        .card-1 .quote { font-family: var(--font-amoresa); font-size: 3.5rem; margin: 20px 0; }
+        .card-1 .ref, .card-1 .date { font-family: var(--font-woodland); font-size: 1.2rem; }
+        .card-1 .divider { width: 80px; height: 2px; background: var(--gold); margin: 20px 0; }
+        .card-1 .cake-img { 
+            position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+            width: 35%; opacity: 0; transition: opacity 2s ease;
+        }
+        .card-1.visible .cake-img { opacity: 1; }
 
-        .hero-names { font-size: clamp(3rem, 10vw, 4.5rem); line-height: 0.95; color: var(--navy); margin-bottom: 10px; }
-        .script { font-family: 'Great Vibes', cursive; font-size: clamp(2.2rem, 8vw, 3.5rem); color: var(--slate); }
-        .divider { width: 50px; height: 1px; background: var(--gold); margin: 24px auto; }
-        
-        .map-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: var(--midnight);
-            color: white;
-            text-decoration: none;
-            font-family: 'Montserrat';
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            transition: 0.3s;
+        /* Card 2 Specifics */
+        .card-2 { background-color: var(--dark-navy); color: var(--white); text-align: center; font-family: var(--font-woodland); }
+        .card-2 .title { font-family: var(--font-amoresa); font-size: 4.5rem; color: var(--white); }
+        .card-2 .names { font-family: var(--font-amoresa); font-size: 4rem; color: var(--gold); margin: 15px 0; }
+        .card-2 .names span { font-size: 1.2em; } /* 3 points bigger approx */
+
+        /* Card 3 Specifics */
+        .card-3 { background-color: var(--champagne); color: var(--dark-navy); font-family: var(--font-woodland); }
+        .card-3 .title { font-family: var(--font-woodland); font-size: 3rem; margin-bottom: 20px; }
+        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 3.5rem; margin-top: 15px; }
+        .card-3 .bottom-border { position: absolute; bottom: 0; left: 0; width: 100%; height: auto; }
+
+        /* Card 4 Specifics */
+        .card-4 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
+        .card-4 .title { font-family: var(--font-woodland); font-size: 3.5rem; color: var(--gold); margin-bottom: 30px; }
+
+        .btn-map {
+            display: inline-block; margin-top: 25px; padding: 15px 30px;
+            background: var(--dark-navy); color: var(--white);
+            text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem;
         }
 
-        .rsvp-form { text-align: left; margin-top: 30px; }
-        .input-group { margin-bottom: 18px; }
-        label { display: block; font-family: 'Montserrat'; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 5px; }
-        input, select { width: 100%; padding: 12px; border: 1px solid var(--stone); font-family: 'Cormorant Garamond'; font-size: 1rem; }
-        .submit-btn { width: 100%; background: var(--midnight); color: white; border: none; padding: 16px; letter-spacing: 2px; cursor: pointer; font-family: 'Montserrat'; margin-top: 10px; }
+        .rsvp-form { max-width: 400px; margin: 0 auto; text-align: left; }
+        .input-group { margin-bottom: 15px; }
+        input, select { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--white); color: white; }
     </style>
 </head>
 <body>
 
 <section id="landing-screen">
-    <div class="envelope" onclick="openInvitation()" role="button" aria-label="Open Invitation">
+    <div class="envelope" onclick="openInvitation()">
         <div class="flap"></div>
-        <img src="01.png" class="wax-seal-img" alt="E&M Wax Seal">
+        <img src="01.png" class="wax-seal-img" alt="Seal">
     </div>
-    <p style="position: absolute; bottom: 80px; font-family: Montserrat; font-size: 0.7rem; letter-spacing: 3px; opacity: 0.5;">PRESS THE SEAL TO OPEN</p>
 </section>
 
 <main id="main-content">
-    <section class="card">
-        <h1 class="hero-names">MEKHA<br>& EDWIN</h1>
+    <section class="card card-1">
+        <h1 class="title">MEKHA<br>& EDWIN</h1>
         <div class="divider"></div>
-        <p style="font-style: italic; opacity: 0.8; line-height: 1.6;">“He has made everything beautiful in its time”</p>
-        <p style="font-size: 0.9rem; margin-top: 5px;">Ecclesiastes 3:11 [cite: 2]</p>
-        <p style="letter-spacing: 5px; font-weight: 500; margin-top: 20px;">17<sup>TH</sup> JULY 2026 [cite: 3]</p>
+        <p class="quote">“He has made everything beautiful in its time”</p>
+        <p class="ref">Ecclesiastes 3:11</p>
+        <p class="date" style="margin-top: 40px;">17TH JULY 2026</p>
+        <img src="02.png" class="cake-img" alt="Wedding Cake">
     </section>
 
-    <section class="card">
-        <h2 class="script">You are Invited [cite: 4]</h2>
-        <div class="divider"></div>
-        <p style="line-height: 1.8; margin-bottom: 30px;">
-            We, Reji Thomas Mathew & Lekha Reji Thomas,<br>
-            request the honour of your presence at the holy matrimony of our daughter, [cite: 5]
-        </p>
-        <h2 class="script">Mekha Susan Thomas [cite: 6]</h2>
-        <p style="margin: 12px 0; font-size: 0.8rem; letter-spacing: 4px;">WITH</p>
-        <h2 class="script">Edwin Roger Bright [cite: 7]</h2>
-        <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.9;">(Son of M.J. Bright and Lissy Bright) [cite: 8]</p>
+    <section class="card card-2">
+        <h2 class="title">You are Invited</h2>
+        <p>We, Reji Thomas Mathew & Lekha Reji Thomas,<br>request the honour of your presence at the holy matrimony of our daughter,</p>
+        <h2 class="names">Mekha Susan Thomas</h2>
+        <p>WITH</p>
+        <h2 class="names">Edwin Roger Bright</h2>
+        <p>(Son of M.J. Bright and Lissy Bright)</p>
     </section>
 
-    <section class="card">
-        <p style="letter-spacing: 5px; font-weight: 600; font-size: 0.8rem;">THE DETAILS [cite: 9]</p>
-        <div class="divider"></div>
-        <div style="margin-bottom: 30px;">
-            <p style="font-family: Montserrat; font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 10px;">DATE & TIME [cite: 10]</p>
-            <p>July 17, 2026 [cite: 11]</p>
-            <p>4:30pm — Wedding [cite: 12]</p>
-            <p>7:00pm — Reception [cite: 13]</p>
-        </div>
-        <div>
-            <p style="font-family: Montserrat; font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 10px;">VENUE [cite: 14]</p>
-            <p><strong>The Kings Meadows [cite: 15]</strong></p>
-            <p style="font-size: 0.95rem;">Under the Auspices of City Harvest AG Church, Bangalore [cite: 16, 17, 18]</p>
-            <a href="https://maps.app.goo.gl/3Xz8x7v6uB9V1Zq67" target="_blank" class="map-btn">VIEW ON MAP</a>
-        </div>
-    </section>
-
-    <section class="card">
-        <h2 class="script">RSVP soon! [cite: 19]</h2>
-        <p style="margin-top: 10px;">We can't wait to celebrate with you! [cite: 20]</p>
+    <section class="card card-3">
+        <h2 class="title">THE DETAILS</h2>
+        <h3 class="sub-title">Date and Time</h3>
+        <p>July 17, 2026<br>4:30pm — Wedding<br>7:00pm — Reception</p>
         
-        <form class="rsvp-form" action="YOUR_GOOGLE_FORM_URL" method="POST">
+        <h3 class="sub-title">Venue</h3>
+        <p>The Kings Meadows<br>Under the Auspices of City Harvest AG Church, Bangalore</p>
+        <a href="https://maps.app.goo.gl/BNb1bsk9s6Z5EYtAA " target="_blank" class="btn-map">VIEW ON MAP</a>
+        
+        <img src="03.png" class="bottom-border" alt="Decoration">
+    </section>
+
+    <section class="card card-4">
+        <h2 class="title">RSVP SOON!</h2>
+        <form class="rsvp-form">
             <div class="input-group">
-                <label>FULL NAME</label>
-                <input type="text" name="entry.NAME_ID" required>
+                <input type="text" placeholder="FULL NAME" required>
             </div>
             <div class="input-group">
-                <label>NUMBER OF GUESTS</label>
-                <select name="entry.GUEST_ID">
+                <select>
+                    <option>NUMBER OF GUESTS</option>
                     <option>1 Person</option>
                     <option>2 People</option>
-                    <option>3 People</option>
-                    <option>4+ People</option>
+                    <option>3+ People</option>
                 </select>
             </div>
-            <button class="submit-btn" type="submit">SEND RSVP</button>
+            <button type="submit" style="background: var(--gold); color: var(--dark-navy); border: none; padding: 15px; width: 100%; font-family: var(--font-woodland); font-weight: 600;">SEND RSVP</button>
         </form>
-        
-        <p style="margin-top: 50px; font-size: 0.75rem; opacity: 0.6; line-height: 1.8;">
-            With best compliments from<br>
-            <strong>Shimon Mathew Thomas [cite: 22]</strong>
-        </p>
+        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.7;">With best compliments from<br><strong>Shimon Mathew Thomas</strong></p>
     </section>
 </main>
 
@@ -208,9 +195,11 @@
             
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
                 });
-            }, { threshold: 0.15 });
+            }, { threshold: 0.3 });
 
             document.querySelectorAll('.card').forEach(card => observer.observe(card));
         }, 1100);
