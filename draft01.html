@@ -18,7 +18,6 @@
             --font-amoresa: 'Tangerine', cursive;
         }
 
-        /* ─── BASE ─── */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body, html { 
@@ -28,7 +27,7 @@
             font-display: swap;
         }
 
-        /* ─── ENVELOPE (FULL SCREEN REVERT) ─── */
+        /* ─── ENVELOPE WITH VISIBLE CREASES ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -44,11 +43,25 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            background-color: var(--dark-navy);
+            background: 
+                linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 50%),
+                var(--dark-navy);
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
+        }
+
+        /* Visible Side Creases */
+        .envelope-container::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: 
+                linear-gradient(to right, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(0,0,0,0.3) 100%),
+                linear-gradient(to top, rgba(0,0,0,0.2) 0%, transparent 40%);
+            z-index: 1;
+            pointer-events: none;
         }
 
         .flap {
@@ -59,7 +72,8 @@
             z-index: 10;
             transform-origin: top;
             transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
         }
 
         .wax-seal-img {
@@ -67,14 +81,14 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: clamp(180px, 45vw, 240px);
+            width: clamp(220px, 55vw, 300px); /* Enlarged and prominent */
             z-index: 20;
             transition: opacity 0.4s ease, transform 0.5s ease;
-            filter: drop-shadow(0 12px 25px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 15px 35px rgba(0,0,0,0.7));
         }
 
         .open-flap .flap { transform: rotateX(180deg); }
-        .open-flap .wax-seal-img { opacity: 0; transform: translate(-50%, -50%) scale(1.5); pointer-events: none; }
+        .open-flap .wax-seal-img { opacity: 0; transform: translate(-50%, -50%) scale(1.6); pointer-events: none; }
         .hide-landing { transform: translateY(-100%); }
 
         /* ─── CONTENT SYSTEM ─── */
@@ -94,155 +108,47 @@
             flex-direction: column;
             justify-content: center;
             position: relative;
-            padding: 40px 8vw;
+            padding: 20px 8vw;
         }
 
         /* ─── PAGE 1: HERO ─── */
-        .card-1 { 
-            background-color: var(--champagne); 
-            color: var(--dark-navy); 
-            text-align: left;
-        }
-        .card-1 .title { 
-            font-family: var(--font-woodland); 
-            font-size: clamp(3.5rem, 12vw, 6.5rem); 
-            line-height: 1.4; 
-            font-weight: 500;
-        }
-        .card-1 .divider { 
-            width: 100px; height: 2px; background: var(--gold); margin: 30px 0; 
-        }
-        .card-1 .quote { 
-            font-family: var(--font-amoresa); 
-            font-size: clamp(1.8rem, 5vw, 2.4rem); 
-            color: var(--formal-navy); 
-            margin-bottom: 5px;
-        }
-        .card-1 .ref { 
-            font-family: var(--font-woodland); 
-            font-size: 0.85rem; letter-spacing: 2px; 
-            color: var(--formal-navy); 
-        }
-        .card-1 .date { 
-            font-family: var(--font-woodland); 
-            font-size: 1.4rem; letter-spacing: 5px; margin-top: 50px; 
-        }
-        .cake-img {
-            position: absolute;
-            right: 6%;
-            top: 55%;
-            transform: translateY(-50%);
-            width: 28%;
-            max-width: 450px;
-            opacity: 0;
-            transition: opacity 2s ease 0.8s;
-        }
+        .card-1 { background-color: var(--champagne); color: var(--dark-navy); text-align: left; }
+        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(3rem, 12vw, 6.5rem); line-height: 1.2; }
+        .card-1 .divider { width: 100px; height: 2px; background: var(--gold); margin: 25px 0; }
+        .card-1 .quote { font-family: var(--font-amoresa); font-size: clamp(1.8rem, 5vw, 2.4rem); color: var(--formal-navy); margin-bottom: 5px; }
+        .card-1 .ref { font-family: var(--font-woodland); font-size: 0.85rem; letter-spacing: 2px; color: var(--formal-navy); }
+        .card-1 .date { font-family: var(--font-woodland); font-size: 1.4rem; letter-spacing: 5px; margin-top: 40px; }
+        .cake-img { position: absolute; right: 6%; top: 55%; transform: translateY(-50%); width: 28%; max-width: 450px; opacity: 0; transition: opacity 2s ease 0.8s; }
         .card-1.visible .cake-img { opacity: 1; }
 
-        /* ─── PAGE 2: INVITATION ─── */
-        .card-2 { 
-            background-color: var(--dark-navy); 
-            color: var(--white); 
-            text-align: center;
-        }
-        .card-2 .title { 
-            font-family: var(--font-amoresa); 
-            font-size: clamp(5rem, 16vw, 9rem); 
-            margin-bottom: 30px;
-            font-weight: 400;
-        }
-        .card-2 .body-text { 
-            font-family: var(--font-woodland); 
-            font-size: 1.1rem; line-height: 2; 
-            margin: 15px 0;
-            text-transform: none; 
-        }
-        .card-2 .names { 
-            font-family: var(--font-amoresa); 
-            font-size: clamp(3.5rem, 9vw, 5.5rem); 
-            color: var(--gold);
-            margin: 20px 0;
-        }
-        .card-2 .son-info { 
-            font-family: var(--font-woodland); 
-            font-size: 1rem; 
-            font-style: italic;
-        }
+        /* ─── PAGE 2: INVITATION (Tightened Spacing) ─── */
+        .card-2 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
+        .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(4rem, 14vw, 7.5rem); margin-bottom: 10px; font-weight: 400; }
+        .card-2 .body-text { font-family: var(--font-woodland); font-size: 0.95rem; line-height: 1.6; margin: 8px 0; }
+        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 8vw, 5rem); color: var(--gold); margin: 10px 0; }
+        .card-2 .son-info { font-family: var(--font-woodland); font-size: 0.9rem; font-style: italic; margin-top: 10px; }
 
-        /* ─── PAGE 3: DETAILS ─── */
-        .card-3 { 
-            background-color: var(--champagne); 
-            color: var(--dark-navy); 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .card-3 .header { 
-            font-family: var(--font-woodland); 
-            font-size: 3.5rem; 
-            letter-spacing: 10px;
-            margin-bottom: 60px;
-        }
-        .card-3 .content-grid {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 1000px;
-        }
-        .card-3 .sub-title { 
-            font-family: var(--font-amoresa); 
-            font-size: 3.8rem; 
-            margin-bottom: 10px;
-        }
-        .card-3 .block { line-height: 2.2; }
-        .card-3 .left { text-align: left; }
-        .card-3 .right { text-align: right; }
-        
-        .card-3 .map-container { margin-top: 60px; }
-        .map-btn {
-            background: var(--dark-navy);
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-family: var(--font-woodland);
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-        }
+        /* ─── PAGE 3: DETAILS (Center-Aligned Blocks) ─── */
+        .card-3 { background-color: var(--champagne); color: var(--dark-navy); text-align: center; }
+        .card-3 .header { font-family: var(--font-woodland); font-size: clamp(2.5rem, 8vw, 3.5rem); letter-spacing: 10px; margin-bottom: 40px; }
+        .card-3 .grid-container { display: flex; justify-content: center; width: 100%; gap: 10vw; }
+        .card-3 .block { flex: 1; max-width: 300px; text-align: center; }
+        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 3.8rem; margin-bottom: 5px; }
+        .card-3 .detail-text { font-family: var(--font-woodland); font-size: 1.1rem; line-height: 1.8; }
+        .card-3 .map-container { margin-top: 50px; }
+        .map-btn { background: var(--dark-navy); color: white; padding: 10px 20px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.75rem; letter-spacing: 2px; }
 
         /* ─── PAGE 4: RSVP ─── */
-        .card-4 { 
-            background-color: var(--dark-navy); 
-            color: var(--white); 
-            text-align: center;
-        }
-        .card-4 .title { 
-            font-family: var(--font-woodland); 
-            font-size: 4rem; 
-            color: var(--gold); 
-            margin-bottom: 40px;
-        }
-        .rsvp-form { max-width: 420px; margin: 0 auto; width: 100%; text-align: left; }
-        .rsvp-form input, .rsvp-form select { 
-            width: 100%; padding: 15px; background: transparent; border: 1px solid rgba(255,255,255,0.3); 
-            color: white; margin-bottom: 20px; font-family: var(--font-woodland);
-        }
-        .card-4 .compliments { 
-            font-family: var(--font-woodland); 
-            margin-top: 60px; 
-            font-size: 0.95rem; 
-            opacity: 0.8; 
-        }
-        .card-4 .shimon { 
-            font-family: var(--font-amoresa); 
-            font-size: 4rem; 
-            color: var(--gold); 
-        }
+        .card-4 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
+        .card-4 .title { font-family: var(--font-woodland); font-size: 3.5rem; color: var(--gold); margin-bottom: 30px; }
+        .rsvp-form { max-width: 400px; margin: 0 auto; width: 100%; text-align: left; }
+        .rsvp-form input, .rsvp-form select { width: 100%; padding: 15px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 15px; font-family: var(--font-woodland); }
+        .rsvp-form button { width: 100%; background: var(--gold); border: none; padding: 15px; font-family: var(--font-woodland); font-weight: 600; cursor: pointer; color: var(--dark-navy); }
+        .card-4 .compliments { font-family: var(--font-woodland); margin-top: 50px; font-size: 0.95rem; opacity: 0.8; }
+        .card-4 .shimon { font-family: var(--font-amoresa); font-size: 4rem; color: var(--gold); line-height: 1; margin-top: 5px; }
 
-        /* ─── RESPONSIVE ─── */
         @media (max-width: 768px) {
-            .card-3 .content-grid { flex-direction: column; align-items: center; gap: 50px; }
-            .card-3 .block { text-align: center; }
+            .card-3 .grid-container { flex-direction: column; gap: 30px; align-items: center; }
             .cake-img { width: 45%; top: 82%; right: 5%; transform: none; }
         }
     </style>
@@ -278,15 +184,15 @@
     </section>
 
     <section class="card card-3">
-        <div class="header">THE DETAILS [cite: 9]</div>
-        <div class="content-grid">
-            <div class="block left">
-                <h2 class="sub-title">Date and Time [cite: 10]</h2>
-                <p>July 17, 2026 [cite: 11]<br>4:30pm — Wedding [cite: 12]<br>7:00pm — Reception [cite: 13]</p>
+        <div class="header">THE DETAILS</div>
+        <div class="grid-container">
+            <div class="block">
+                <h2 class="sub-title">Date and Time</h2>
+                <p class="detail-text">July 17, 2026<br>4:30pm — Wedding<br>7:00pm — Reception</p>
             </div>
-            <div class="block right">
-                <h2 class="sub-title">Venue [cite: 14]</h2>
-                <p>The Kings Meadows [cite: 15]<br>Under the Auspices of City [cite: 16]<br>Harvest AG Church, Bangalore [cite: 17, 18]</p>
+            <div class="block">
+                <h2 class="sub-title">Venue</h2>
+                <p class="detail-text">The Kings Meadows<br>Under the Auspices of City<br>Harvest AG Church, Bangalore</p>
             </div>
         </div>
         <div class="map-container">
@@ -295,7 +201,7 @@
     </section>
 
     <section class="card card-4">
-        <h1 class="title">RSVP soon! [cite: 19]</h1>
+        <h1 class="title">RSVP soon!</h1>
         <form class="rsvp-form">
             <input type="text" placeholder="FULL NAME" required>
             <select>
@@ -304,10 +210,10 @@
                 <option value="2">2 People</option>
                 <option value="3+ People</option>
             </select>
-            <button type="submit" style="background: var(--gold); border: none; padding: 18px; width: 100%; font-family: var(--font-woodland); font-weight: 600; cursor: pointer;">SEND RSVP</button>
+            <button type="submit">SEND RSVP</button>
         </form>
-        <p class="compliments">With best compliments from [cite: 22]</p>
-        <p class="shimon">Shimon Mathew Thomas [cite: 22]</p>
+        <p class="compliments">With best compliments from</p>
+        <p class="shimon">Shimon Mathew Thomas</p>
     </section>
 </main>
 
@@ -316,15 +222,12 @@
         const landing = document.getElementById('landing-screen');
         const content = document.getElementById('main-content');
         
-        // 1. Immediate flap animation
         landing.classList.add('open-flap');
         
-        // 2. Clear landing after flap reveals inner depth
         setTimeout(() => {
             landing.classList.add('hide-landing');
             content.style.display = 'block';
             
-            // Re-trigger scroll animations
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
