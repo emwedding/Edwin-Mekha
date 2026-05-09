@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Mekha & Edwin | Wedding Invitation</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Tangerine:wght@700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Tangerine:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -22,11 +22,12 @@
         
         body, html { 
             height: 100%; 
-            background-color: var(--champagne);
+            background-color: var(--dark-navy);
             overflow: hidden; 
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── 3D ENVELOPE DESIGN ─── */
+        /* ─── ENHANCED 3D ENVELOPE ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -35,63 +36,81 @@
             justify-content: center;
             align-items: center;
             background-color: var(--champagne);
-            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
-        .envelope-container {
+        .envelope-wrapper {
             position: relative;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             background-color: var(--dark-navy);
-            overflow: hidden;
-            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1500px;
         }
 
-        .envelope-container::before {
-            content: "";
+        /* Realistic Creases using Gradients */
+        .creases {
             position: absolute;
             inset: 0;
-            z-index: 2;
-            background: 
-                linear-gradient(45deg, rgba(0,0,0,0.4) 0%, transparent 40%),
-                linear-gradient(-45deg, rgba(0,0,0,0.4) 0%, transparent 40%),
-                linear-gradient(to top, rgba(0,0,0,0.2) 0%, transparent 50%);
             pointer-events: none;
+            z-index: 5;
+            background: 
+                /* Diagonal Creases */
+                linear-gradient(45deg, rgba(0,0,0,0.5) 0%, transparent 0.5%, transparent 99.5%, rgba(0,0,0,0.5) 100%),
+                linear-gradient(-45deg, rgba(0,0,0,0.5) 0%, transparent 0.5%, transparent 99.5%, rgba(0,0,0,0.5) 100%),
+                /* Depth Shading */
+                radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.4) 100%);
         }
 
         .flap {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 50%;
-            background-color: var(--dark-navy);
-            clip-path: polygon(0 0, 100% 0, 50% 65%);
+            top: 0; left: 0; width: 100%; height: 55%;
+            background: var(--dark-navy);
+            clip-path: polygon(0 0, 100% 0, 50% 70%);
             z-index: 10;
             transform-origin: top;
-            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            border-bottom: 1px solid rgba(200, 169, 107, 0.2);
         }
 
-        .wax-seal-img {
+        .wax-seal-container {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: clamp(240px, 50vw, 320px);
+            transform: translate(-50%, -40%);
             z-index: 20;
-            transition: opacity 0.5s ease, transform 0.6s ease;
-            filter: drop-shadow(0 15px 40px rgba(0,0,0,0.8));
+            cursor: pointer;
+            transition: all 0.6s ease;
         }
 
-        .open-flap .flap { transform: rotateX(180deg); z-index: 1; }
-        .open-flap .wax-seal-img { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
-        .hide-landing { transform: translateY(100%); opacity: 0; }
+        .wax-seal-img {
+            width: clamp(180px, 40vw, 250px);
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+            animation: pulse 3s infinite ease-in-out;
+        }
 
-        /* ─── SCROLLABLE CONTENT ─── */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Animation States */
+        .open-flap .flap { transform: rotateX(160deg); }
+        .open-flap .wax-seal-container { opacity: 0; transform: translate(-50%, -20%) scale(1.2); pointer-events: none; }
+        .hide-landing { transform: scale(2); opacity: 0; pointer-events: none; }
+
+        /* ─── MAIN CONTENT ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
             overflow-y: scroll; 
             scroll-snap-type: y mandatory;
+            background-color: var(--champagne);
+            opacity: 0;
+            transition: opacity 1.5s ease;
         }
 
         .card {
@@ -101,113 +120,80 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            padding: 40px 12vw;
             position: relative;
-            padding: 20px 10vw; /* Increased side padding for better text containment */
         }
 
-        /* ─── PAGE 1: HERO ─── */
-        .card-1 { background-color: var(--champagne); color: var(--dark-navy); text-align: left; }
-        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(3.5rem, 12vw, 6.5rem); line-height: 1.1; }
-        .card-1 .divider { width: 100px; height: 2px; background: var(--gold); margin: 25px 0; }
-        .card-1 .quote { font-family: var(--font-amoresa); font-size: clamp(1.8rem, 5vw, 2.4rem); color: var(--formal-navy); margin-bottom: 5px; }
-        .card-1 .ref { font-family: var(--font-woodland); font-size: 0.9rem; letter-spacing: 2px; }
-        .card-1 .date { font-family: var(--font-woodland); font-size: 1.4rem; letter-spacing: 5px; margin-top: 40px; }
-        
-        .cake-img { position: absolute; right: 6%; top: 55%; transform: translateY(-50%); width: 28%; z-index: 5; opacity: 0; transition: opacity 2s ease 1s; }
-        .card.visible .cake-img { opacity: 1 !important; }
+        /* PAGE 1: HERO */
+        .card-1 { text-align: left; color: var(--dark-navy); }
+        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(3rem, 10vw, 5rem); line-height: 1; margin-bottom: 20px; }
+        .card-1 .divider { width: 80px; height: 3px; background: var(--gold); margin-bottom: 30px; }
+        .card-1 .quote { font-family: var(--font-amoresa); font-size: 2.2rem; line-height: 1.2; }
 
-        /* ─── PAGE 2: INVITATION (Fix: Spacing and Alignment) ─── */
+        /* PAGE 2: INVITATION (Refined Spacing) */
         .card-2 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
-        .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(4.5rem, 15vw, 8rem); margin-bottom: 20px; }
-        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(3rem, 10vw, 5.5rem); color: var(--gold); margin: 15px 0; }
+        .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(3.5rem, 12vw, 6rem); margin-bottom: 10px; }
         .card-2 .body-text { 
             font-family: var(--font-woodland); 
-            font-size: 1rem; 
-            line-height: 1.8; /* Increased line spacing */
-            margin: 10px auto;
-            max-width: 80%; /* Ensures text doesn't hit edges */
+            font-size: 0.95rem; 
+            line-height: 1.5; /* Condensed */
+            letter-spacing: 1px;
+            max-width: 90%; 
+            margin: 0 auto;
         }
+        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 9vw, 4.5rem); color: var(--gold); margin: 15px 0; line-height: 1; }
 
-        /* ─── PAGE 3: DETAILS (Fix: Button Size/Alignment) ─── */
-        .card-3 { background-color: var(--champagne); color: var(--dark-navy); text-align: center; }
-        .card-3 .header { font-family: var(--font-woodland); font-size: clamp(2.5rem, 8vw, 3.5rem); letter-spacing: 10px; margin-bottom: 40px; }
-        .card-3 .grid-container { display: flex; justify-content: center; gap: 8vw; }
-        .card-3 .block { width: 35vw; max-width: 320px; }
-        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 3.8rem; margin-bottom: 10px; }
-        
-        .map-container { 
-            display: flex; 
-            justify-content: center; 
-            width: 100%; 
-            margin-top: 40px; 
-        }
-        .card-3 .map-btn { 
-            display: inline-block; 
-            background: var(--dark-navy); 
-            color: white; 
-            padding: 12px 30px; /* Refined padding */
-            text-decoration: none; 
-            font-family: var(--font-woodland); 
-            font-size: 0.75rem; 
+        /* PAGE 3: DETAILS (Bigger Text Blocks) */
+        .card-3 { color: var(--dark-navy); text-align: center; }
+        .card-3 .grid-container { display: flex; flex-direction: column; gap: 40px; margin-top: 30px; }
+        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 3.5rem; color: var(--gold); }
+        .card-3 .detail-text { font-family: var(--font-woodland); font-size: 1.2rem; line-height: 1.6; }
+        .map-btn { 
+            align-self: center;
+            margin: 40px auto 0;
+            background: var(--dark-navy);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-family: var(--font-woodland);
+            font-size: 0.8rem;
             letter-spacing: 2px;
-            width: auto; /* Prevent full-width spread */
         }
 
-        /* ─── PAGE 4: RSVP (Fix: Counter logic and Shimone) ─── */
+        /* PAGE 4: RSVP */
         .card-4 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
-        .card-4 .title { font-family: var(--font-woodland); font-size: 3.5rem; color: var(--gold); margin-bottom: 30px; }
-        .rsvp-form { max-width: 400px; margin: 0 auto; width: 100%; text-align: left; }
-        .rsvp-form label { display: block; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 8px; opacity: 0.8; }
-        .rsvp-form input { width: 100%; padding: 15px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 20px; font-family: var(--font-woodland); }
+        .card-4 .title { font-family: var(--font-woodland); font-size: 3rem; color: var(--gold); margin-bottom: 20px; }
+        .rsvp-form { max-width: 350px; margin: 0 auto; width: 100%; text-align: left; }
+        .rsvp-form label { display: block; font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 8px; font-family: var(--font-woodland); }
         
-        /* Counter Layout Fix */
         .counter-container { 
             display: flex; 
-            justify-content: space-between; 
             align-items: center; 
-            margin-bottom: 30px; 
+            justify-content: space-between;
             border: 1px solid rgba(255,255,255,0.2); 
-            padding: 5px; 
+            margin-bottom: 25px;
         }
-        .counter-btn { 
-            background: transparent; 
-            border: none; 
-            color: var(--gold); 
-            width: 50px; 
-            height: 50px; 
-            cursor: pointer; 
-            font-size: 1.5rem; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .guest-num { 
-            font-family: var(--font-woodland); 
-            font-size: 1.5rem; 
-            text-align: center; 
-            color: var(--white);
-            flex-grow: 1; /* Ensures center alignment between buttons */
-        }
+        .counter-btn { background: none; border: none; color: var(--gold); font-size: 2rem; width: 60px; height: 60px; cursor: pointer; }
+        .guest-num { font-family: var(--font-woodland); font-size: 1.8rem; text-align: center; flex-grow: 1; }
 
-        .submit-btn { width: 100%; background: var(--gold); border: none; padding: 18px; font-family: var(--font-woodland); font-weight: 600; cursor: pointer; color: var(--dark-navy); transition: 0.3s; }
+        .submit-btn { width: 100%; background: var(--gold); border: none; padding: 20px; font-family: var(--font-woodland); color: var(--dark-navy); font-weight: bold; cursor: pointer; }
+        
+        .footer-name { font-family: var(--font-amoresa); font-size: 3rem; color: var(--gold); margin-top: 10px; }
 
-        .compliments-footer { margin-top: 50px; text-align: center; }
-        .compliments-footer p { font-family: var(--font-woodland); font-size: 0.9rem; opacity: 0.7; }
-        .compliments-footer strong { display: block; font-family: var(--font-amoresa); font-size: 3.5rem; color: var(--gold); line-height: 1; margin-top: 5px; }
-
-        @media (max-width: 768px) {
-            .card-3 .grid-container { flex-direction: column; gap: 40px; }
-            .cake-img { width: 50%; top: auto; bottom: 5%; right: 5%; transform: none; }
-            .card-2 .body-text { max-width: 100%; }
+        @media (min-width: 768px) {
+            .card-3 .grid-container { flex-direction: row; justify-content: center; gap: 100px; }
         }
     </style>
 </head>
 <body>
 
 <section id="landing-screen">
-    <div class="envelope-container" onclick="openInvitation()">
+    <div class="envelope-wrapper">
+        <div class="creases"></div>
         <div class="flap"></div>
-        <img src="01.png" class="wax-seal-img" alt="Seal">
+        <div class="wax-seal-container" onclick="openInvitation()">
+            <img src="01.png" class="wax-seal-img" alt="Seal">
+        </div>
     </div>
 </section>
 
@@ -216,9 +202,8 @@
         <h1 class="title">Mekha<br>& Edwin</h1> 
         <div class="divider"></div>
         <p class="quote">“He has made everything beautiful in its time”</p>
-        <p class="ref">Ecclesiastes 3:11</p>
-        <p class="date">17TH JULY 2026</p>
-        <img src="02.jpg" class="cake-img" alt="Cake">
+        <p style="font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; margin-top: 10px;">ECCLESIASTES 3:11</p>
+        <p style="margin-top: 50px; font-family: var(--font-woodland); letter-spacing: 4px;">17TH JULY 2026</p>
     </section>
 
     <section class="card card-2">
@@ -233,29 +218,27 @@
     </section>
 
     <section class="card card-3">
-        <div class="header">THE DETAILS</div>
+        <h1 class="title" style="color: var(--dark-navy); font-family: var(--font-woodland); letter-spacing: 5px;">THE DETAILS</h1>
         <div class="grid-container">
             <div class="block">
-                <h2 class="sub-title">Date and Time</h2>
+                <h2 class="sub-title">Date & Time</h2>
                 <p class="detail-text">July 17, 2026<br>4:30pm — Wedding<br>7:00pm — Reception</p>
             </div>
             <div class="block">
                 <h2 class="sub-title">Venue</h2>
-                <p class="detail-text">The Kings Meadows<br>Under the Auspices of City<br>Harvest AG Church, Bangalore</p>
+                <p class="detail-text">The Kings Meadows<br>City Harvest AG Church<br>Bangalore</p>
             </div>
         </div>
-        <div class="map-container">
-            <a href="https://maps.google.com" target="_blank" class="map-btn">VIEW ON MAPS</a>
-        </div>
+        <a href="https://maps.google.com" target="_blank" class="map-btn">VIEW ON MAPS</a>
     </section>
 
     <section class="card card-4">
-        <h1 class="title">RSVP soon!</h1>
+        <h1 class="title">RSVP</h1>
         <form class="rsvp-form">
             <label>FULL NAME</label>
-            <input type="text" placeholder="Enter your name" required>
+            <input type="text" style="width:100%; padding: 15px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 20px;" required>
             
-            <label>NUMBER OF GUESTS (MAX 20)</label>
+            <label>NUMBER OF GUESTS</label>
             <div class="counter-container">
                 <button type="button" class="counter-btn" onclick="updateGuests(-1)">-</button>
                 <div class="guest-num" id="guestCountDisplay">1</div>
@@ -264,9 +247,9 @@
             <button type="submit" class="submit-btn">SEND RSVP</button>
         </form>
         
-        <div class="compliments-footer">
-            <p>With best compliments from</p> 
-            <strong>Shimone Mathew Thomas</strong> 
+        <div style="margin-top: 40px;">
+            <p style="font-family: var(--font-woodland); font-size: 0.7rem; opacity: 0.7;">WITH BEST COMPLIMENTS FROM</p> 
+            <p class="footer-name">Shimone Mathew Thomas</p> 
         </div>
     </section>
 </main>
@@ -276,7 +259,6 @@
 
     function updateGuests(val) {
         currentGuests += val;
-        // Limit logic updated to 20
         if (currentGuests < 1) currentGuests = 1;
         if (currentGuests > 20) currentGuests = 20;
         document.getElementById('guestCountDisplay').innerText = currentGuests;
@@ -291,17 +273,10 @@
         setTimeout(() => {
             landing.classList.add('hide-landing');
             content.style.display = 'block';
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.card').forEach(card => observer.observe(card));
-        }, 950);
+            setTimeout(() => {
+                content.style.opacity = '1';
+            }, 100);
+        }, 1100);
     }
 </script>
 
