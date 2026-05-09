@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mekha & Edwin Wedding Invitation</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --dark-ink: #081B2C;      /* Page 1 Envelope */
+            --navy-ink: #102A43;      /* Text Accents */
+            --slate-ink: #3C5A73;     /* Interactive elements */
+            --ivory: #E9E4D6;         /* Background */
+            --stone: #C7BFAE;         /* Decorative elements */
+            --white: #FFFFFF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background-color: var(--ivory); 
+            font-family: 'Cormorant Garamond', serif; 
+            color: var(--dark-ink);
+            overflow-x: hidden;
+        }
+
+        /* ─── INITIAL VIEW: ENVELOPE ─── */
+        #landing-screen {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s;
+            background-color: var(--ivory);
+        }
+
+        .envelope {
+            width: 320px;
+            height: 220px;
+            background-color: var(--navy-ink);
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .flap {
+            position: absolute;
+            top: 0; width: 100%; height: 100%;
+            background-color: var(--navy-ink);
+            clip-path: polygon(0 0, 100% 0, 50% 50%);
+            transform-origin: top;
+            transition: transform 0.8s ease;
+            z-index: 2;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .wax-seal {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 65px; height: 65px;
+            background: #C5A35D; /* Gold seal as per Page 1 */
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            transition: opacity 0.4s;
+        }
+
+        /* ─── CONTENT CARDS ─── */
+        #main-content {
+            display: none;
+            padding: 20px 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--white);
+            margin-bottom: 30px;
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border-radius: 2px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .card.visible { opacity: 1; transform: translateY(0); }
+
+        .hero-names { font-family: 'Cormorant Garamond'; font-size: 3.5rem; line-height: 1; color: var(--navy-ink); [cite: 1] }
+        .script { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--slate-ink); [cite: 4, 6, 7] }
+        .divider { width: 40px; height: 1px; background: var(--stone); margin: 20px auto; }
+        
+        /* ─── RSVP FORM ─── */
+        .rsvp-form { text-align: left; margin-top: 20px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-family: 'Montserrat'; font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 10px; border: 1px solid var(--stone); font-family: 'Cormorant Garamond'; }
+        .submit-btn { 
+            width: 100%; background: var(--dark-ink); color: var(--white); 
+            border: none; padding: 15px; font-family: 'Montserrat'; 
+            letter-spacing: 2px; cursor: pointer; margin-top: 10px;
+        }
+
+        /* ─── ANIMATION CLASSES ─── */
+        .open-flap .flap { transform: rotateX(180deg); }
+        .hide-landing { transform: translateY(-100%); opacity: 0; }
+    </style>
+</head>
+<body>
+
+<div id="landing-screen">
+    <div class="envelope" onclick="openInvitation()">
+        <div class="flap"></div>
+        <div class="wax-seal"></div>
+    </div>
+</div>
+
+<div id="main-content">
+    <div class="card">
+        <h1 class="hero-names">MEKHA<br>& EDWIN</h1> [cite: 1]
+        <div class="divider"></div>
+        <p style="font-style: italic;">"He has made everything beautiful in its time"</p> 
+        <p style="font-size: 0.8rem; margin-top: 5px;">Ecclesiastes 3:11</p> 
+        <h2 style="letter-spacing: 4px; margin-top: 20px;">17<sup>th</sup> JULY 2026</h2> [cite: 3]
+    </div>
+
+    <div class="card">
+        <p class="script">You are Invited</p> [cite: 4]
+        <p style="font-size: 0.9rem; line-height: 1.6; margin: 20px 0;">
+            We, Reji Thomas Mathew & Lekha Reji Thomas<br>
+            request the honour of your presence at the holy matrimony of our daughter, [cite: 5]
+        </p>
+        <h2 class="script">Mekha Susan Thomas</h2> [cite: 6]
+        <p style="margin: 10px 0; font-size: 0.8rem; letter-spacing: 2px;">WITH</p>
+        <h2 class="script">Edwin Roger Bright</h2> [cite: 7]
+        <p style="font-size: 0.8rem; margin-top: 15px;">(Son of M.J. Bright and Lissy Bright)</p> [cite: 8]
+    </div>
+
+    <div class="card">
+        <p style="letter-spacing: 5px; font-weight: 600;">THE DETAILS</p> [cite: 9]
+        <div class="divider"></div>
+        <div style="margin-bottom: 30px;">
+            <p style="font-weight: 600;">DATE & TIME</p> [cite: 10]
+            <p>July 17, 2026</p> [cite: 11]
+            <p>4:30pm — Wedding</p> [cite: 12]
+            <p>7:00pm — Reception</p> [cite: 13]
+        </div>
+        <div>
+            <p style="font-weight: 600;">VENUE</p> [cite: 14]
+            <p>The Kings Meadows</p> [cite: 15]
+            <p style="font-size: 0.85rem;">City Harvest AG Church, Bangalore</p> [cite: 16, 17, 18]
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="script">RSVP soon!</h2> [cite: 19]
+        <p style="font-size: 0.8rem; margin: 10px 0;">We can't wait to celebrate with you!</p> [cite: 20]
+        
+        <form class="rsvp-form" action="YOUR_GOOGLE_FORM_URL_HERE" method="POST">
+            <div class="input-group">
+                <label>FULL NAME</label>
+                <input type="text" name="entry.123456" required>
+            </div>
+            <div class="input-group">
+                <label>NUMBER OF GUESTS</label>
+                <select name="entry.789012">
+                    <option value="1">1 Person</option>
+                    <option value="2">2 People</option>
+                    <option value="3">3 People</option>
+                    <option value="4">4+ People</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">SEND RSVP</button>
+        </form>
+        
+        <p style="margin-top: 40px; font-size: 0.7rem; opacity: 0.6;">
+            With best compliments from<br>
+            <strong>Shimon Mathew Thomas</strong> 
+        </p>
+    </div>
+</div>
+
+<script>
+    function openInvitation() {
+        const landing = document.getElementById('landing-screen');
+        const content = document.getElementById('main-content');
+        
+        landing.classList.add('open-flap');
+        
+        setTimeout(() => {
+            landing.classList.add('hide-landing');
+            content.style.display = 'block';
+            
+            // Trigger intersection observer for cards
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.card').forEach(card => observer.observe(card));
+        }, 1200);
+    }
+</script>
+
+</body>
+</html>
