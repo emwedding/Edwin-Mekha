@@ -27,7 +27,7 @@
             font-display: swap;
         }
 
-        /* ─── ENVELOPE WITH VISIBLE CREASES ─── */
+        /* ─── 3D ENVELOPE DESIGN ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -36,31 +36,31 @@
             justify-content: center;
             align-items: center;
             background-color: var(--champagne);
-            transition: transform 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .envelope-container {
             position: relative;
             width: 100vw;
             height: 100vh;
-            background: 
-                linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 50%),
-                var(--dark-navy);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: var(--dark-navy);
+            overflow: hidden;
             cursor: pointer;
+            /* Crease lighting */
+            background-image: 
+                linear-gradient(30deg, rgba(255,255,255,0.03) 0%, transparent 40%),
+                linear-gradient(-30deg, rgba(0,0,0,0.2) 0%, transparent 40%);
         }
 
-        /* Visible Side Creases */
+        /* Side Creases (V-shape visual) */
         .envelope-container::before {
             content: "";
             position: absolute;
             inset: 0;
+            z-index: 2;
             background: 
-                linear-gradient(to right, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(0,0,0,0.3) 100%),
-                linear-gradient(to top, rgba(0,0,0,0.2) 0%, transparent 40%);
-            z-index: 1;
+                linear-gradient(to right, rgba(0,0,0,0.4) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.4) 100%),
+                linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 50%);
             pointer-events: none;
         }
 
@@ -68,12 +68,12 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 50%;
             background-color: var(--dark-navy);
-            clip-path: polygon(0 0, 100% 0, 50% 60%);
+            clip-path: polygon(0 0, 100% 0, 50% 65%);
             z-index: 10;
             transform-origin: top;
             transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
         .wax-seal-img {
@@ -81,17 +81,18 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: clamp(220px, 55vw, 300px); /* Enlarged and prominent */
+            width: clamp(240px, 50vw, 320px);
             z-index: 20;
-            transition: opacity 0.4s ease, transform 0.5s ease;
-            filter: drop-shadow(0 15px 35px rgba(0,0,0,0.7));
+            transition: opacity 0.5s ease, transform 0.6s ease;
+            filter: drop-shadow(0 15px 40px rgba(0,0,0,0.8));
         }
 
-        .open-flap .flap { transform: rotateX(180deg); }
-        .open-flap .wax-seal-img { opacity: 0; transform: translate(-50%, -50%) scale(1.6); pointer-events: none; }
-        .hide-landing { transform: translateY(-100%); }
+        /* Opening Sequences */
+        .open-flap .flap { transform: rotateX(180deg); z-index: 1; }
+        .open-flap .wax-seal-img { opacity: 0; transform: translate(-50%, -50%) scale(1.5); pointer-events: none; }
+        .hide-landing { transform: translateY(100%); opacity: 0; }
 
-        /* ─── CONTENT SYSTEM ─── */
+        /* ─── SCROLLABLE CONTENT ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
@@ -113,43 +114,45 @@
 
         /* ─── PAGE 1: HERO ─── */
         .card-1 { background-color: var(--champagne); color: var(--dark-navy); text-align: left; }
-        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(3rem, 12vw, 6.5rem); line-height: 1.2; }
+        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(3.5rem, 12vw, 6.5rem); line-height: 1.3; }
         .card-1 .divider { width: 100px; height: 2px; background: var(--gold); margin: 25px 0; }
         .card-1 .quote { font-family: var(--font-amoresa); font-size: clamp(1.8rem, 5vw, 2.4rem); color: var(--formal-navy); margin-bottom: 5px; }
-        .card-1 .ref { font-family: var(--font-woodland); font-size: 0.85rem; letter-spacing: 2px; color: var(--formal-navy); }
+        .card-1 .ref { font-family: var(--font-woodland); font-size: 0.9rem; letter-spacing: 2px; color: var(--formal-navy); }
         .card-1 .date { font-family: var(--font-woodland); font-size: 1.4rem; letter-spacing: 5px; margin-top: 40px; }
-        .cake-img { position: absolute; right: 6%; top: 55%; transform: translateY(-50%); width: 28%; max-width: 450px; opacity: 0; transition: opacity 2s ease 0.8s; }
+        .cake-img { position: absolute; right: 6%; top: 55%; transform: translateY(-50%); width: 28%; opacity: 0; transition: opacity 2s ease 0.8s; }
         .card-1.visible .cake-img { opacity: 1; }
 
-        /* ─── PAGE 2: INVITATION (Tightened Spacing) ─── */
+        /* ─── PAGE 2: INVITATION ─── */
         .card-2 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
-        .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(4rem, 14vw, 7.5rem); margin-bottom: 10px; font-weight: 400; }
-        .card-2 .body-text { font-family: var(--font-woodland); font-size: 0.95rem; line-height: 1.6; margin: 8px 0; }
-        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 8vw, 5rem); color: var(--gold); margin: 10px 0; }
-        .card-2 .son-info { font-family: var(--font-woodland); font-size: 0.9rem; font-style: italic; margin-top: 10px; }
+        .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(4.5rem, 15vw, 8rem); margin-bottom: 10px; font-weight: 400; }
+        .card-2 .body-text { font-family: var(--font-woodland); font-size: 1rem; line-height: 1.5; margin: 5px 0; }
+        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(3rem, 10vw, 5.5rem); color: var(--gold); margin: 10px 0; }
+        .card-2 .son-info { font-family: var(--font-woodland); font-size: 0.9rem; margin-top: 5px; }
 
-        /* ─── PAGE 3: DETAILS (Center-Aligned Blocks) ─── */
+        /* ─── PAGE 3: DETAILS ─── */
         .card-3 { background-color: var(--champagne); color: var(--dark-navy); text-align: center; }
         .card-3 .header { font-family: var(--font-woodland); font-size: clamp(2.5rem, 8vw, 3.5rem); letter-spacing: 10px; margin-bottom: 40px; }
-        .card-3 .grid-container { display: flex; justify-content: center; width: 100%; gap: 10vw; }
-        .card-3 .block { flex: 1; max-width: 300px; text-align: center; }
-        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 3.8rem; margin-bottom: 5px; }
-        .card-3 .detail-text { font-family: var(--font-woodland); font-size: 1.1rem; line-height: 1.8; }
-        .card-3 .map-container { margin-top: 50px; }
-        .map-btn { background: var(--dark-navy); color: white; padding: 10px 20px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.75rem; letter-spacing: 2px; }
+        .card-3 .grid-container { display: flex; justify-content: center; gap: 8vw; }
+        .card-3 .block { width: 35vw; max-width: 320px; }
+        .card-3 .left { text-align: center; transform: translateX(-15px); }
+        .card-3 .right { text-align: center; transform: translateX(15px); }
+        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 3.8rem; margin-bottom: 10px; }
+        .card-3 .detail-text { font-family: var(--font-woodland); font-size: 1.15rem; line-height: 1.8; }
+        .card-3 .map-btn { display: inline-block; margin-top: 50px; background: var(--dark-navy); color: white; padding: 10px 20px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.75rem; letter-spacing: 2px; }
 
         /* ─── PAGE 4: RSVP ─── */
         .card-4 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
-        .card-4 .title { font-family: var(--font-woodland); font-size: 3.5rem; color: var(--gold); margin-bottom: 30px; }
+        .card-4 .title { font-family: var(--font-woodland); font-size: 3.5rem; color: var(--gold); margin-bottom: 40px; }
         .rsvp-form { max-width: 400px; margin: 0 auto; width: 100%; text-align: left; }
         .rsvp-form input, .rsvp-form select { width: 100%; padding: 15px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 15px; font-family: var(--font-woodland); }
         .rsvp-form button { width: 100%; background: var(--gold); border: none; padding: 15px; font-family: var(--font-woodland); font-weight: 600; cursor: pointer; color: var(--dark-navy); }
-        .card-4 .compliments { font-family: var(--font-woodland); margin-top: 50px; font-size: 0.95rem; opacity: 0.8; }
-        .card-4 .shimon { font-family: var(--font-amoresa); font-size: 4rem; color: var(--gold); line-height: 1; margin-top: 5px; }
+        
+        .card-4 .compliments { font-family: var(--font-woodland); margin-top: 60px; font-size: 0.95rem; opacity: 0.8; }
+        .card-4 .shimon { font-family: var(--font-amoresa); font-size: 4rem; color: var(--gold); margin-top: 5px; line-height: 1; }
 
         @media (max-width: 768px) {
-            .card-3 .grid-container { flex-direction: column; gap: 30px; align-items: center; }
-            .cake-img { width: 45%; top: 82%; right: 5%; transform: none; }
+            .card-3 .grid-container { flex-direction: column; gap: 40px; }
+            .card-3 .left, .card-3 .right { width: 100%; transform: none; }
         }
     </style>
 </head>
@@ -174,23 +177,23 @@
 
     <section class="card card-2">
         <h1 class="title">You are Invited</h1>
-        <p class="body-text">We, Reji Thomas Mathew & Lekha Reji Thomas, [cite: 5]<br>
+        <p class="body-text">We, Reji Thomas Mathew & Lekha Reji Thomas,<br>
         request the honour of your presence at the holy<br>
-        matrimony of our daughter, [cite: 5]</p>
-        <h2 class="names">Mekha Susan Thomas [cite: 6]</h2>
-        <p class="body-text">with [cite: 6]</p>
-        <h2 class="names">Edwin Roger Bright [cite: 7]</h2>
-        <p class="son-info">(Son of M.J. Bright and Lissy Bright) [cite: 8]</p>
+        matrimony of our daughter,</p>
+        <h2 class="names">Mekha Susan Thomas</h2>
+        <p class="body-text">with</p>
+        <h2 class="names">Edwin Roger Bright</h2>
+        <p class="son-info">(Son of M.J. Bright and Lissy Bright)</p>
     </section>
 
     <section class="card card-3">
         <div class="header">THE DETAILS</div>
         <div class="grid-container">
-            <div class="block">
+            <div class="block left">
                 <h2 class="sub-title">Date and Time</h2>
                 <p class="detail-text">July 17, 2026<br>4:30pm — Wedding<br>7:00pm — Reception</p>
             </div>
-            <div class="block">
+            <div class="block right">
                 <h2 class="sub-title">Venue</h2>
                 <p class="detail-text">The Kings Meadows<br>Under the Auspices of City<br>Harvest AG Church, Bangalore</p>
             </div>
@@ -237,7 +240,7 @@
             }, { threshold: 0.25 });
 
             document.querySelectorAll('.card').forEach(card => observer.observe(card));
-        }, 900);
+        }, 950);
     }
 </script>
 
