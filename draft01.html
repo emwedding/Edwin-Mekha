@@ -9,7 +9,7 @@
 
     <style>
         :root {
-            --deep-dark-navy: #020810; /* Deeper, richer navy */
+            --deep-dark-navy: #020810;
             --paper-navy: #05111D;
             --champagne: #F7E7CE;
             --gold: #C8A96B;
@@ -27,7 +27,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── ENVELOPE WITH DEFINED SHADOW LINES ─── */
+        /* ─── MOBILE-OPTIMIZED REALISTIC ENVELOPE ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -35,55 +35,53 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #CBB99B; /* Neutral surface */
+            background-color: #BDB095;
             transition: opacity 0.5s ease-out, visibility 0.5s;
         }
 
         .envelope {
             position: relative;
-            width: 100vw;
-            height: 100vh;
-            background: transparent;
-            perspective: 2500px;
+            width: 100%;
+            height: 100%;
+            perspective: 2000px;
         }
 
         .flap {
             position: absolute;
             background-color: var(--paper-navy);
-            transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
             z-index: 10;
         }
 
-        /* ─── DEFINED SHADOW LINES ─── 
-           Using multiple box-shadows and gradients to define the fold lines clearly */
+        /* Sharply defined shadow lines for flaps */
         .flap-top { 
             top: 0; left: 0; width: 100%; height: 50%; 
             clip-path: polygon(0 0, 100% 0, 50% 100%); 
             transform-origin: top; 
             z-index: 14; 
-            box-shadow: inset 0 -40px 80px rgba(0,0,0,0.9), 0 10px 30px rgba(0,0,0,0.6);
-            border-bottom: 1px solid rgba(255,255,255,0.03);
+            box-shadow: inset 0 -50px 100px rgba(0,0,0,0.95);
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
         }
         .flap-left { 
             top: 0; left: 0; width: 50%; height: 100%; 
             clip-path: polygon(0 0, 100% 50%, 0 100%); 
             transform-origin: left; 
             z-index: 12; 
-            box-shadow: inset 40px 0 80px rgba(0,0,0,0.9);
+            box-shadow: inset 50px 0 100px rgba(0,0,0,0.95);
         }
         .flap-right { 
             top: 0; right: 0; width: 50%; height: 100%; 
             clip-path: polygon(100% 0, 100% 100%, 0 50%); 
             transform-origin: right; 
             z-index: 12; 
-            box-shadow: inset -40px 0 80px rgba(0,0,0,0.9);
+            box-shadow: inset -50px 0 100px rgba(0,0,0,0.95);
         }
         .flap-bottom { 
             bottom: 0; left: 0; width: 100%; height: 50%; 
             clip-path: polygon(50% 0, 100% 100%, 0 100%); 
             transform-origin: bottom; 
             z-index: 13; 
-            box-shadow: inset 0 40px 80px rgba(0,0,0,0.9);
+            box-shadow: inset 0 50px 100px rgba(0,0,0,0.95);
         }
 
         .wax-seal-container {
@@ -92,84 +90,90 @@
             transform: translate(-50%, -50%);
             z-index: 20;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         .wax-seal-img {
-            width: clamp(250px, 55vw, 350px);
-            filter: drop-shadow(0 30px 50px rgba(0,0,0,1));
+            width: clamp(200px, 60vw, 350px);
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,1));
         }
 
-        /* FAST UNIFORM UNFOLD */
-        .unfold .flap-top { transform: rotateX(160deg); }
-        .unfold .flap-bottom { transform: rotateX(-160deg); }
-        .unfold .flap-left { transform: rotateY(-160deg); }
-        .unfold .flap-right { transform: rotateY(160deg); }
-        .unfold .wax-seal-container { opacity: 0; transform: translate(-50%, -50%) scale(1.2); pointer-events: none; }
+        .unfold .flap-top { transform: rotateX(150deg); }
+        .unfold .flap-bottom { transform: rotateX(-150deg); }
+        .unfold .flap-left { transform: rotateY(-150deg); }
+        .unfold .flap-right { transform: rotateY(150deg); }
+        .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
         
         #landing-screen.hide { opacity: 0; visibility: hidden; }
 
-        /* ─── CONTENT CARDS ─── */
+        /* ─── RESPONSIVE CONTENT CARDS ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
             overflow-y: scroll; 
             scroll-snap-type: y mandatory;
-            background-color: var(--deep-dark-navy);
         }
 
         .card {
-            width: 100vw; height: 100vh;
+            width: 100vw;
+            min-height: 100vh;
             scroll-snap-align: start;
-            display: flex; flex-direction: column; justify-content: center;
-            padding: 40px 10vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 8vw;
             position: relative;
-            /* Scroll Fade Effect */
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+            overflow: hidden;
         }
 
-        .card.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .card.is-visible { opacity: 1; transform: translateY(0); }
 
         .card-1 { background-color: var(--champagne); }
         .card-2 { background-color: var(--deep-dark-navy); color: var(--white); text-align: center; }
-        .card-3 { background-color: var(--champagne); text-align: center; }
+        .card-3 { background-color: var(--champagne); text-align: center; color: var(--paper-navy); }
         .card-4 { background-color: var(--deep-dark-navy); color: var(--white); text-align: center; }
 
-        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(3rem, 10vw, 5.5rem); line-height: 1; color: var(--paper-navy); }
-        .card-1 .divider { width: 80px; height: 3px; background: var(--gold); margin: 25px 0; }
-        .card-1 .quote { font-family: var(--font-amoresa); font-size: 2.8rem; color: var(--paper-navy); }
-        
+        /* PAGE 1 FIXES */
+        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1; color: var(--paper-navy); z-index: 2; }
+        .card-1 .quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 20px; z-index: 2; }
         .cake-img { 
-            position: absolute; bottom: 5%; right: 5%; 
-            width: clamp(300px, 48vw, 550px); 
-            opacity: 0; transform: scale(0.9);
-            transition: opacity 1.5s ease 0.4s, transform 1.5s ease 0.4s;
+            position: absolute; 
+            bottom: 2%; right: -5%; 
+            width: clamp(250px, 60vw, 500px); 
+            opacity: 0.8; 
+            z-index: 1; 
         }
-        .is-visible .cake-img { opacity: 1; transform: scale(1); }
 
-        .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(4rem, 12vw, 7.5rem); margin-bottom: 5px; }
-        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(3rem, 10vw, 5.5rem); color: var(--gold); margin: 15px 0; }
-        .card-2 .body-text { font-family: var(--font-woodland); font-size: 0.95rem; line-height: 1.5; max-width: 85%; margin: 0 auto; letter-spacing: 0.5px; }
+        /* PAGE 2 & RSVP FIXES (Prevents spilling) */
+        .card-2 .title, .card-4 .rsvp-title { 
+            font-family: var(--font-amoresa); 
+            font-size: clamp(3.5rem, 10vw, 7rem); 
+            width: 100%;
+        }
+        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.5rem, 8vw, 5rem); color: var(--gold); }
+        .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(0.8rem, 3vw, 1rem); line-height: 1.5; max-width: 90%; margin: 0 auto; }
 
-        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 4.5rem; color: var(--gold); }
-        .card-3 .detail-text { font-family: var(--font-woodland); font-size: 1.5rem; line-height: 1.6; margin-bottom: 35px; color: var(--paper-navy); }
-        .map-btn { display: inline-block; background: var(--paper-navy); color: white; padding: 18px 35px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.9rem; letter-spacing: 2px; }
+        /* DETAILS FIXES */
+        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: clamp(3rem, 7vw, 4.5rem); color: var(--gold); }
+        .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(1rem, 4vw, 1.4rem); margin-bottom: 20px; }
+        .map-btn { display: inline-block; background: var(--paper-navy); color: white; padding: 15px 30px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; }
 
-        .rsvp-title { font-family: var(--font-woodland); color: var(--gold); font-size: 3rem; margin-bottom: 5px; }
-        .rsvp-subtitle { font-family: var(--font-woodland); color: var(--white); font-size: 1rem; letter-spacing: 1.5px; margin-bottom: 35px; display: block; }
-        
-        .counter-container { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.2); margin: 20px auto; max-width: 320px; }
-        .counter-btn { background: none; border: none; color: var(--gold); font-size: 2.2rem; width: 65px; height: 65px; cursor: pointer; }
-        .guest-num { font-family: var(--font-woodland); font-size: 2.2rem; flex-grow: 1; text-align: center; }
-        .submit-btn { background: var(--gold); border: none; padding: 22px; width: 100%; max-width: 320px; font-family: var(--font-woodland); font-weight: bold; cursor: pointer; color: var(--deep-dark-navy); }
-        .footer-name { font-family: var(--font-amoresa); font-size: 3.8rem; color: var(--gold); }
+        /* RSVP FORM FIXES */
+        .rsvp-subtitle { font-family: var(--font-woodland); font-size: clamp(0.7rem, 3vw, 1rem); margin-bottom: 20px; display: block; }
+        .counter-container { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.2); margin: 15px auto; max-width: 280px; }
+        .counter-btn { width: 50px; height: 50px; font-size: 1.8rem; color: var(--gold); background: none; border: none; cursor: pointer; }
+        .guest-num { font-family: var(--font-woodland); font-size: 1.8rem; }
+        .submit-btn { background: var(--gold); color: var(--deep-dark-navy); padding: 18px; width: 100%; max-width: 280px; font-weight: bold; border: none; font-family: var(--font-woodland); }
 
-        @media (min-width: 768px) { .details-flex { display: flex; justify-content: center; gap: 120px; } }
+        .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.5rem, 8vw, 4rem); color: var(--gold); margin-top: 5px; }
+
+        @media (max-width: 600px) {
+            .card { padding: 30px 6vw; }
+            .cake-img { width: 80%; bottom: 0; right: -10%; opacity: 0.4; } /* Lower opacity on mobile to ensure text readability */
+            .details-flex { display: flex; flex-direction: column; gap: 30px; }
+        }
     </style>
 </head>
 <body>
@@ -189,10 +193,10 @@
 <main id="main-content">
     <section class="card card-1">
         <h1 class="title">Mekha<br>& Edwin</h1> 
-        <div class="divider"></div>
+        <div style="width: 60px; height: 3px; background: var(--gold); margin: 15px 0;"></div>
         <p class="quote">“He has made everything beautiful in its time”</p>
-        <p style="font-family: var(--font-woodland); letter-spacing: 3px; margin-top: 15px; color: var(--paper-navy);">ECCLESIASTES 3:11</p>
-        <p style="margin-top: 50px; font-family: var(--font-woodland); letter-spacing: 6px; font-weight: 600; color: var(--paper-navy);">17TH JULY 2026</p>
+        <p style="font-family: var(--font-woodland); letter-spacing: 2px; font-size: 0.8rem; margin-top: 10px;">ECCLESIASTES 3:11</p>
+        <p style="margin-top: 30px; font-family: var(--font-woodland); letter-spacing: 4px; font-weight: 600;">17TH JULY 2026</p>
         <img src="02.png" class="cake-img" alt="Wedding Cake">
     </section>
 
@@ -208,7 +212,7 @@
     </section>
 
     <section class="card card-3">
-        <h1 style="font-family: var(--font-woodland); letter-spacing: 10px; margin-bottom: 45px; color: var(--paper-navy);">THE DETAILS</h1>
+        <h1 style="font-family: var(--font-woodland); letter-spacing: 5px; margin-bottom: 30px;">THE DETAILS</h1>
         <div class="details-flex">
             <div class="block">
                 <h2 class="sub-title">Date & Time</h2>
@@ -223,14 +227,14 @@
     </section>
 
     <section class="card card-4">
-        <h1 class="rsvp-title">RSVP SOON!</h1>
+        <h1 class="rsvp-title" style="color: var(--gold); font-family: var(--font-woodland);">RSVP SOON!</h1>
         <span class="rsvp-subtitle">We can’t wait to celebrate with you!</span>
         
-        <form style="margin: 0 auto; width: 100%; max-width: 320px; text-align: left;">
-            <label style="font-size: 0.75rem; letter-spacing: 2px; font-family: var(--font-woodland); opacity: 0.8;">FULL NAME</label>
-            <input type="text" style="width:100%; padding: 14px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 25px; font-family: var(--font-woodland);" placeholder="Your Name" required>
+        <form style="margin: 0 auto; width: 100%; max-width: 280px; text-align: left;">
+            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland);">FULL NAME</label>
+            <input type="text" style="width:100%; padding: 12px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 15px;" required>
             
-            <label style="font-size: 0.75rem; letter-spacing: 2px; font-family: var(--font-woodland); opacity: 0.8;">NUMBER OF GUESTS</label>
+            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland);">NUMBER OF GUESTS</label>
             <div class="counter-container">
                 <button type="button" class="counter-btn" onclick="updateGuests(-1)">-</button>
                 <div class="guest-num" id="guestCountDisplay">1</div>
@@ -239,8 +243,8 @@
             <button type="submit" class="submit-btn">SEND RSVP</button>
         </form>
         
-        <div style="margin-top: 40px;">
-            <p style="font-family: var(--font-woodland); font-size: 0.75rem; opacity: 0.7; letter-spacing: 1.5px;">WITH BEST COMPLIMENTS FROM</p> 
+        <div style="margin-top: 25px;">
+            <p style="font-family: var(--font-woodland); font-size: 0.7rem; opacity: 0.7;">WITH BEST COMPLIMENTS FROM</p> 
             <p class="footer-name">Shimone Mathew Thomas</p> 
         </div>
     </section>
@@ -248,7 +252,6 @@
 
 <script>
     let currentGuests = 1;
-
     function updateGuests(val) {
         currentGuests += val;
         if (currentGuests < 1) currentGuests = 1;
@@ -256,7 +259,6 @@
         document.getElementById('guestCountDisplay').innerText = currentGuests;
     }
 
-    // Scroll Observer
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -268,18 +270,12 @@
     }, { threshold: 0.2 });
 
     function handleOpen() {
-        const envelope = document.getElementById('envelope');
-        const landing = document.getElementById('landing-screen');
-        const content = document.getElementById('main-content');
-        
-        envelope.classList.add('unfold');
-        content.style.display = 'block';
-        
-        // Fast switch to content
+        document.getElementById('envelope').classList.add('unfold');
+        document.getElementById('main-content').style.display = 'block';
         setTimeout(() => {
-            landing.classList.add('hide');
+            document.getElementById('landing-screen').classList.add('hide');
             document.querySelectorAll('.card').forEach(card => observer.observe(card));
-        }, 650);
+        }, 600);
     }
 </script>
 
