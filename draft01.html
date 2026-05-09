@@ -10,7 +10,7 @@
     <style>
         :root {
             --dark-navy: #081B2C;
-            --formal-navy: #1A3A5A;
+            --mid-navy: #0D253D;
             --champagne: #F7E7CE;
             --gold: #C8A96B;
             --white: #ffffff;
@@ -27,7 +27,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── ENHANCED 3D ENVELOPE ─── */
+        /* ─── 4-SIDED FOLDING ENVELOPE ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -36,163 +36,173 @@
             justify-content: center;
             align-items: center;
             background-color: var(--champagne);
-            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+            transition: opacity 1s ease 1.5s, visibility 1s ease 1.5s;
         }
 
-        .envelope-wrapper {
+        .envelope {
             position: relative;
-            width: 100%;
-            height: 100%;
-            background-color: var(--dark-navy);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1500px;
+            width: 100vw;
+            height: 100vh;
+            background: var(--mid-navy);
+            perspective: 2000px;
+            overflow: hidden;
         }
 
-        /* Realistic Creases using Gradients */
-        .creases {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 5;
-            background: 
-                /* Diagonal Creases */
-                linear-gradient(45deg, rgba(0,0,0,0.5) 0%, transparent 0.5%, transparent 99.5%, rgba(0,0,0,0.5) 100%),
-                linear-gradient(-45deg, rgba(0,0,0,0.5) 0%, transparent 0.5%, transparent 99.5%, rgba(0,0,0,0.5) 100%),
-                /* Depth Shading */
-                radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.4) 100%);
-        }
-
+        /* Common Flap Style */
         .flap {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 55%;
             background: var(--dark-navy);
-            clip-path: polygon(0 0, 100% 0, 50% 70%);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 10;
-            transform-origin: top;
-            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            border-bottom: 1px solid rgba(200, 169, 107, 0.2);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
         }
 
+        /* Top Flap */
+        .flap-top {
+            top: 0; left: 0; width: 100%; height: 55%;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top;
+            z-index: 14;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Left Flap */
+        .flap-left {
+            top: 0; left: 0; width: 55%; height: 100%;
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+            transform-origin: left;
+            z-index: 12;
+        }
+
+        /* Right Flap */
+        .flap-right {
+            top: 0; right: 0; width: 55%; height: 100%;
+            clip-path: polygon(100% 0, 100% 100%, 0 50%);
+            transform-origin: right;
+            z-index: 12;
+        }
+
+        /* Bottom Flap */
+        .flap-bottom {
+            bottom: 0; left: 0; width: 100%; height: 55%;
+            clip-path: polygon(50% 0, 100% 100%, 0 100%);
+            transform-origin: bottom;
+            z-index: 13;
+        }
+
+        /* Wax Seal */
         .wax-seal-container {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -40%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 20;
             cursor: pointer;
-            transition: all 0.6s ease;
+            transition: all 0.5s ease;
         }
 
         .wax-seal-img {
-            width: clamp(180px, 40vw, 250px);
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
-            animation: pulse 3s infinite ease-in-out;
+            width: clamp(200px, 45vw, 280px);
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.7));
+            animation: pulse 2.5s infinite;
         }
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.08); }
         }
 
-        /* Animation States */
-        .open-flap .flap { transform: rotateX(160deg); }
-        .open-flap .wax-seal-container { opacity: 0; transform: translate(-50%, -20%) scale(1.2); pointer-events: none; }
-        .hide-landing { transform: scale(2); opacity: 0; pointer-events: none; }
+        /* Unfolding Animations */
+        .unfold .flap-top { transform: rotateX(160deg); z-index: 5; }
+        .unfold .flap-left { transform: rotateY(-160deg); transition-delay: 0.3s; }
+        .unfold .flap-right { transform: rotateY(160deg); transition-delay: 0.3s; }
+        .unfold .flap-bottom { transform: rotateX(-160deg); transition-delay: 0.6s; }
+        .unfold .wax-seal-container { opacity: 0; transform: translate(-50%, -80%) scale(0.5); pointer-events: none; }
+        
+        #landing-screen.hide { opacity: 0; visibility: hidden; }
 
-        /* ─── MAIN CONTENT ─── */
+        /* ─── CONTENT CARDS ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
             overflow-y: scroll; 
             scroll-snap-type: y mandatory;
             background-color: var(--champagne);
-            opacity: 0;
-            transition: opacity 1.5s ease;
         }
 
         .card {
-            width: 100vw;
-            height: 100vh;
+            width: 100vw; height: 100vh;
             scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px 12vw;
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 40px 10vw;
             position: relative;
         }
 
-        /* PAGE 1: HERO */
-        .card-1 { text-align: left; color: var(--dark-navy); }
-        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(3rem, 10vw, 5rem); line-height: 1; margin-bottom: 20px; }
-        .card-1 .divider { width: 80px; height: 3px; background: var(--gold); margin-bottom: 30px; }
-        .card-1 .quote { font-family: var(--font-amoresa); font-size: 2.2rem; line-height: 1.2; }
+        /* PAGE 1: HERO & CAKE */
+        .card-1 { color: var(--dark-navy); }
+        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(3rem, 10vw, 5.5rem); line-height: 1; }
+        .card-1 .divider { width: 80px; height: 3px; background: var(--gold); margin: 25px 0; }
+        .card-1 .quote { font-family: var(--font-amoresa); font-size: 2.5rem; color: var(--mid-navy); }
+        
+        .cake-img { 
+            position: absolute; 
+            bottom: 10%; right: 10%; 
+            width: clamp(150px, 30vw, 300px); 
+            z-index: 5;
+            /* Ensure the image is visible if file exists */
+            display: block;
+        }
 
-        /* PAGE 2: INVITATION (Refined Spacing) */
+        /* PAGE 2: INVITATION (Condensed) */
         .card-2 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
-        .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(3.5rem, 12vw, 6rem); margin-bottom: 10px; }
+        .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(4rem, 12vw, 7rem); margin-bottom: 5px; }
         .card-2 .body-text { 
             font-family: var(--font-woodland); 
-            font-size: 0.95rem; 
-            line-height: 1.5; /* Condensed */
-            letter-spacing: 1px;
-            max-width: 90%; 
+            font-size: 0.9rem; 
+            line-height: 1.4; 
+            max-width: 85%; 
             margin: 0 auto;
+            letter-spacing: 0.5px;
         }
-        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 9vw, 4.5rem); color: var(--gold); margin: 15px 0; line-height: 1; }
+        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(3rem, 10vw, 5rem); color: var(--gold); margin: 10px 0; }
 
-        /* PAGE 3: DETAILS (Bigger Text Blocks) */
-        .card-3 { color: var(--dark-navy); text-align: center; }
-        .card-3 .grid-container { display: flex; flex-direction: column; gap: 40px; margin-top: 30px; }
-        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 3.5rem; color: var(--gold); }
-        .card-3 .detail-text { font-family: var(--font-woodland); font-size: 1.2rem; line-height: 1.6; }
+        /* PAGE 3: DETAILS (Bigger Text) */
+        .card-3 { text-align: center; color: var(--dark-navy); }
+        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 4rem; color: var(--gold); }
+        .card-3 .detail-text { font-family: var(--font-woodland); font-size: 1.4rem; line-height: 1.5; margin-bottom: 30px; }
+        
         .map-btn { 
-            align-self: center;
-            margin: 40px auto 0;
-            background: var(--dark-navy);
-            color: white;
-            padding: 12px 25px;
-            text-decoration: none;
-            font-family: var(--font-woodland);
-            font-size: 0.8rem;
-            letter-spacing: 2px;
+            display: inline-block; background: var(--dark-navy); color: white; 
+            padding: 15px 30px; text-decoration: none; font-family: var(--font-woodland); 
+            font-size: 0.9rem; letter-spacing: 2px; margin: 0 auto;
         }
 
         /* PAGE 4: RSVP */
         .card-4 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
-        .card-4 .title { font-family: var(--font-woodland); font-size: 3rem; color: var(--gold); margin-bottom: 20px; }
-        .rsvp-form { max-width: 350px; margin: 0 auto; width: 100%; text-align: left; }
-        .rsvp-form label { display: block; font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 8px; font-family: var(--font-woodland); }
-        
         .counter-container { 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between;
-            border: 1px solid rgba(255,255,255,0.2); 
-            margin-bottom: 25px;
+            display: flex; align-items: center; justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.2); margin: 20px auto; max-width: 300px;
         }
         .counter-btn { background: none; border: none; color: var(--gold); font-size: 2rem; width: 60px; height: 60px; cursor: pointer; }
-        .guest-num { font-family: var(--font-woodland); font-size: 1.8rem; text-align: center; flex-grow: 1; }
-
-        .submit-btn { width: 100%; background: var(--gold); border: none; padding: 20px; font-family: var(--font-woodland); color: var(--dark-navy); font-weight: bold; cursor: pointer; }
-        
-        .footer-name { font-family: var(--font-amoresa); font-size: 3rem; color: var(--gold); margin-top: 10px; }
+        .guest-num { font-family: var(--font-woodland); font-size: 2rem; flex-grow: 1; text-align: center; }
+        .submit-btn { background: var(--gold); border: none; padding: 20px; width: 100%; max-width: 300px; font-family: var(--font-woodland); font-weight: bold; cursor: pointer; }
+        .footer-name { font-family: var(--font-amoresa); font-size: 3.5rem; color: var(--gold); }
 
         @media (min-width: 768px) {
-            .card-3 .grid-container { flex-direction: row; justify-content: center; gap: 100px; }
+            .details-flex { display: flex; justify-content: center; gap: 100px; }
         }
     </style>
 </head>
 <body>
 
 <section id="landing-screen">
-    <div class="envelope-wrapper">
-        <div class="creases"></div>
-        <div class="flap"></div>
-        <div class="wax-seal-container" onclick="openInvitation()">
-            <img src="01.png" class="wax-seal-img" alt="Seal">
+    <div class="envelope" id="envelope">
+        <div class="flap flap-top"></div>
+        <div class="flap flap-left"></div>
+        <div class="flap flap-right"></div>
+        <div class="flap flap-bottom"></div>
+        
+        <div class="wax-seal-container" onclick="handleOpen()">
+            <img src="01.png" class="wax-seal-img" alt="Wax Seal">
         </div>
     </div>
 </section>
@@ -202,8 +212,10 @@
         <h1 class="title">Mekha<br>& Edwin</h1> 
         <div class="divider"></div>
         <p class="quote">“He has made everything beautiful in its time”</p>
-        <p style="font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; margin-top: 10px;">ECCLESIASTES 3:11</p>
-        <p style="margin-top: 50px; font-family: var(--font-woodland); letter-spacing: 4px;">17TH JULY 2026</p>
+        <p style="font-family: var(--font-woodland); letter-spacing: 2px; margin-top: 10px;">ECCLESIASTES 3:11</p>
+        <p style="margin-top: 40px; font-family: var(--font-woodland); letter-spacing: 5px; font-weight: 600;">17TH JULY 2026</p>
+        
+        <img src="02.png" class="cake-img" alt="Wedding Cake">
     </section>
 
     <section class="card card-2">
@@ -218,8 +230,8 @@
     </section>
 
     <section class="card card-3">
-        <h1 class="title" style="color: var(--dark-navy); font-family: var(--font-woodland); letter-spacing: 5px;">THE DETAILS</h1>
-        <div class="grid-container">
+        <h1 style="font-family: var(--font-woodland); letter-spacing: 8px; margin-bottom: 40px;">THE DETAILS</h1>
+        <div class="details-flex">
             <div class="block">
                 <h2 class="sub-title">Date & Time</h2>
                 <p class="detail-text">July 17, 2026<br>4:30pm — Wedding<br>7:00pm — Reception</p>
@@ -233,12 +245,12 @@
     </section>
 
     <section class="card card-4">
-        <h1 class="title">RSVP</h1>
-        <form class="rsvp-form">
-            <label>FULL NAME</label>
-            <input type="text" style="width:100%; padding: 15px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 20px;" required>
+        <h1 style="font-family: var(--font-woodland); color: var(--gold); font-size: 2.5rem;">RSVP</h1>
+        <form style="margin: 20px auto; width: 100%; max-width: 300px; text-align: left;">
+            <label style="font-size: 0.7rem; letter-spacing: 2px; font-family: var(--font-woodland);">FULL NAME</label>
+            <input type="text" style="width:100%; padding: 12px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 20px;" required>
             
-            <label>NUMBER OF GUESTS</label>
+            <label style="font-size: 0.7rem; letter-spacing: 2px; font-family: var(--font-woodland);">NUMBER OF GUESTS</label>
             <div class="counter-container">
                 <button type="button" class="counter-btn" onclick="updateGuests(-1)">-</button>
                 <div class="guest-num" id="guestCountDisplay">1</div>
@@ -247,8 +259,8 @@
             <button type="submit" class="submit-btn">SEND RSVP</button>
         </form>
         
-        <div style="margin-top: 40px;">
-            <p style="font-family: var(--font-woodland); font-size: 0.7rem; opacity: 0.7;">WITH BEST COMPLIMENTS FROM</p> 
+        <div style="margin-top: 30px;">
+            <p style="font-family: var(--font-woodland); font-size: 0.7rem; opacity: 0.7; letter-spacing: 1px;">WITH BEST COMPLIMENTS FROM</p> 
             <p class="footer-name">Shimone Mathew Thomas</p> 
         </div>
     </section>
@@ -264,19 +276,19 @@
         document.getElementById('guestCountDisplay').innerText = currentGuests;
     }
 
-    function openInvitation() {
+    function handleOpen() {
+        const envelope = document.getElementById('envelope');
         const landing = document.getElementById('landing-screen');
         const content = document.getElementById('main-content');
         
-        landing.classList.add('open-flap');
+        // Start unfolding
+        envelope.classList.add('unfold');
         
+        // Fade out landing screen after unfolding completes
         setTimeout(() => {
-            landing.classList.add('hide-landing');
+            landing.classList.add('hide');
             content.style.display = 'block';
-            setTimeout(() => {
-                content.style.opacity = '1';
-            }, 100);
-        }, 1100);
+        }, 1800);
     }
 </script>
 
