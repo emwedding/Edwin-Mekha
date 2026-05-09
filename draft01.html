@@ -27,7 +27,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── ENVELOPE (Dark Navy Paper) ─── */
+        /* ─── REALISTIC DARK NAVY ENVELOPE ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -35,18 +35,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: var(--champagne); /* The table surface */
-            transition: opacity 1s ease 1s, visibility 1s;
+            background-color: #E6D5B8; /* Slightly darker surface to make navy pop */
+            transition: opacity 0.8s ease 1s, visibility 0.8s;
         }
 
         .envelope {
             position: relative;
             width: 100vw;
             height: 100vh;
-            background: transparent; /* Allows Card 1 to show through immediately */
-            perspective: 2000px;
+            background: transparent;
+            perspective: 2500px;
         }
 
+        /* Flap Styling with Prominent Creases */
         .flap {
             position: absolute;
             background-color: var(--dark-navy);
@@ -55,11 +56,36 @@
             z-index: 10;
         }
 
-        /* Simultaneous Simultaneous Unfold Edges */
-        .flap-top { top: 0; left: 0; width: 100%; height: 50%; clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top; z-index: 14; box-shadow: inset 0 -15px 40px rgba(0,0,0,0.5); }
-        .flap-left { top: 0; left: 0; width: 50%; height: 100%; clip-path: polygon(0 0, 100% 50%, 0 100%); transform-origin: left; z-index: 12; box-shadow: inset 15px 0 40px rgba(0,0,0,0.5); }
-        .flap-right { top: 0; right: 0; width: 50%; height: 100%; clip-path: polygon(100% 0, 100% 100%, 0 50%); transform-origin: right; z-index: 12; box-shadow: inset -15px 0 40px rgba(0,0,0,0.5); }
-        .flap-bottom { bottom: 0; left: 0; width: 100%; height: 50%; clip-path: polygon(50% 0, 100% 100%, 0 100%); transform-origin: bottom; z-index: 13; box-shadow: inset 0 15px 40px rgba(0,0,0,0.5); }
+        /* Hard Creases using specific Shadowing */
+        .flap-top { 
+            top: 0; left: 0; width: 100%; height: 50%; 
+            clip-path: polygon(0 0, 100% 0, 50% 100%); 
+            transform-origin: top; 
+            z-index: 14; 
+            box-shadow: inset 0 -25px 50px rgba(0,0,0,0.7), 0 5px 15px rgba(0,0,0,0.5);
+            border-bottom: 0.5px solid rgba(255,255,255,0.05);
+        }
+        .flap-left { 
+            top: 0; left: 0; width: 50%; height: 100%; 
+            clip-path: polygon(0 0, 100% 50%, 0 100%); 
+            transform-origin: left; 
+            z-index: 12; 
+            box-shadow: inset 25px 0 50px rgba(0,0,0,0.7);
+        }
+        .flap-right { 
+            top: 0; right: 0; width: 50%; height: 100%; 
+            clip-path: polygon(100% 0, 100% 100%, 0 50%); 
+            transform-origin: right; 
+            z-index: 12; 
+            box-shadow: inset -25px 0 50px rgba(0,0,0,0.7);
+        }
+        .flap-bottom { 
+            bottom: 0; left: 0; width: 100%; height: 50%; 
+            clip-path: polygon(50% 0, 100% 100%, 0 100%); 
+            transform-origin: bottom; 
+            z-index: 13; 
+            box-shadow: inset 0 25px 50px rgba(0,0,0,0.7);
+        }
 
         .wax-seal-container {
             position: absolute;
@@ -71,18 +97,18 @@
         }
 
         .wax-seal-img {
-            width: clamp(220px, 48vw, 300px);
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
-            animation: pulse 2.5s infinite;
+            width: clamp(230px, 50vw, 320px);
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));
+            animation: breathe 3s infinite ease-in-out;
         }
 
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-        /* Animation Trigger */
-        .unfold .flap-top { transform: rotateX(130deg); }
-        .unfold .flap-bottom { transform: rotateX(-130deg); }
-        .unfold .flap-left { transform: rotateY(-130deg); }
-        .unfold .flap-right { transform: rotateY(130deg); }
+        /* Instant Unfolding Reveal */
+        .unfold .flap-top { transform: rotateX(140deg); }
+        .unfold .flap-bottom { transform: rotateX(-140deg); }
+        .unfold .flap-left { transform: rotateY(-140deg); }
+        .unfold .flap-right { transform: rotateY(140deg); }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
         
         #landing-screen.hide { opacity: 0; visibility: hidden; }
@@ -103,44 +129,44 @@
             position: relative;
         }
 
-        /* Slide 1: Hero - Retains Texture */
+        /* Hero Slide - Instant Visibility */
         .card-1 { background-color: var(--champagne); background-image: var(--paper-texture); }
         .card-1 .title { font-family: var(--font-woodland); font-size: clamp(3rem, 10vw, 5.5rem); line-height: 1; color: var(--dark-navy); }
         .card-1 .divider { width: 80px; height: 3px; background: var(--gold); margin: 25px 0; }
-        .card-1 .quote { font-family: var(--font-amoresa); font-size: 2.5rem; color: var(--dark-navy); }
+        .card-1 .quote { font-family: var(--font-amoresa); font-size: 2.8rem; color: var(--dark-navy); line-height: 1.1; }
         
         .cake-img { 
             position: absolute; bottom: 5%; right: 5%; 
-            width: clamp(280px, 45vw, 500px); 
-            opacity: 0; transform: translateY(30px);
-            transition: opacity 2s ease, transform 2s ease;
+            width: clamp(300px, 48vw, 550px); 
+            opacity: 0; transform: translateY(30px) scale(0.95);
+            transition: opacity 1.5s ease 0.3s, transform 1.5s ease 0.3s;
         }
-        .visible .cake-img { opacity: 1; transform: translateY(0); }
+        .visible .cake-img { opacity: 1; transform: translateY(0) scale(1); }
 
-        /* Slide 2: Invitation - Solid Dark Navy (No Texture) */
-        .card-2 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
-        .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(4rem, 12vw, 7rem); margin-bottom: 5px; }
-        .card-2 .body-text { font-family: var(--font-woodland); font-size: 0.9rem; line-height: 1.4; max-width: 85%; margin: 0 auto; letter-spacing: 0.5px; }
-        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(3rem, 10vw, 5rem); color: var(--gold); margin: 10px 0; }
+        /* Solid Navy Slides (No Texture) */
+        .card-2, .card-4 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
+        .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(4rem, 12vw, 7.5rem); margin-bottom: 5px; }
+        .card-2 .body-text { font-family: var(--font-woodland); font-size: 0.95rem; line-height: 1.5; max-width: 85%; margin: 0 auto; letter-spacing: 0.5px; }
+        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(3rem, 10vw, 5.5rem); color: var(--gold); margin: 15px 0; }
 
-        /* Slide 3: Details - Retains Texture */
+        /* Details Slide (Texture) */
         .card-3 { background-color: var(--champagne); background-image: var(--paper-texture); text-align: center; color: var(--dark-navy); }
-        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 4rem; color: var(--gold); }
-        .card-3 .detail-text { font-family: var(--font-woodland); font-size: 1.4rem; line-height: 1.5; margin-bottom: 30px; }
-        .map-btn { display: inline-block; background: var(--dark-navy); color: white; padding: 15px 30px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.9rem; letter-spacing: 2px; }
+        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: 4.5rem; color: var(--gold); }
+        .card-3 .detail-text { font-family: var(--font-woodland); font-size: 1.5rem; line-height: 1.6; margin-bottom: 35px; }
+        .map-btn { display: inline-block; background: var(--dark-navy); color: white; padding: 18px 35px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.9rem; letter-spacing: 2px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
-        /* Slide 4: RSVP - Solid Dark Navy (No Texture) */
-        .card-4 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
-        .rsvp-title { font-family: var(--font-woodland); color: var(--gold); font-size: 2.8rem; margin-bottom: 5px; }
-        .rsvp-subtitle { font-family: var(--font-woodland); color: var(--white); font-size: 0.9rem; letter-spacing: 1.5px; margin-bottom: 30px; display: block; }
+        /* RSVP Soon! Slide */
+        .rsvp-title { font-family: var(--font-woodland); color: var(--gold); font-size: 3rem; margin-bottom: 5px; }
+        .rsvp-subtitle { font-family: var(--font-woodland); color: var(--white); font-size: 1rem; letter-spacing: 1.5px; margin-bottom: 35px; display: block; }
         
-        .counter-container { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.2); margin: 20px auto; max-width: 300px; }
-        .counter-btn { background: none; border: none; color: var(--gold); font-size: 2rem; width: 60px; height: 60px; cursor: pointer; }
-        .guest-num { font-family: var(--font-woodland); font-size: 2rem; flex-grow: 1; text-align: center; }
-        .submit-btn { background: var(--gold); border: none; padding: 20px; width: 100%; max-width: 300px; font-family: var(--font-woodland); font-weight: bold; cursor: pointer; color: var(--dark-navy); }
-        .footer-name { font-family: var(--font-amoresa); font-size: 3.5rem; color: var(--gold); }
+        .counter-container { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.2); margin: 20px auto; max-width: 320px; }
+        .counter-btn { background: none; border: none; color: var(--gold); font-size: 2.2rem; width: 65px; height: 65px; cursor: pointer; transition: 0.2s; }
+        .counter-btn:active { transform: scale(0.9); }
+        .guest-num { font-family: var(--font-woodland); font-size: 2.2rem; flex-grow: 1; text-align: center; }
+        .submit-btn { background: var(--gold); border: none; padding: 22px; width: 100%; max-width: 320px; font-family: var(--font-woodland); font-weight: bold; cursor: pointer; color: var(--dark-navy); font-size: 1rem; }
+        .footer-name { font-family: var(--font-amoresa); font-size: 3.8rem; color: var(--gold); }
 
-        @media (min-width: 768px) { .details-flex { display: flex; justify-content: center; gap: 100px; } }
+        @media (min-width: 768px) { .details-flex { display: flex; justify-content: center; gap: 120px; } }
     </style>
 </head>
 <body>
@@ -163,8 +189,8 @@
         <h1 class="title">Mekha<br>& Edwin</h1> 
         <div class="divider"></div>
         <p class="quote">“He has made everything beautiful in its time”</p>
-        <p style="font-family: var(--font-woodland); letter-spacing: 2px; margin-top: 10px;">ECCLESIASTES 3:11</p>
-        <p style="margin-top: 40px; font-family: var(--font-woodland); letter-spacing: 5px; font-weight: 600;">17TH JULY 2026</p>
+        <p style="font-family: var(--font-woodland); letter-spacing: 3px; margin-top: 15px;">ECCLESIASTES 3:11</p>
+        <p style="margin-top: 50px; font-family: var(--font-woodland); letter-spacing: 6px; font-weight: 600;">17TH JULY 2026</p>
         <img src="02.png" class="cake-img" id="cake" alt="Wedding Cake">
     </section>
 
@@ -180,7 +206,7 @@
     </section>
 
     <section class="card card-3">
-        <h1 style="font-family: var(--font-woodland); letter-spacing: 8px; margin-bottom: 40px;">THE DETAILS</h1>
+        <h1 style="font-family: var(--font-woodland); letter-spacing: 10px; margin-bottom: 45px;">THE DETAILS</h1>
         <div class="details-flex">
             <div class="block">
                 <h2 class="sub-title">Date & Time</h2>
@@ -198,11 +224,11 @@
         <h1 class="rsvp-title">RSVP SOON!</h1>
         <span class="rsvp-subtitle">We can’t wait to celebrate with you!</span>
         
-        <form style="margin: 0 auto; width: 100%; max-width: 300px; text-align: left;">
-            <label style="font-size: 0.7rem; letter-spacing: 2px; font-family: var(--font-woodland);">FULL NAME</label>
-            <input type="text" style="width:100%; padding: 12px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 20px;" required>
+        <form style="margin: 0 auto; width: 100%; max-width: 320px; text-align: left;">
+            <label style="font-size: 0.75rem; letter-spacing: 2px; font-family: var(--font-woodland); opacity: 0.8;">FULL NAME</label>
+            <input type="text" style="width:100%; padding: 14px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 25px; font-family: var(--font-woodland);" placeholder="Your Name" required>
             
-            <label style="font-size: 0.7rem; letter-spacing: 2px; font-family: var(--font-woodland);">NUMBER OF GUESTS</label>
+            <label style="font-size: 0.75rem; letter-spacing: 2px; font-family: var(--font-woodland); opacity: 0.8;">NUMBER OF GUESTS</label>
             <div class="counter-container">
                 <button type="button" class="counter-btn" onclick="updateGuests(-1)">-</button>
                 <div class="guest-num" id="guestCountDisplay">1</div>
@@ -211,8 +237,8 @@
             <button type="submit" class="submit-btn">SEND RSVP</button>
         </form>
         
-        <div style="margin-top: 30px;">
-            <p style="font-family: var(--font-woodland); font-size: 0.7rem; opacity: 0.7; letter-spacing: 1px;">WITH BEST COMPLIMENTS FROM</p> 
+        <div style="margin-top: 40px;">
+            <p style="font-family: var(--font-woodland); font-size: 0.75rem; opacity: 0.7; letter-spacing: 1.5px;">WITH BEST COMPLIMENTS FROM</p> 
             <p class="footer-name">Shimone Mathew Thomas</p> 
         </div>
     </section>
@@ -234,16 +260,16 @@
         const content = document.getElementById('main-content');
         const hero = document.getElementById('hero-card');
         
-        // Start unfolding
+        // Unfold
         envelope.classList.add('unfold');
         
-        // Pre-display content so it's ready behind the flaps
+        // Set main content to block immediately so it's behind the flaps
         content.style.display = 'block';
         
         setTimeout(() => {
             landing.classList.add('hide');
             hero.classList.add('visible');
-        }, 1100);
+        }, 1000);
     }
 </script>
 
