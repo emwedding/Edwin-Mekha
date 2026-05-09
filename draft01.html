@@ -26,7 +26,7 @@
             overflow: hidden; 
         }
 
-        /* ─── 3D ENVELOPE (VISUAL CREASES) ─── */
+        /* ─── 3D ENVELOPE (REFINED CREASES) ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -44,7 +44,7 @@
             background-color: var(--dark-navy);
             cursor: pointer;
             overflow: hidden;
-            /* Crease Lighting and Shadows */
+            /* Enhanced 3D Crease Shadows */
             background-image: 
                 linear-gradient(45deg, rgba(0,0,0,0.4) 0%, transparent 40%),
                 linear-gradient(-45deg, rgba(0,0,0,0.4) 0%, transparent 40%),
@@ -68,7 +68,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: clamp(260px, 60vw, 380px);
+            width: clamp(260px, 60vw, 380px); /* Maximized Prominence */
             z-index: 20;
             transition: opacity 0.5s ease, transform 0.6s ease;
             filter: drop-shadow(0 15px 45px rgba(0,0,0,0.8));
@@ -99,7 +99,7 @@
             padding: 40px 8vw;
         }
 
-        /* ─── CARD 1: HERO ─── */
+        /* ─── PAGE 1: HERO ─── */
         .card-1 { background-color: var(--champagne); color: var(--dark-navy); text-align: left; }
         .card-1 .title { font-family: var(--font-woodland); font-size: clamp(3rem, 12vw, 6rem); line-height: 1.2; }
         .card-1 .divider { width: 100px; height: 2px; background: var(--gold); margin: 30px 0; }
@@ -114,13 +114,13 @@
         }
         .card.visible .cake-img { opacity: 1 !important; }
 
-        /* ─── CARD 2: INVITATION ─── */
+        /* ─── PAGE 2: INVITATION ─── */
         .card-2 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
         .card-2 .title { font-family: var(--font-amoresa); font-size: clamp(4.5rem, 15vw, 8rem); margin-bottom: 20px; }
         .card-2 .body-text { font-family: var(--font-woodland); font-size: 1rem; line-height: 1.8; margin: 10px 0; }
         .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(3rem, 10vw, 5rem); color: var(--gold); margin: 15px 0; }
 
-        /* ─── CARD 3: DETAILS ─── */
+        /* ─── PAGE 3: DETAILS ─── */
         .card-3 { background-color: var(--champagne); color: var(--dark-navy); text-align: center; }
         .card-3 .header { font-family: var(--font-woodland); font-size: 3rem; letter-spacing: 8px; margin-bottom: 40px; }
         .card-3 .grid { display: flex; justify-content: center; gap: 8vw; }
@@ -129,35 +129,16 @@
         .card-3 p { font-family: var(--font-woodland); line-height: 1.8; }
         .card-3 .map-btn { display: inline-block; margin-top: 40px; background: var(--dark-navy); color: white; padding: 12px 24px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; }
 
-        /* ─── CARD 4: RSVP (WHITE TEXT / NAVY FIELDS) ─── */
+        /* ─── PAGE 4: RSVP ─── */
         .card-4 { background-color: var(--dark-navy); color: var(--white); text-align: center; }
         .card-4 .title { font-family: var(--font-woodland); font-size: 3.5rem; color: var(--gold); margin-bottom: 30px; }
         
-        .rsvp-form-container { max-width: 400px; margin: 0 auto; text-align: left; }
-        .rsvp-form-container input { 
-            width: 100%; padding: 15px; 
-            background: var(--dark-navy); 
-            border: 1px solid rgba(255,255,255,0.2); 
-            color: var(--white); 
-            margin-bottom: 20px; 
-            font-family: var(--font-woodland);
-        }
-        
-        .label-text { font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 1px; color: var(--gold); text-align: center; margin-bottom: 8px; }
-        
-        /* Counter Stylings */
-        .counter-container { 
-            display: flex; align-items: center; justify-content: center; 
-            gap: 20px; margin-bottom: 30px; 
-            background: var(--dark-navy);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 5px;
-        }
+        .counter-container { display: flex; align-items: center; justify-content: center; gap: 20px; margin: 20px 0 30px; }
         .counter-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); width: 45px; height: 45px; cursor: pointer; font-size: 1.5rem; transition: 0.2s; }
         .counter-btn:hover { background: var(--gold); color: var(--dark-navy); }
-        .guest-num { font-family: var(--font-woodland); font-size: 2rem; color: var(--white); min-width: 45px; text-align: center; }
+        .guest-num { font-family: var(--font-woodland); font-size: 2rem; color: var(--white); min-width: 45px; }
         
-        .submit-btn { width: 100%; background: var(--gold); border: none; padding: 18px; font-family: var(--font-woodland); font-weight: 600; cursor: pointer; color: var(--dark-navy); }
+        .submit-btn { width: 100%; max-width: 400px; background: var(--gold); border: none; padding: 18px; font-family: var(--font-woodland); font-weight: 600; cursor: pointer; color: var(--dark-navy); }
         
         .shimon-footer { margin-top: 50px; }
         .shimon-footer p { font-family: var(--font-woodland); font-size: 0.9rem; opacity: 0.7; }
@@ -216,11 +197,10 @@
 
     <section class="card card-4">
         <h1 class="title">RSVP soon!</h1>
-        <div class="rsvp-form-container">
-            <div class="label-text" style="text-align: left;">FULL NAME</div>
-            <input type="text" placeholder="Enter your full name" required>
+        <div style="max-width: 400px; margin: 0 auto; text-align: left;">
+            <input type="text" placeholder="FULL NAME" style="width: 100%; padding: 15px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 20px; font-family: var(--font-woodland);">
             
-            <div class="label-text">GUEST COUNT</div>
+            <p style="font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 1px; color: var(--gold); text-align: center; margin-bottom: 5px;">GUEST COUNT</p>
             <div class="counter-container">
                 <button type="button" class="counter-btn" onclick="adj(-1)">-</button>
                 <div class="guest-num" id="gn">1</div>
@@ -247,8 +227,10 @@
         const landing = document.getElementById('landing-screen');
         const content = document.getElementById('main-content');
         
+        // Stage 1: Animation trigger
         landing.classList.add('open-flap');
         
+        // Stage 2: Reveal
         setTimeout(() => {
             landing.classList.add('hide-landing');
             content.style.display = 'block';
