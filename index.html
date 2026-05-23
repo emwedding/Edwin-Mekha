@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Mekha & Edwin | Wedding Invitation</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Tangerine:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Tangerine:wght@700&family=Montserrat:wght=300;400&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -37,9 +37,11 @@
             align-items: center;
             background-color: #BDB095;
             padding: 24px;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s;
+            transform-origin: center center;
+            transition: opacity 0.3s ease-in-out, transform 0.6s cubic-bezier(0.25, 1, 0.3, 1), background-color 0.6s ease;
         }
 
+        /* Fixed envelope wrapper bounds - stays structurally completely still */
         .envelope-container {
             position: relative;
             width: 100%;
@@ -48,7 +50,6 @@
             perspective: 2500px;
             filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
             z-index: 10;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1);
         }
 
         .envelope-body {
@@ -62,7 +63,7 @@
             position: absolute;
             inset: 12px;
             background-color: var(--champagne);
-            padding: 30px;
+            padding: 35px 25px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -74,10 +75,7 @@
             transform: translateY(35%) scale(0.94);
             opacity: 0;
             z-index: 9;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
-                        opacity 0.4s ease,
-                        inset 0.6s cubic-bezier(0.25, 1, 0.3, 1),
-                        padding 0.6s cubic-bezier(0.25, 1, 0.3, 1);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
         /* CARD TYPOGRAPHY */
@@ -89,14 +87,14 @@
             max-width: 90%;
             margin: 0 auto;
             color: var(--paper-navy);
-            transition: font-size 0.6s cubic-bezier(0.25, 1, 0.3, 1);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1);
         }
 
-        /* ─── STAGE TRANSITIONS (SINGLE RUN ARCHITECTURE) ─── */
+        /* ─── ANIMATION TIMELINE PIPELINE STEPS ─── */
         .unfold .flap-top { transform: rotateX(150deg); }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
-        /* Step 1: Emerge out of pocket */
+        /* Step 1: Emerge gracefully upward from the pocket */
         .unfold #invitation-card {
             transform: translateY(-56%) scale(1);
             opacity: 1;
@@ -104,35 +102,27 @@
             transition-delay: 0.35s;
         }
 
-        /* Step 2: Fullscreen Zoom (Lifts card globally out of structural bounds cleanly) */
+        /* Step 2: Fullscreen viewport scale handling (No shifting layout properties) */
+        .zoom-active {
+            background-color: var(--champagne) !important; /* Matches card color instantly to block navy background leaks */
+        }
+
         .zoom-active .envelope-container {
-            perspective: none;
-            position: fixed;
-            inset: 0;
-            max-width: none;
-            width: 100vw;
-            height: 100vh;
-            aspect-ratio: auto;
-            filter: none;
-            z-index: 3000;
+            transform: scale(2.2); /* Smooth hardware-accelerated viewport scale zoom */
+        }
+
+        .zoom-active .flap,
+        .zoom-active .envelope-body {
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
         }
 
         .zoom-active #invitation-card {
-            inset: 0 !important;
-            transform: translate(0, 0) scale(1) !important;
-            padding: 40px 10vw;
             box-shadow: none;
         }
 
         .zoom-active #invitation-card .invite-text {
-            font-size: clamp(2.2rem, 6vw, 3.5rem); 
-            max-width: 80%;
-        }
-
-        /* Hide background envelope flaps simultaneously on zoom to kill the flash glitch */
-        .zoom-active .flap {
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            transform: scale(0.65); /* Keeps the typography perfectly proportional during the container zoom */
         }
 
         #landing-screen.hide { opacity: 0; visibility: hidden; }
@@ -258,7 +248,7 @@
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Uniducted Mechanical & Zoom Card Item -->
+            <!-- Unified Invitation Card element -->
             <div class="envelope-card-preview" id="invitation-card">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
@@ -357,23 +347,21 @@
 
     function handleOpen() {
         const landing = document.getElementById('landing-screen');
-        const viewport = document.getElementById('envelope-viewport');
         const content = document.getElementById('main-content');
         
-        // Stage 1: Snappy flap unfold sequence
+        // Stage 1: Slit open upper flap
         landing.classList.add('unfold');
         
-        // Stage 2: Instant execution handover for the fullscreen zoom
+        // Stage 2: Trigger hardware-accelerated continuous zoom layout frame
         setTimeout(() => {
             landing.classList.add('zoom-active');
             
-            // Stage 3: Hold in fullscreen view for exactly 2.5 seconds (2500ms)
+            // Stage 3: Hold fully scaled layout for exactly 2.5 seconds (2500ms)
             setTimeout(() => {
-                // Snappy 300ms cross-dissolve fade out
+                // Quick 300ms transition fade into card 1
                 landing.style.transition = "opacity 0.3s ease-in-out";
                 landing.style.opacity = "0";
                 
-                // Mount the timeline cards directly underneath
                 content.style.display = 'block';
                 
                 setTimeout(() => {
@@ -382,10 +370,10 @@
                 }, 300);
             }, 2500); 
             
-        }, 950); // Fluid timing loop match for structural pull-out lift
+        }, 950); // Exact window sync for emergence sequence finish
     }
 
-    // Google Form Handling Script Loop
+    // Google Forms Pipeline
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
