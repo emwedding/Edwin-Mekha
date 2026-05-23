@@ -92,7 +92,7 @@
             height: 100vh;
             background-color: var(--champagne);
             color: var(--paper-navy);
-            z-index: 3000; /* Bypasses envelope limits entirely */
+            z-index: 3000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -102,7 +102,6 @@
             opacity: 0;
             pointer-events: none;
             
-            /* Crucial: Scales directly from top-left layout point using clean hardware bounds */
             transform-origin: top left;
             transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease-in-out;
         }
@@ -117,7 +116,7 @@
         /* HARD-LOCKED TYPOGRAPHY SYSTEM */
         .invite-text { 
             font-family: 'Tangerine', cursive !important; 
-            font-size: clamp(2.3rem, 6.2vw, 3.8rem) !important; /* Locked uniformly to final viewport size bounds */
+            font-size: clamp(2.3rem, 6.2vw, 3.8rem) !important;
             line-height: 1.3 !important; 
             font-weight: 700 !important;
             max-width: 80%;
@@ -259,7 +258,6 @@
             
             <!-- Original Card Anchor Preview Frame Element -->
             <div class="envelope-card-preview" id="internal-card">
-                <!-- Scaled layout down explicitly to match standard initialization aspects cleanly -->
                 <p class="invite-text" style="transform: scale(0.62); width: 160%; max-width: none; flex-shrink: 0; transform-origin: center center;">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
 
@@ -387,16 +385,19 @@
             
             // 4. Lock standard presentation setup modes safely for exactly 2.5 seconds
             setTimeout(() => {
+                // Simultaneously trigger the transition configurations
                 zoomOverlay.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
                 landing.style.transition = "opacity 0.5s ease-in-out";
                 
+                // Fade out the overlay and the envelope landing backdrop to total transparency
                 zoomOverlay.style.opacity = "0";
                 zoomOverlay.style.transform = "scale(0.96)";
                 landing.style.opacity = "0";
                 
-                content.style.display = 'block';
-                
+                // FIXED: Wait until the fade-out completes (500ms) BEFORE popping the main scroll layout into view.
+                // This stops the underlying scroll cards from flashing beneath the translocating envelope screen.
                 setTimeout(() => {
+                    content.style.display = 'block';
                     zoomOverlay.style.display = 'none';
                     landing.classList.add('hide');
                     
