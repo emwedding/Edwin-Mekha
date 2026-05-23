@@ -54,7 +54,6 @@
             position: absolute;
             inset: 0;
             background: #030a12;
-            transform-style: preserve-3d;
         }
 
         /* ─── PHYSICAL INTERNAL POCKET CARD ─── */
@@ -77,27 +76,45 @@
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
-        /* Card slides out completely clear of envelope pocket bounds and leaps in front */
+        /* Card slides out completely clear of envelope pocket bounds */
         .unfold .envelope-card-preview {
             transform: translateY(-56%) scale(1);
             opacity: 1;
-            z-index: 15; /* Fixed: Brought in front of the flaps (max 14) */
+            z-index: 15; /* Keeps it over the side/bottom flaps while animating */
         }
 
-        /* ─── FLUID OVERLAY STATE ─── */
-        /* Eliminates dynamic JS bounds tracking to guarantee perfect cross-device scaling */
-        .unfold-zoom .envelope-card-preview {
+        /* ─── DEDICATED VIEWPORT FLUID OVERLAY (OUTSIDE 3D CONTEXT) ─── */
+        #zoom-card-overlay {
             position: fixed;
-            z-index: 3000 !important;
-            inset: 0 !important;
+            background-color: var(--champagne);
+            color: var(--paper-navy);
+            z-index: 3000; /* Completely bypasses all envelope layers and structural stacking context */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            
+            opacity: 0;
+            pointer-events: none;
+            
+            /* Clean fluid tracking transition bounds */
+            transition: top 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        left 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        height 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        padding 0.7s ease,
+                        opacity 0.2s ease-in-out;
+        }
+
+        /* Fullscreen state transforms bounds comfortably without text-clipping */
+        #zoom-card-overlay.fullscreen-active {
+            opacity: 1;
+            top: 0 !important;
+            left: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
-            max-width: none !important;
-            max-height: none !important;
-            transform: translateY(0) scale(1) !important;
-            padding: 40px 10vw !important;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 40px 10vw;
         }
 
         /* HARD-LOCKED TYPOGRAPHY SYSTEM */
@@ -112,8 +129,8 @@
             transition: font-size 0.5s ease;
         }
 
-        /* Expands naturally when the zoom active state changes container layout bounds */
-        .unfold-zoom .invite-text {
+        /* Expands naturally within spacious fullscreen container margins */
+        #zoom-card-overlay.fullscreen-active .invite-text {
             font-size: clamp(2.4rem, 6vw, 3.8rem) !important; 
             max-width: 80%;
         }
@@ -167,7 +184,7 @@
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        .unfold .flap-top { transform: rotateX(150deg); }
+        .unfold .flap-top { transform: rotateX(150deg); z-index: 5; } /* Retracts flap priority behind the emerging card path */
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
         #landing-screen.hide { display: none; }
@@ -240,11 +257,16 @@
 </head>
 <body>
 
+<!-- Perfectly Separated Visual Zoom Overlay Frame -->
+<div id="zoom-card-overlay">
+    <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
+</div>
+
 <section id="landing-screen">
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Structural Inner Card Base -->
+            <!-- Original Card Anchor -->
             <div class="envelope-card-preview" id="internal-card">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
@@ -343,39 +365,67 @@
 
     function handleOpen() {
         const landing = document.getElementById('landing-screen');
-        const content = document.getElementById('main-content');
         const internalCard = document.getElementById('internal-card');
+        const zoomOverlay = document.getElementById('zoom-card-overlay');
+        const content = document.getElementById('main-content');
         
-        // Step 1: Open the envelope flap and slide the inner card up gracefully
+        // 1. Instantly match layout positions BEFORE animation to eliminate dynamic telemetry jumping
+        const initialBounds = internalCard.getBoundingClientRect();
+        zoomOverlay.style.top = initialBounds.top + 'px';
+        zoomOverlay.style.left = initialBounds.left + 'px';
+        zoomOverlay.style.width = initialBounds.width + 'px';
+        zoomOverlay.style.height = initialBounds.height + 'px';
+        
+        // 2. Open the envelope flap naturally
         landing.classList.add('unfold');
         
-        // Step 2: Trigger frame-perfect expansion directly through CSS state modifications
+        // 3. Seamlessly capture dimension metrics at peak translation height
         setTimeout(() => {
-            landing.classList.add('unfold-zoom');
+            const finalBounds = internalCard.getBoundingClientRect();
             
-            // Step 3: Keep full-screen presentation locked completely for 2.5 seconds
+            // Map the layout overlay cleanly to track target end bounds
+            zoomOverlay.style.top = finalBounds.top + 'px';
+            zoomOverlay.style.left = finalBounds.left + 'px';
+            zoomOverlay.style.width = finalBounds.width + 'px';
+            zoomOverlay.style.height = finalBounds.height + 'px';
+            zoomOverlay.style.opacity = '1';
+            
+            // Force browser repaint to seamlessly hide the overlay handoff
+            zoomOverlay.offsetHeight; 
+            
+            // 4. Swap context cleanly and ignite full scale presentation mode
+            internalCard.style.opacity = '0';
+            zoomOverlay.classList.add('fullscreen-active');
+            
+            // 5. Keep fullscreen view completely locked for exactly 2.5 seconds
             setTimeout(() => {
-                // Smoothly fade out everything at once
-                landing.style.transition = "opacity 0.6s ease-in-out";
+                
+                // Crossfade out gracefully
+                zoomOverlay.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+                landing.style.transition = "opacity 0.5s ease-in-out";
+                
+                zoomOverlay.style.opacity = "0";
+                zoomOverlay.style.transform = "scale(0.96)";
                 landing.style.opacity = "0";
                 
-                // Mount timeline layout underneath
+                // Mount timeline content seamlessly underneath
                 content.style.display = 'block';
                 
                 setTimeout(() => {
+                    zoomOverlay.style.display = 'none';
                     landing.classList.add('hide');
                     
-                    // Unlock page scrolling actions
+                    // Unlock browser scrolling actions
                     document.body.style.overflow = "auto";
                     document.documentElement.style.overflow = "auto";
                     
                     // Activate timeline observers
                     document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                }, 600); 
+                }, 500); 
                 
-            }, 2500); // 2.5 Second Hold
+            }, 2500);
             
-        }, 800); // Wait time for slide-up completion
+        }, 800); // Sync timing with CSS transition delay precisely
     }
 
     // Google Forms Pipeline Handler
