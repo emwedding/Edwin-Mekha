@@ -27,7 +27,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── LANDING SCREEN ─── */
+        /* ─── PHYSICAL PROPORTIONAL ENVELOPE CONTAINER ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -36,37 +36,37 @@
             justify-content: center;
             align-items: center;
             background-color: #BDB095;
-            padding: 20px;
-            transition: opacity 0.4s ease-in-out, visibility 0.4s;
+            padding: 24px;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s;
         }
 
+        /* Explicit aspect ratio bounds ensure it consistently reads as a physical letter envelope */
         .envelope-container {
             position: relative;
             width: 100%;
-            max-width: 500px;
-            aspect-ratio: 1.4;
+            max-width: 520px;
+            aspect-ratio: 1.5;
             perspective: 2000px;
+            filter: drop-shadow(0 25px 45px rgba(0,0,0,0.55));
         }
 
         .envelope-body {
             position: absolute;
             inset: 0;
             background: #030a12;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.65);
-            overflow: hidden; /* Keeps the card hidden when tucked low */
         }
 
-        /* ─── FIXED LOWER POCKET FRONT ─── */
+        /* ─── FIXED LOWER POCKET FRONT PANEL ─── */
         .envelope-pocket {
             position: absolute;
             inset: 0;
             background: var(--paper-navy);
             clip-path: polygon(0% 45%, 50% 75%, 100% 45%, 100% 100%, 0% 100%);
             z-index: 12;
-            box-shadow: inset 0 20px 40px rgba(0,0,0,0.5);
+            box-shadow: inset 0 20px 40px rgba(0,0,0,0.6);
         }
 
-        /* ─── TRADITIONAL UPPER FLAP ─── */
+        /* ─── SINGLE STRUCTURAL UPPER FLAP ─── */
         .flap-top {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 50%;
@@ -74,80 +74,88 @@
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             transform-origin: top center;
             z-index: 14;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            border-bottom: 0.5px solid rgba(255,255,255,0.05);
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            border-bottom: 0.5px solid rgba(255,255,255,0.08);
         }
 
+        /* Fixed Image Container logic to prevent cropping across window resizes */
         .wax-seal-container {
             position: absolute;
             top: 100%; left: 50%;
             transform: translate(-50%, -50%);
             z-index: 20;
             cursor: pointer;
-            transition: opacity 0.2s ease;
+            width: clamp(120px, 28vw, 160px);
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.25s ease;
         }
 
         .wax-seal-img {
-            width: clamp(130px, 32vw, 175px);
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Prevents text clipping or fractional rendering of image assets */
+            filter: drop-shadow(0 10px 18px rgba(0,0,0,0.75));
         }
 
-        /* ─── INSIDE CHAMPAGNE CARD ─── */
+        /* ─── INTERNAL INVITATION SLIP ─── */
         .envelope-card-preview {
             position: absolute;
-            inset: 15px 15px 25px 15px;
+            inset: 12px 12px 20px 12px;
             background-color: var(--champagne);
             z-index: 10;
-            padding: 30px 20px;
+            padding: 30px 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: var(--paper-navy);
-            box-shadow: 0 -5px 25px rgba(0,0,0,0.25);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
             
-            /* FIXED: Tucked lower and opacity hidden initially to fix image_c08fbf.png visual bugs */
-            transform: translateY(40%) scale(0.9); 
+            /* Securely tucked inside front pocket bounds initially */
+            transform: translateY(35%) scale(0.94); 
             opacity: 0;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+            transition: transform 0.85s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
         .envelope-card-preview .invite-text { 
             font-family: var(--font-woodland); 
-            font-size: clamp(0.9rem, 3.2vw, 1.4rem); 
-            line-height: 1.5; 
+            font-size: clamp(0.85rem, 2.8vw, 1.25rem); 
+            line-height: 1.6; 
             font-weight: 600;
             letter-spacing: 0.5px;
-            max-width: 85%;
+            max-width: 90%;
         }
 
-        /* ─── TRANSITION ACTIONS ─── */
-        /* Step 1: Open upper flap */
+        /* ─── TIMED TRANSITION SEQUENCING ─── */
+        /* Step 1: Flip top flap open */
         .unfold .flap-top {
             transform: rotateX(180deg);
             z-index: 8; 
         }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
 
-        /* Step 2: Emerge out of pocket safely */
+        /* Step 2: Extract Card out of Lower pouch boundary safely */
         .unfold .envelope-card-preview {
-            transform: translateY(-65%) scale(0.98);
+            transform: translateY(-62%) scale(1);
             opacity: 1;
             z-index: 15; 
             transition-delay: 0.4s;
         }
 
-        /* Step 3: Zoom screen proportions smoothly */
+        /* Step 3: Zoom cleanly past camera viewports */
         .zoom-fullscreen .envelope-card-preview {
-            transform: translateY(-25%) scale(2.2);
+            transform: translateY(-15%) scale(2.6);
             opacity: 0;
-            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity(0);
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out 0.25s;
         }
 
         #landing-screen.hide { opacity: 0; visibility: hidden; }
 
-        /* ─── CONTENT CARDS ─── */
+        /* ─── SCROLL PANELS ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
@@ -220,19 +228,19 @@
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body">
             
-            <!-- Traditional Upper Flap -->
+            <!-- Traditional Structural Top Flap -->
             <div class="flap-top" id="main-flap">
                 <div class="wax-seal-container" onclick="handleOpen()">
                     <img src="01.png" class="wax-seal-img" alt="Wax Seal">
                 </div>
             </div>
 
-            <!-- Internal Invitation Slip Component -->
+            <!-- Internal Champagne Slide Object with Custom Request Text -->
             <div class="envelope-card-preview">
-                <p class="invite-text">We request your presence at our joyous occasion!</p>
+                <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
 
-            <!-- Front Pouch Overlay Panel -->
+            <!-- Pocket Mask Front Cover Piece -->
             <div class="envelope-pocket"></div>
             
         </div>
@@ -325,6 +333,7 @@
         
         landing.classList.add('unfold');
         
+        // Let top flap swing wide open, reveal text on sliding card, then perform clean zoom handover
         setTimeout(() => {
             container.classList.add('zoom-fullscreen');
             
@@ -333,9 +342,10 @@
                 content.style.display = 'block';
                 document.querySelectorAll('.card').forEach(card => observer.observe(card));
             }, 550);
-        }, 1200); 
+        }, 1350); 
     }
 
+    // Google forms backend integration hook
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
