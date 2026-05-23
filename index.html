@@ -37,7 +37,7 @@
             align-items: center;
             background-color: #BDB095;
             padding: 24px;
-            transition: opacity 0.4s ease-in-out; /* Match overlay fade timing */
+            transition: opacity 0.4s ease-in-out;
         }
 
         .envelope-container {
@@ -200,6 +200,12 @@
             height: 100vh; 
             overflow-y: scroll; 
             scroll-snap-type: y mandatory;
+            opacity: 0; /* Clear start state for fade-in entry */
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        #main-content.fade-in-active {
+            opacity: 1;
         }
 
         .card {
@@ -251,7 +257,7 @@
         .guest-num { font-family: var(--font-woodland); font-size: 1.8rem; }
         .submit-btn { background: var(--gold); color: var(--deep-dark-navy); padding: 18px; width: 100%; max-width: 280px; font-weight: bold; border: none; font-family: var(--font-woodland); cursor: pointer; }
 
-        .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7.5vw, 3.8rem); color: var(--gold); margin-top: 5px 0 0 0; }
+        .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7.5vw, 3.8rem); color: var(--gold); margin-top: 5px; }
 
         @media (max-width: 600px) {
             .card { padding: 25px 5vw; }
@@ -381,44 +387,52 @@
         setTimeout(() => {
             const bounds = internalCard.getBoundingClientRect();
             
-            // Map the overlay card's exact position to match the emerged card down to the pixel
+            // Map overlay dimensions exactly to match the emerged card down to the pixel
             zoomOverlay.style.top = bounds.top + 'px';
             zoomOverlay.style.left = bounds.left + 'px';
             zoomOverlay.style.width = bounds.width + 'px';
             zoomOverlay.style.height = bounds.height + 'px';
             
-            // Force browser repaint to seamlessly hide the swap
+            // Force browser repaint to seamlessly hide the element swap
             zoomOverlay.offsetHeight; 
             
-            // Step 3: Handoff — hide inner card, instantly ignite the structured overlay
+            // Step 3: Handoff — hide inner pocket card, instantly show and expand overlay card
             internalCard.style.opacity = '0';
             zoomOverlay.classList.add('fullscreen-active');
             
             // Step 4: Keep full-screen presentation completely locked for exactly 2.5 seconds
             setTimeout(() => {
                 
-                // RECTIFIED: Exact timing match (0.4s) prevents the envelope background from popping out early
+                // Set uniform transitions on elements to trigger crossfade
                 zoomOverlay.style.transition = "opacity 0.4s ease-in-out, transform 0.4s ease-in-out";
                 landing.style.transition = "opacity 0.4s ease-in-out";
                 
+                // Dissolve EVERYTHING on the landing stage cleanly out of view together
                 zoomOverlay.style.opacity = "0";
                 zoomOverlay.style.transform = "scale(0.96)";
                 landing.style.opacity = "0";
                 
-                // Mount timeline blocks cleanly underneath
-                content.style.display = 'block';
-                
+                // FIXED PIPELINE: Wait until the fade transitions end completely BEFORE changing display structures
                 setTimeout(() => {
                     zoomOverlay.style.display = 'none';
-                    landing.classList.add('hide');
+                    landing.classList.add('hide'); // Force complete screen collapse
                     
-                    // Unlock browser scrolling actions
+                    // Render the scrollable main wrapper content cleanly from absolute opacity 0
+                    content.style.display = 'block';
+                    
+                    // Force display rendering repaint
+                    content.offsetHeight;
+                    
+                    // Smoothly slide and fade in the timeline invitation sheets
+                    content.classList.add('fade-in-active');
+                    
+                    // Unlock browser standard frame scrolling operations safely
                     document.body.style.overflow = "auto";
                     document.documentElement.style.overflow = "auto";
                     
-                    // Activate timeline scroll visibility observers
+                    // Initialize scroll observer animations
                     document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                }, 400); // Clean transition handoff alignment window
+                }, 400); // Wait exactly for the 0.4s fade-out step to finish out of sight
                 
             }, 2500); // 2.5 Second Hold
             
