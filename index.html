@@ -23,7 +23,6 @@
         body, html { 
             height: 100%; 
             background-color: var(--deep-dark-navy);
-            /* RECTIFIED: Controlled exclusively by javascript state to ensure fluid scrolling handoff */
             overflow: hidden; 
             font-family: 'Montserrat', sans-serif;
         }
@@ -38,9 +37,7 @@
             align-items: center;
             background-color: #BDB095;
             padding: 24px;
-            /* Global opacity fade transition rule */
             transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-            pointer-events: auto;
         }
 
         .envelope-container {
@@ -85,7 +82,7 @@
             opacity: 1;
         }
 
-        /* ─── DEDICATED VIEWPORT OVERLAY CARD ─── */
+        /* ─── DEDICATED VIEWPORT FLUID OVERLAY ─── */
         #zoom-card-overlay {
             position: fixed;
             background-color: var(--champagne);
@@ -97,35 +94,46 @@
             text-align: center;
             box-shadow: 0 10px 40px rgba(0,0,0,0.4);
             
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            padding: 40px 10vw;
             opacity: 0;
             pointer-events: none;
             
-            /* Core transform animation pipeline */
-            transform-origin: center center;
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                        opacity 0.2s ease-in-out;
+            /* Fluid sizing pipeline tracking physical width/height updates safely */
+            transition: top 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        left 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        height 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        padding 0.7s ease,
+                        opacity 0.15s ease-in-out;
+        }
+
+        /* Fullscreen state transforms bounds comfortably without text-clipping */
+        #zoom-card-overlay.fullscreen-active {
+            opacity: 1;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: 100vw !important; /* Lock hard maximum boundary scale triggers */
+            max-height: 100vh !important;
+            padding: 40px 10vw;
         }
 
         /* HARD-LOCKED TYPOGRAPHY SYSTEM */
         .invite-text { 
             font-family: 'Tangerine', cursive !important; 
-            font-size: clamp(2.3rem, 6vw, 3.6rem) !important; 
+            font-size: clamp(1.8rem, 4.8vw, 2.5rem) !important; 
             line-height: 1.3 !important; 
             font-weight: 700 !important;
-            max-width: 80%;
+            max-width: 90%;
             margin: 0 auto;
             color: var(--paper-navy) !important;
+            transition: font-size 0.5s ease;
         }
 
-        /* Match the smaller layout font limits inside the miniature pocket container view */
-        .envelope-card-preview .invite-text {
-            font-size: clamp(1.4rem, 3.8vw, 2公开rem) !important;
-            max-width: 90%;
+        /* Expands naturally within spacious fullscreen container margins */
+        #zoom-card-overlay.fullscreen-active .invite-text {
+            font-size: clamp(2.4rem, 6vw, 3.8rem) !important; 
+            max-width: 80%;
         }
 
         /* ─── ENVELOPE PANEL GEOMETRY ─── */
@@ -186,10 +194,11 @@
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
+        #landing-screen.hide { display: none; }
+
         /* ─── SCROLLABLE CONTENT TIMELINE CARDS ─── */
         #main-content { 
-            /* RECTIFIED: Enabled by default to pre-bake layouts safely on the background layer */
-            display: block; 
+            display: block; /* Kept block layout to preserve the perfect disappearance pipeline */
             height: 100vh; 
             overflow-y: scroll; 
             scroll-snap-type: y mandatory;
@@ -342,7 +351,7 @@
     </section>
 </main>
 
-<script>
+<script {all_latex_restrained_by_rules}>
     let currentGuests = 1;
     function updateGuests(val) {
         currentGuests += val;
@@ -370,53 +379,50 @@
         // Step 1: Open the envelope flap naturally
         landing.classList.add('unfold');
         
-        // Step 2: Extract layout constraints at peak sliding clearance height
+        // Step 2: Capture dimensions at peak extraction height
         setTimeout(() => {
+            // RESTORED: Precise geometric pixel alignment calculation setup
             const bounds = internalCard.getBoundingClientRect();
             
-            // Calculate inverse dimensions to scale down overlay container view cleanly
-            const startScaleX = bounds.width / window.innerWidth;
-            const startScaleY = bounds.height / window.innerHeight;
-            const startTranslateX = bounds.left - (window.innerWidth - bounds.width) / 2;
-            const startTranslateY = bounds.top - (window.innerHeight - bounds.height) / 2;
+            // Map bounds verbatim so the card doesn't jump or slide out of position on handoff
+            zoomOverlay.style.top = bounds.top + 'px';
+            zoomOverlay.style.left = bounds.left + 'px';
+            zoomOverlay.style.width = bounds.width + 'px';
+            zoomOverlay.style.height = bounds.height + 'px';
             
-            // Prime layout boundary configurations instantly matching position bounds
-            zoomOverlay.style.transform = `translate(${startTranslateX}px, ${startTranslateY}px) scale(${startScaleX}, ${startScaleY})`;
-            zoomOverlay.style.opacity = "1";
-            
-            // Force operational redraw check
+            // Force browser repaint to seamlessly hide the swap
             zoomOverlay.offsetHeight; 
             
-            // Step 3: Handoff — hide internal vector element, smoothly target matrix zoom forward
+            // Step 3: Handoff — hide inner card, instantly ignite the structured overlay
             internalCard.style.opacity = '0';
-            zoomOverlay.style.transform = 'translate(0px, 0px) scale(1)';
+            zoomOverlay.classList.add('fullscreen-active');
             
-            // Step 4: Lock viewport visibility for exactly 2.5 seconds (2500ms)
+            // Step 4: Keep full-screen presentation completely locked for exactly 2.5 seconds
             setTimeout(() => {
                 
-                // Set uniform transitions on the staging screen components
-                landing.style.transition = "opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
+                // Simultaneous Crossfade Transition Layer
+                zoomOverlay.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+                landing.style.transition = "opacity 0.5s ease-in-out";
                 
-                // RECTIFIED: Simply fade out the entire staging layer container. 
-                // Since the scroll cards already exist on the base layer, this dissolves like a dream.
+                zoomOverlay.style.opacity = "0";
+                zoomOverlay.style.transform = "scale(0.96)";
                 landing.style.opacity = "0";
-                landing.style.pointerEvents = "none";
                 
                 setTimeout(() => {
                     zoomOverlay.style.display = 'none';
-                    landing.style.display = 'none';
+                    landing.style.display = 'none'; 
                     
-                    // Unlock page viewport navigation loops safely
+                    // Unlock browser scrolling actions safely
                     document.body.style.overflow = "auto";
                     document.documentElement.style.overflow = "auto";
                     
-                    // Fire scroll timeline presentations
+                    // Activate timeline scroll visibility observers
                     document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                }, 500); // Transitions wipe clean completely out of layout sight
+                }, 500); 
                 
-            }, 2500);
+            }, 2500); // 2.5 Second Hold
             
-        }, 800);
+        }, 800); // Wait time for slide-up completion
     }
 
     // Google Forms Pipeline Handler
