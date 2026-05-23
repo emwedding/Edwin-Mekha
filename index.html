@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
     <title>Mekha & Edwin | Wedding Invitation</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Tangerine:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Tangerine:wght@700&family=Montserrat:wght@300;400&display=swap"
+        rel="stylesheet">
 
     <style>
+
         :root {
             --deep-dark-navy: #020810;
             --paper-navy: #05111D;
@@ -18,453 +26,973 @@
             --font-amoresa: 'Tangerine', cursive;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body, html { 
-            height: 100%; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            height: 100%;
             background-color: var(--deep-dark-navy);
-            overflow: hidden; 
+            overflow: hidden;
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── BASE VIEW STAGE ─── */
+        /* ───────────────── LANDING SCREEN ───────────────── */
+
         #landing-screen {
+
             position: fixed;
             inset: 0;
+
             z-index: 1000;
+
             display: flex;
             justify-content: center;
             align-items: center;
+
             background-color: #BDB095;
+
             padding: 24px;
-            transition: opacity 0.4s ease-in-out;
+
+            transition: opacity 0.45s ease;
         }
 
         .envelope-container {
+
             position: relative;
+
             width: 100%;
             max-width: 530px;
+
             aspect-ratio: 1.5;
+
             perspective: 2500px;
+
             transform-style: preserve-3d;
-            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+
+            filter:
+                drop-shadow(0 30px 60px rgba(0, 0, 0, 0.6));
+
             z-index: 10;
         }
 
         .envelope-body {
+
             position: absolute;
             inset: 0;
+
             background: #030a12;
+
             transform-style: preserve-3d;
         }
 
-        /* ─── PHYSICAL INTERNAL POCKET CARD ─── */
+        /* ───────────────── INTERNAL CARD ───────────────── */
+
         .envelope-card-preview {
+
             position: absolute;
+
             inset: 12px;
+
             background-color: var(--champagne);
+
             padding: 20px 30px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             text-align: center;
+
             color: var(--paper-navy);
-            box-shadow: 0 0 25px rgba(0,0,0,0.35);
-            
-            /* Tucked inside lower envelope bounds initially */
-            transform: translateY(35%) scale(0.94) translateZ(1px);
+
+            box-shadow:
+                0 0 25px rgba(0, 0, 0, 0.35);
+
+            transform:
+                translateY(35%)
+                scale(0.94);
+
             opacity: 0;
-            z-index: 20; 
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+
+            z-index: 20;
+
+            transition:
+                transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                opacity 0.4s ease;
         }
 
-        /* Card slides out completely clear of envelope pocket bounds */
-        .unfold .envelope-card-preview {
-            transform: translateY(-56%) scale(1) translateZ(36px);
+        /* RECTIFIED CARD REVEAL */
+
+        .envelope-card-preview.reveal-card {
+
+            transform:
+                translateY(-42%)
+                scale(1)
+                translateZ(36px);
+
             opacity: 1;
         }
 
-        /* ─── DEDICATED VIEWPORT FLUID OVERLAY ─── */
+        /* ───────────────── OVERLAY ───────────────── */
+
         #zoom-card-overlay {
+
             position: fixed;
+
             background-color: var(--champagne);
+
             color: var(--paper-navy);
+
             z-index: 3000;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            
+
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.4);
+
             opacity: 0;
+
             pointer-events: none;
-            
-            /* Fluid sizing pipeline tracking physical width/height updates safely */
-            transition: top 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                        left 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                        width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                        height 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                        padding 0.7s ease,
-                        opacity 0.15s ease-in-out;
+
+            transition:
+                top 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                left 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                height 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.7s ease,
+                opacity 0.15s ease-in-out;
         }
 
-        /* Fullscreen state transforms bounds comfortably without text-clipping */
         #zoom-card-overlay.fullscreen-active {
+
             opacity: 1;
+
             top: 0 !important;
             left: 0 !important;
+
             width: 100vw !important;
             height: 100vh !important;
+
             padding: 40px 10vw;
         }
 
-        /* HARD-LOCKED TYPOGRAPHY SYSTEM */
-        .invite-text { 
-            font-family: 'Tangerine', cursive !important; 
-            font-size: clamp(1.8rem, 4.8vw, 2.5rem) !important; 
-            line-height: 1.3 !important; 
+        .invite-text {
+
+            font-family: 'Tangerine', cursive !important;
+
+            font-size: clamp(1.8rem, 4.8vw, 2.5rem) !important;
+
+            line-height: 1.3 !important;
+
             font-weight: 700 !important;
+
             max-width: 90%;
+
             margin: 0 auto;
+
             color: var(--paper-navy) !important;
-            transition: font-size 0.5s ease;
         }
 
-        /* Expands naturally within spacious fullscreen container margins */
         #zoom-card-overlay.fullscreen-active .invite-text {
-            font-size: clamp(2.4rem, 6vw, 3.8rem) !important; 
+
+            font-size:
+                clamp(2.4rem, 6vw, 3.8rem) !important;
+
             max-width: 80%;
         }
 
-        /* ─── ENVELOPE PANEL GEOMETRY ─── */
+        /* ───────────────── ENVELOPE FLAPS ───────────────── */
+
         .flap {
+
             position: absolute;
+
             background-color: var(--paper-navy);
-            backface-visibility: hidden;
-            transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+
+            transition:
+                transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .flap-top { 
-            top: 0; left: 0; width: 100%; height: 50%; 
-            clip-path: polygon(0 0, 100% 0, 50% 100%); 
-            transform-origin: top center; 
-            z-index: 14; 
-            box-shadow: inset 0 -35px 50px rgba(0,0,0,0.95);
-            border-bottom: 0.5px solid rgba(255,255,255,0.08);
-            transform: rotateX(0deg) translateZ(0px);
-            transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+        .flap-top {
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 50%;
+
+            clip-path:
+                polygon(0 0, 100% 0, 50% 100%);
+
+            transform-origin: top center;
+
+            z-index: 14;
+
+            box-shadow:
+                inset 0 -35px 50px rgba(0, 0, 0, 0.95);
+
+            border-bottom:
+                0.5px solid rgba(255, 255, 255, 0.08);
+
+            transition:
+                transform 0.55s cubic-bezier(0.25, 1, 0.5, 1),
+                z-index 0.1s step-end;
+
+            /* FIX */
+
+            backface-visibility: hidden;
             transform-style: preserve-3d;
         }
-        
-        .flap-right { top: 0; right: 0; width: 50%; height: 100%; clip-path: polygon(100% 0, 100% 100%, 0 50%); z-index: 13; box-shadow: inset -35px 0 50px rgba(0,0,0,0.95); }
-        .flap-bottom { bottom: 0; left: 0; width: 100%; height: 50%; clip-path: polygon(50% 0, 100% 100%, 0 100%); z-index: 12; box-shadow: inset 0 35px 50px rgba(0,0,0,0.95); }
-        .flap-left { top: 0; left: 0; width: 50%; height: 100%; clip-path: polygon(0 0, 100% 50%, 0 100%); z-index: 11; box-shadow: inset 35px 0 50px rgba(0,0,0,0.95); }
 
-        /* Fold open top panel logic */
-        .unfold .flap-top { 
-            transform: rotateX(150deg) translateZ(-1px); 
-            z-index: 1 !important; /* Drops behind the emerging card layer immediately */
+        .flap-right {
+
+            top: 0;
+            right: 0;
+
+            width: 50%;
+            height: 100%;
+
+            clip-path:
+                polygon(100% 0, 100% 100%, 0 50%);
+
+            z-index: 13;
+
+            box-shadow:
+                inset -35px 0 50px rgba(0, 0, 0, 0.95);
         }
-        
-        .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
-        /* PULSING WAX SEAL */
+        .flap-bottom {
+
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            height: 50%;
+
+            clip-path:
+                polygon(50% 0, 100% 100%, 0 100%);
+
+            z-index: 12;
+
+            box-shadow:
+                inset 0 35px 50px rgba(0, 0, 0, 0.95);
+        }
+
+        .flap-left {
+
+            top: 0;
+            left: 0;
+
+            width: 50%;
+            height: 100%;
+
+            clip-path:
+                polygon(0 0, 100% 50%, 0 100%);
+
+            z-index: 11;
+
+            box-shadow:
+                inset 35px 0 50px rgba(0, 0, 0, 0.95);
+        }
+
+        /* RECTIFIED FLAP OPENING */
+
+        .unfold .flap-top {
+
+            transform:
+                rotateX(135deg)
+                translateZ(-2px);
+
+            opacity: 1;
+
+            z-index: 5 !important;
+
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .unfold .wax-seal-container {
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            animation: none;
+        }
+
+        /* ───────────────── WAX SEAL ───────────────── */
+
         .wax-seal-container {
+
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) translateZ(10px);
-            z-index: 25; 
+
+            top: 50%;
+            left: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            z-index: 25;
+
             cursor: pointer;
+
             width: clamp(120px, 28vw, 160px);
+
             aspect-ratio: 1;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: seal-pulse 2s infinite ease-in-out;
+
+            animation:
+                seal-pulse 2s infinite ease-in-out;
+
             transition: opacity 0.25s ease;
         }
 
         .wax-seal-img {
+
             width: 100%;
             height: 100%;
+
             object-fit: contain;
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
+
+            filter:
+                drop-shadow(0 15px 25px rgba(0, 0, 0, 0.85));
         }
 
         @keyframes seal-pulse {
-            0% { transform: translate(-50%, -50%) scale(1) translateZ(10px); }
-            50% { transform: translate(-50%, -50%) scale(1.05) translateZ(10px); }
-            100% { transform: translate(-50%, -50%) scale(1) translateZ(10px); }
+
+            0% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(1);
+            }
+
+            50% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(1.05);
+            }
+
+            100% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(1);
+            }
         }
 
-        #landing-screen.hide { display: none; }
+        /* ───────────────── CONTENT ───────────────── */
 
-        /* ─── SCROLLABLE CONTENT TIMELINE CARDS ─── */
-        #main-content { 
-            display: block; 
-            height: 100vh; 
-            overflow-y: scroll; 
+        #main-content {
+
+            display: block;
+
+            height: 100vh;
+
+            overflow-y: scroll;
+
             scroll-snap-type: y mandatory;
         }
 
         .card {
+
             width: 100vw;
+
             min-height: 100vh;
+
             scroll-snap-align: start;
+
             display: flex;
+
             flex-direction: column;
+
             justify-content: center;
+
             padding: 40px 8vw;
+
             position: relative;
+
             opacity: 0;
+
             transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+
+            transition:
+                opacity 0.6s ease,
+                transform 0.6s ease;
         }
 
-        .card.is-visible { opacity: 1; transform: translateY(0); }
+        .card.is-visible {
 
-        .card-1 { background-color: var(--champagne); }
-        .card-2 { background-color: var(--deep-dark-navy); color: var(--white); text-align: center; }
-        .card-3 { background-color: var(--champagne); text-align: center; color: var(--paper-navy); }
-        .card-4 { background-color: var(--deep-dark-navy); color: var(--white); text-align: center; }
+            opacity: 1;
 
-        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(2.3rem, 7vw, 4.8rem); line-height: 1.1; color: var(--paper-navy); z-index: 2; }
-        .card-1 .quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 15px; z-index: 2; }
-        .cake-img { 
-            position: absolute; 
-            bottom: 2%; right: -5%; 
-            width: clamp(240px, 55vw, 480px); 
-            opacity: 0.8; 
-            z-index: 1; 
+            transform: translateY(0);
         }
 
-        .card-2 .title, .card-4 .rsvp-title { 
-            font-family: var(--font-amoresa); 
-            font-size: clamp(3.2rem, 9vw, 6.5rem); 
+        .card-1 {
+            background-color: var(--champagne);
+        }
+
+        .card-2 {
+            background-color: var(--deep-dark-navy);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .card-3 {
+            background-color: var(--champagne);
+            text-align: center;
+            color: var(--paper-navy);
+        }
+
+        .card-4 {
+            background-color: var(--deep-dark-navy);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .card-1 .title {
+
+            font-family: var(--font-woodland);
+
+            font-size:
+                clamp(2.3rem, 7vw, 4.8rem);
+
+            line-height: 1.1;
+
+            color: var(--paper-navy);
+
+            z-index: 2;
+        }
+
+        .card-1 .quote {
+
+            font-family: var(--font-amoresa);
+
+            font-size:
+                clamp(2rem, 5vw, 3rem);
+
+            color: var(--paper-navy);
+
+            margin-top: 15px;
+
+            z-index: 2;
+        }
+
+        .cake-img {
+
+            position: absolute;
+
+            bottom: 2%;
+            right: -5%;
+
+            width: clamp(240px, 55vw, 480px);
+
+            opacity: 0.8;
+
+            z-index: 1;
+        }
+
+        .card-2 .title,
+        .card-4 .rsvp-title {
+
+            font-family: var(--font-amoresa);
+
+            font-size:
+                clamp(3.2rem, 9vw, 6.5rem);
+
             width: 100%;
         }
-        .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7vw, 4.5rem); color: var(--gold); margin: 8px 0; }
-        .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(0.8rem, 2.8vw, 0.95rem); line-height: 1.6; max-width: 90%; margin: 0 auto; }
 
-        .card-3 .sub-title { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 6.5vw, 4.2rem); color: var(--gold); }
-        .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(0.95rem, 3.5vw, 1.3rem); margin-bottom: 15px; line-height: 1.5; }
-        .map-btn { display: inline-block; background: var(--paper-navy); color: white; padding: 14px 28px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; }
+        .card-2 .names {
 
-        .rsvp-subtitle { font-family: var(--font-woodland); font-size: clamp(0.7rem, 2.5vw, 0.9rem); margin-bottom: 25px; display: block; }
-        .counter-container { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.2); margin: 15px auto; max-width: 280px; }
-        .counter-btn { width: 50px; height: 50px; font-size: 1.8rem; color: var(--gold); background: none; border: none; cursor: pointer; }
-        .guest-num { font-family: var(--font-woodland); font-size: 1.8rem; }
-        .submit-btn { background: var(--gold); color: var(--deep-dark-navy); padding: 18px; width: 100%; max-width: 280px; font-weight: bold; border: none; font-family: var(--font-woodland); cursor: pointer; }
+            font-family: var(--font-amoresa);
 
-        .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7.5vw, 3.8rem); color: var(--gold); margin-top: 5px; }
+            font-size:
+                clamp(2.3rem, 7vw, 4.5rem);
+
+            color: var(--gold);
+
+            margin: 8px 0;
+        }
+
+        .card-2 .body-text {
+
+            font-family: var(--font-woodland);
+
+            font-size:
+                clamp(0.8rem, 2.8vw, 0.95rem);
+
+            line-height: 1.6;
+
+            max-width: 90%;
+
+            margin: 0 auto;
+        }
+
+        .card-3 .sub-title {
+
+            font-family: var(--font-amoresa);
+
+            font-size:
+                clamp(2.8rem, 6.5vw, 4.2rem);
+
+            color: var(--gold);
+        }
+
+        .card-3 .detail-text {
+
+            font-family: var(--font-woodland);
+
+            font-size:
+                clamp(0.95rem, 3.5vw, 1.3rem);
+
+            margin-bottom: 15px;
+
+            line-height: 1.5;
+        }
+
+        .map-btn {
+
+            display: inline-block;
+
+            background: var(--paper-navy);
+
+            color: white;
+
+            padding: 14px 28px;
+
+            text-decoration: none;
+
+            font-family: var(--font-woodland);
+
+            font-size: 0.8rem;
+
+            letter-spacing: 2px;
+        }
+
+        .rsvp-subtitle {
+
+            font-family: var(--font-woodland);
+
+            font-size:
+                clamp(0.7rem, 2.5vw, 0.9rem);
+
+            margin-bottom: 25px;
+
+            display: block;
+        }
+
+        .counter-container {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            margin: 15px auto;
+
+            max-width: 280px;
+        }
+
+        .counter-btn {
+
+            width: 50px;
+            height: 50px;
+
+            font-size: 1.8rem;
+
+            color: var(--gold);
+
+            background: none;
+
+            border: none;
+
+            cursor: pointer;
+        }
+
+        .guest-num {
+
+            font-family: var(--font-woodland);
+
+            font-size: 1.8rem;
+        }
+
+        .submit-btn {
+
+            background: var(--gold);
+
+            color: var(--deep-dark-navy);
+
+            padding: 18px;
+
+            width: 100%;
+            max-width: 280px;
+
+            font-weight: bold;
+
+            border: none;
+
+            font-family: var(--font-woodland);
+
+            cursor: pointer;
+        }
+
+        .footer-name {
+
+            font-family: var(--font-amoresa);
+
+            font-size:
+                clamp(2.3rem, 7.5vw, 3.8rem);
+
+            color: var(--gold);
+
+            margin-top: 5px;
+        }
 
         @media (max-width: 600px) {
-            .card { padding: 25px 5vw; }
-            .cake-img { width: 75%; bottom: 0; right: -5%; opacity: 0.35; } 
-            .details-flex { display: flex; flex-direction: column; gap: 25px; }
+
+            .card {
+                padding: 25px 5vw;
+            }
+
+            .cake-img {
+                width: 75%;
+                bottom: 0;
+                right: -5%;
+                opacity: 0.35;
+            }
+
+            .details-flex {
+                display: flex;
+                flex-direction: column;
+                gap: 25px;
+            }
         }
+
     </style>
+
 </head>
+
 <body>
 
-<!-- Perfectly Separated Visual Zoom Overlay Frame -->
-<div id="zoom-card-overlay">
-    <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
-</div>
+    <!-- OVERLAY -->
 
-<section id="landing-screen">
-    <div class="envelope-container" id="envelope-viewport">
-        <div class="envelope-body" id="envelope">
-            
-            <!-- Original Card Anchor -->
-            <div class="envelope-card-preview" id="internal-card">
-                <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
-            </div>
+    <div id="zoom-card-overlay">
 
-            <!-- Envelope Panels -->
-            <div class="flap flap-left"></div>
-            <div class="flap flap-bottom"></div>
-            <div class="flap flap-right"></div>
-            <div class="flap flap-top" id="main-flap"></div>
-            
-            <div class="wax-seal-container" onclick="handleOpen()">
-                <img src="01.png" class="wax-seal-img" alt="Wax Seal">
-            </div>
-        </div>
+        <p class="invite-text">
+            As our next chapter begins, we request the pleasure of your company at our wedding celebration!
+        </p>
+
     </div>
-</section>
 
-<main id="main-content">
-    <section class="card card-1">
-        <h1 class="title">Mekha<br>& Edwin</h1> 
-        <div style="width: 50px; height: 3px; background: var(--gold); margin: 12px 0;"></div>
-        <p class="quote">“He has made everything beautiful in its time”</p>
-        <p style="font-family: var(--font-woodland); letter-spacing: 2px; font-size: 0.75rem; margin-top: 8px;">ECCLESIASTES 3:11</p>
-        <p style="margin-top: 25px; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600;">17TH JULY 2026</p>
-        <img src="02.png" class="cake-img" alt="Wedding Cake">
-    </section>
+    <!-- LANDING -->
 
-    <section class="card card-2">
-        <h1 class="title">You are Invited</h1>
-        <p class="body-text">We, Reji Thomas Mathew & Lekha Reji Thomas,<br>
-        request the honour of your presence at the holy<br>
-        matrimony of our daughter,</p>
-        <h2 class="names">Mekha Susan Thomas</h2>
-        <p class="body-text">with</p>
-        <h2 class="names">Edwin Roger Bright</h2>
-        <p class="body-text">(Son of M.J. Bright and Lissy Bright)</p>
-    </section>
+    <section id="landing-screen">
 
-    <section class="card card-3">
-        <h1 style="font-family: var(--font-woodland); letter-spacing: 4px; margin-bottom: 25px;">THE DETAILS</h1>
-        <div class="details-flex">
-            <div class="block">
-                <h2 class="sub-title">Date & Time</h2>
-                <p class="detail-text">July 17, 2026<br>4:30pm — Wedding<br>7:00pm — Reception</p>
+        <div class="envelope-container" id="envelope-viewport">
+
+            <div class="envelope-body" id="envelope">
+
+                <!-- INTERNAL CARD -->
+
+                <div class="envelope-card-preview"
+                    id="internal-card">
+
+                    <p class="invite-text">
+                        As our next chapter begins, we request the pleasure of your company at our wedding celebration!
+                    </p>
+
+                </div>
+
+                <!-- FLAPS -->
+
+                <div class="flap flap-left"></div>
+                <div class="flap flap-bottom"></div>
+                <div class="flap flap-right"></div>
+
+                <div class="flap flap-top"
+                    id="main-flap"></div>
+
+                <!-- WAX SEAL -->
+
+                <div class="wax-seal-container"
+                    onclick="handleOpen()">
+
+                    <img src="01.png"
+                        class="wax-seal-img"
+                        alt="Wax Seal">
+
+                </div>
+
             </div>
-            <div class="block">
-                <h2 class="sub-title">Venue</h2>
-                <p class="detail-text">The Kings Meadows<br>City Harvest AG Church<br>Bangalore</p>
-            </div>
+
         </div>
-        <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="map-btn">VIEW ON MAPS</a>
+
     </section>
 
-    <section class="card card-4">
-        <h1 class="rsvp-title" style="color: var(--gold); font-family: var(--font-woodland);">RSVP SOON!</h1>
-        <span class="rsvp-subtitle" id="rsvp-status-msg">We can’t wait to celebrate with you!</span>
-        
-        <form id="google-rsvp-form" style="margin: 0 auto; width: 100%; max-width: 280px; text-align: left;">
-            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland);">FULL NAME</label>
-            <input type="text" id="guest-name-input" style="width:100%; padding: 12px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 15px;" required>
-            
-            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland);">NUMBER OF GUESTS</label>
-            <div class="counter-container">
-                <button type="button" class="counter-btn" onclick="updateGuests(-1)">-</button>
-                <div class="guest-num" id="guestCountDisplay">1</div>
-                <button type="button" class="counter-btn" onclick="updateGuests(1)">+</button>
+    <!-- CONTENT -->
+
+    <main id="main-content">
+
+        <section class="card card-1">
+
+            <h1 class="title">
+                Mekha<br>& Edwin
+            </h1>
+
+            <div style="width:50px;height:3px;background:var(--gold);margin:12px 0;"></div>
+
+            <p class="quote">
+                “He has made everything beautiful in its time”
+            </p>
+
+            <p style="font-family: var(--font-woodland); letter-spacing: 2px; font-size: 0.75rem; margin-top: 8px;">
+                ECCLESIASTES 3:11
+            </p>
+
+            <p style="margin-top: 25px; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600;">
+                17TH JULY 2026
+            </p>
+
+            <img src="02.png"
+                class="cake-img"
+                alt="Wedding Cake">
+
+        </section>
+
+        <section class="card card-2">
+
+            <h1 class="title">
+                You are Invited
+            </h1>
+
+            <p class="body-text">
+                We, Reji Thomas Mathew & Lekha Reji Thomas,<br>
+                request the honour of your presence at the holy<br>
+                matrimony of our daughter,
+            </p>
+
+            <h2 class="names">
+                Mekha Susan Thomas
+            </h2>
+
+            <p class="body-text">
+                with
+            </p>
+
+            <h2 class="names">
+                Edwin Roger Bright
+            </h2>
+
+            <p class="body-text">
+                (Son of M.J. Bright and Lissy Bright)
+            </p>
+
+        </section>
+
+        <section class="card card-3">
+
+            <h1 style="font-family: var(--font-woodland); letter-spacing: 4px; margin-bottom: 25px;">
+                THE DETAILS
+            </h1>
+
+            <div class="details-flex">
+
+                <div class="block">
+
+                    <h2 class="sub-title">
+                        Date & Time
+                    </h2>
+
+                    <p class="detail-text">
+                        July 17, 2026<br>
+                        4:30pm — Wedding<br>
+                        7:00pm — Reception
+                    </p>
+
+                </div>
+
+                <div class="block">
+
+                    <h2 class="sub-title">
+                        Venue
+                    </h2>
+
+                    <p class="detail-text">
+                        The Kings Meadows<br>
+                        City Harvest AG Church<br>
+                        Bangalore
+                    </p>
+
+                </div>
+
             </div>
-            <button type="submit" class="submit-btn" id="submit-btn-text">SEND RSVP</button>
-        </form>
-        
-        <div style="margin-top: 25px;">
-            <p style="font-family: var(--font-woodland); font-size: 0.7rem; opacity: 0.7;">WITH BEST COMPLIMENTS FROM</p> 
-            <p class="footer-name">Shimon Mathew Thomas</p> 
-        </div>
-    </section>
-</main>
 
-<script>
-    let currentGuests = 1;
-    function updateGuests(val) {
-        currentGuests += val;
-        if (currentGuests < 1) currentGuests = 1;
-        if (currentGuests > 20) currentGuests = 20;
-        document.getElementById('guestCountDisplay').innerText = currentGuests;
-    }
+            <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7"
+                target="_blank"
+                class="map-btn">
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-            } else {
-                entry.target.classList.remove('is-visible');
-            }
-        });
-    }, { threshold: 0.15 });
+                VIEW ON MAPS
 
-    function handleOpen() {
-        const landing = document.getElementById('landing-screen');
-        const internalCard = document.getElementById('internal-card');
-        const zoomOverlay = document.getElementById('zoom-card-overlay');
-        const content = document.getElementById('main-content');
-        
-        // Step 1: Open the envelope flap naturally
-        landing.classList.add('unfold');
-        
-        // Step 2: Capture dimensions at peak extraction height
-        setTimeout(() => {
-            const bounds = internalCard.getBoundingClientRect();
-            
-            // Map overlay dimensions exactly to match the emerged card down to the pixel
-            zoomOverlay.style.top = bounds.top + 'px';
-            zoomOverlay.style.left = bounds.left + 'px';
-            zoomOverlay.style.width = bounds.width + 'px';
-            zoomOverlay.style.height = bounds.height + 'px';
-            
-            // Force browser repaint to seamlessly hide the element swap
-            zoomOverlay.offsetHeight; 
-            
-            // Step 3: Handoff — hide inner pocket card, instantly show and expand overlay card
-            internalCard.style.opacity = '0';
-            zoomOverlay.classList.add('fullscreen-active');
-            
-            // Step 4: Keep full-screen presentation completely locked for exactly 2.5 seconds
+            </a>
+
+        </section>
+
+        <section class="card card-4">
+
+            <h1 class="rsvp-title"
+                style="color: var(--gold); font-family: var(--font-woodland);">
+
+                RSVP SOON!
+
+            </h1>
+
+            <span class="rsvp-subtitle"
+                id="rsvp-status-msg">
+
+                We can’t wait to celebrate with you!
+
+            </span>
+
+        </section>
+
+    </main>
+
+    <script>
+
+        const observer =
+            new IntersectionObserver((entries) => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList
+                            .add('is-visible');
+
+                    } else {
+
+                        entry.target.classList
+                            .remove('is-visible');
+                    }
+
+                });
+
+            }, { threshold: 0.15 });
+
+        function handleOpen() {
+
+            const landing =
+                document.getElementById('landing-screen');
+
+            const internalCard =
+                document.getElementById('internal-card');
+
+            const zoomOverlay =
+                document.getElementById('zoom-card-overlay');
+
+            /* STEP 1 — OPEN FLAP ONLY */
+
+            landing.classList.add('unfold');
+
+            /* STEP 2 — WAIT FOR FLAP */
+
             setTimeout(() => {
-                
-                // Complete crossfade applied simultaneously with perfect timeline synchronization
-                zoomOverlay.style.transition = "opacity 0.45s ease-in-out, transform 0.45s ease-in-out";
-                landing.style.transition = "opacity 0.45s ease-in-out";
-                
-                // Dissolve landing frame components cleanly together
-                zoomOverlay.style.opacity = "0";
-                zoomOverlay.style.transform = "scale(0.96)";
-                landing.style.opacity = "0";
-                
+
+                internalCard.classList
+                    .add('reveal-card');
+
+            }, 720);
+
+            /* STEP 3 — WAIT FOR CARD */
+
+            setTimeout(() => {
+
+                const bounds =
+                    internalCard.getBoundingClientRect();
+
+                zoomOverlay.style.top =
+                    bounds.top + 'px';
+
+                zoomOverlay.style.left =
+                    bounds.left + 'px';
+
+                zoomOverlay.style.width =
+                    bounds.width + 'px';
+
+                zoomOverlay.style.height =
+                    bounds.height + 'px';
+
+                /* FORCE REPAINT */
+
+                zoomOverlay.offsetHeight;
+
+                /* HIDE ORIGINAL CARD */
+
+                internalCard.style.opacity = '0';
+
+                /* EXPAND OVERLAY */
+
+                zoomOverlay.classList
+                    .add('fullscreen-active');
+
+                /* STEP 4 — HOLD */
+
                 setTimeout(() => {
-                    zoomOverlay.style.display = 'none';
-                    landing.style.display = 'none'; 
-                    
-                    // Unlock browser scrolling actions safely
-                    document.body.style.overflow = "auto";
-                    document.documentElement.style.overflow = "auto";
-                    
-                    // Initialize scroll observer animations
-                    document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                }, 450); 
-                
-            }, 2500); // 2.5 Second Hold
-            
-        }, 800); // Wait time for slide-up completion
-    }
 
-    // Google Forms Pipeline Handler
-    document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const submitBtn = document.getElementById('submit-btn-text');
-        const statusMsg = document.getElementById('rsvp-status-msg');
-        
-        submitBtn.disabled = true;
-        submitBtn.innerText = "SENDING...";
+                    document.querySelectorAll('.card')
+                        .forEach(card =>
+                            observer.observe(card));
 
-        const formActionURL = "https://docs.google.com/forms/d/e/1FAIpQLSfXXXXXXXXXXXXX/formResponse"; 
-        const nameEntryID = "entry.1111111111"; 
-        const guestEntryID = "entry.2222222222"; 
+                    zoomOverlay.style.transition =
+                        "opacity 0.45s ease, transform 0.45s ease";
 
-        const nameValue = document.getElementById('guest-name-input').value;
-        const guestValue = currentGuests;
+                    landing.style.transition =
+                        "opacity 0.45s ease";
 
-        const formData = new FormData();
-        formData.append(nameEntryID, nameValue);
-        formData.append(guestEntryID, guestValue);
+                    zoomOverlay.style.opacity = "0";
 
-        fetch(formActionURL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: formData
-        }).then(() => {
-            submitBtn.innerText = "THANK YOU!";
-            statusMsg.innerText = "Your RSVP has been beautifully recorded.";
-            statusMsg.style.color = "var(--gold)";
-        }).catch((error) => {
-            console.error('Error:', error);
-            submitBtn.disabled = false;
-            submitBtn.innerText = "SEND RSVP";
-            alert("Something went wrong. Please check your connection.");
-        });
-    });
-</script>
+                    zoomOverlay.style.transform =
+                        "scale(0.985)";
+
+                    landing.style.opacity = "0";
+
+                    setTimeout(() => {
+
+                        zoomOverlay.style.display =
+                            'none';
+
+                        landing.style.display =
+                            'none';
+
+                        document.body.style.overflow =
+                            "auto";
+
+                        document.documentElement.style.overflow =
+                            "auto";
+
+                    }, 450);
+
+                }, 2500);
+
+            }, 1750);
+
+        }
+
+    </script>
 
 </body>
+
 </html>
