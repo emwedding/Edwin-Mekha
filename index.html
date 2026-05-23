@@ -72,7 +72,7 @@
             /* Tucked inside lower envelope bounds initially */
             transform: translateY(35%) scale(0.94);
             opacity: 0;
-            z-index: 20; 
+            z-index: 20; /* RECTIFIED: Elevated above flat panels to slide over them */
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
@@ -148,6 +148,7 @@
             z-index: 14; 
             box-shadow: inset 0 -35px 50px rgba(0,0,0,0.95);
             border-bottom: 0.5px solid rgba(255,255,255,0.08);
+            /* RECTIFIED: Tracks z-index update instantly via step-end at the close of transform */
             transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.1s step-end;
         }
         
@@ -158,54 +159,39 @@
         /* Fold open top panel logic */
         .unfold .flap-top { 
             transform: rotateX(150deg); 
-            z-index: 5; /* Dynamic depth drop sends it behind emerging card bounds */
+            z-index: 5; /* RECTIFIED: Instantly slips backward behind the rising card context */
         }
-        
-        .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
-        /* ─── NATIVE PURE CSS WAX SEAL ─── */
+        /* PULSING WAX SEAL */
         .wax-seal-container {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 20;
+            z-index: 25; /* Elevated above top flap threshold boundary */
             cursor: pointer;
-            width: clamp(75px, 18vw, 95px);
+            width: clamp(120px, 28vw, 160px);
             aspect-ratio: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             animation: seal-pulse 2s infinite ease-in-out;
             transition: opacity 0.25s ease;
-            
-            /* Native CSS Styling for a Realistic Wax Emblem */
-            background: radial-gradient(circle, var(--gold) 40%, #a48243 90%);
-            border-radius: 53% 47% 52% 48% / 47% 55% 45% 53%; /* Intentionally irregular organic curves */
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5), 
-                        inset 0 4px 6px rgba(255,255,255,0.4), 
-                        inset 0 -4px 10px rgba(0,0,0,0.4);
-            border: 3px solid #b79555;
         }
 
-        /* Monogram Text inside the Seal Stamp */
-        .wax-seal-container::after {
-            content: "M & E";
-            font-family: var(--font-woodland);
-            font-size: clamp(0.7rem, 2vw, 0.9rem);
-            color: #4a3b1d;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 1px rgba(255,255,255,0.2), -1px -1px 1px rgba(0,0,0,0.4);
-            border: 2px double rgba(74, 59, 29, 0.4);
-            padding: 8px;
-            border-radius: 50%;
+        .wax-seal-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
         }
 
         @keyframes seal-pulse {
             0% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.06); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
             100% { transform: translate(-50%, -50%) scale(1); }
         }
+
+        .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
         #landing-screen.hide { display: none; }
 
@@ -240,17 +226,12 @@
 
         .card-1 .title { font-family: var(--font-woodland); font-size: clamp(2.3rem, 7vw, 4.8rem); line-height: 1.1; color: var(--paper-navy); z-index: 2; }
         .card-1 .quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 15px; z-index: 2; }
-        
-        /* Fallback decorative graphics loop replacing raw missing asset images */
-        .cake-graphic-container { 
+        .cake-img { 
             position: absolute; 
-            bottom: 5%; right: 5%; 
-            width: clamp(120px, 25vw, 240px);
-            height: clamp(120px, 25vw, 240px);
-            border: 2px solid var(--gold);
-            opacity: 0.25; 
+            bottom: 2%; right: -5%; 
+            width: clamp(240px, 55vw, 480px); 
+            opacity: 0.8; 
             z-index: 1; 
-            transform: rotate(45deg);
         }
 
         .card-2 .title, .card-4 .rsvp-title { 
@@ -275,6 +256,7 @@
 
         @media (max-width: 600px) {
             .card { padding: 25px 5vw; }
+            .cake-img { width: 75%; bottom: 0; right: -5%; opacity: 0.35; } 
             .details-flex { display: flex; flex-direction: column; gap: 25px; }
         }
     </style>
@@ -301,8 +283,9 @@
             <div class="flap flap-right"></div>
             <div class="flap flap-top" id="main-flap"></div>
             
-            <!-- Native Interactive Stamp Component -->
-            <div class="wax-seal-container" onclick="handleOpen()"></div>
+            <div class="wax-seal-container" onclick="handleOpen()">
+                <img src="01.png" class="wax-seal-img" alt="Wax Seal">
+            </div>
         </div>
     </div>
 </section>
@@ -314,7 +297,7 @@
         <p class="quote">“He has made everything beautiful in its time”</p>
         <p style="font-family: var(--font-woodland); letter-spacing: 2px; font-size: 0.75rem; margin-top: 8px;">ECCLESIASTES 3:11</p>
         <p style="margin-top: 25px; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600;">17TH JULY 2026</p>
-        <div class="cake-graphic-container"></div>
+        <img src="02.png" class="cake-img" alt="Wedding Cake">
     </section>
 
     <section class="card card-2">
