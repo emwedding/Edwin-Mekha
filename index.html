@@ -27,7 +27,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── ENVELOPE BASE LAYER ─── */
+        /* ─── TRADITIONAL BACKING & BASE ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -37,126 +37,113 @@
             align-items: center;
             background-color: #BDB095;
             padding: 20px;
-            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.4s;
+            transition: opacity 0.4s ease-in-out, visibility 0.4s;
         }
 
         .envelope-container {
             position: relative;
             width: 100%;
-            max-width: 550px;
-            aspect-ratio: 1.618;
-            perspective: 1500px;
-            filter: drop-shadow(0 30px 50px rgba(0,0,0,0.6));
+            max-width: 500px;
+            aspect-ratio: 1.4;
+            perspective: 2000px;
         }
 
         .envelope-body {
             position: absolute;
             inset: 0;
-            background: var(--paper-navy);
-            overflow: visible;
+            background: #030a12;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.65);
         }
 
-        /* ─── INNER CARD EXTRACT (Hidden beneath overlapping flaps initially) ─── */
+        /* Lower front structural pocket overlay */
+        .envelope-pocket {
+            position: absolute;
+            inset: 0;
+            background: var(--paper-navy);
+            clip-path: polygon(0% 45%, 50% 75%, 100% 45%, 100% 100%, 0% 100%);
+            z-index: 12;
+            box-shadow: inset 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* ─── SINGLE TRADITIONAL UPPER FLAP ─── */
+        .flap-top {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 50%;
+            background-color: var(--paper-navy);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top center;
+            z-index: 14;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            border-bottom: 0.5px solid rgba(255,255,255,0.05);
+        }
+
+        .wax-seal-container {
+            position: absolute;
+            top: 100%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .wax-seal-img {
+            width: clamp(130px, 32vw, 175px);
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+        }
+
+        /* ─── INSIDE CHAMPAGNE CARD ─── */
         .envelope-card-preview {
             position: absolute;
-            inset: 5px;
+            /* Anchored deep inside the lower envelope body pocket */
+            inset: 15px 15px 25px 15px;
             background-color: var(--champagne);
-            z-index: 9;
-            padding: 25px 40px;
+            z-index: 10;
+            padding: 30px 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: var(--paper-navy);
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            transform: scale(0.95);
-            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.25);
+            transform: translateY(0) scale(0.96);
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
         .envelope-card-preview .invite-text { 
             font-family: var(--font-woodland); 
-            font-size: clamp(1rem, 3.5vw, 1.6rem); 
+            font-size: clamp(0.9rem, 3.2vw, 1.4rem); 
             line-height: 1.5; 
             font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            max-width: 85%;
         }
 
-        .flap {
-            position: absolute;
-            background-color: var(--paper-navy);
-            transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
-            z-index: 10;
+        /* ─── TRADITIONAL OPENING PIPELINE ─── */
+        /* Step 1: Swing single upper flap vertically open */
+        .unfold .flap-top {
+            transform: rotateX(180deg);
+            z-index: 8;
         }
+        .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
 
-        /* Strong Structural Cut shadows */
-        .flap-top { 
-            top: 0; left: 0; width: 100%; height: 50%; 
-            clip-path: polygon(0 0, 100% 0, 50% 100%); 
-            transform-origin: top; 
-            z-index: 14; 
-            box-shadow: inset 0 -35px 50px rgba(0,0,0,0.95);
-            border-bottom: 0.5px solid rgba(255,255,255,0.08);
-        }
-        .flap-right { 
-            top: 0; right: 0; width: 50%; height: 100%; 
-            clip-path: polygon(100% 0, 100% 100%, 0 50%); 
-            transform-origin: right; 
-            z-index: 13; 
-            box-shadow: inset -35px 0 50px rgba(0,0,0,0.95);
-        }
-        .flap-bottom { 
-            bottom: 0; left: 0; width: 100%; height: 50%; 
-            clip-path: polygon(50% 0, 100% 100%, 0 100%); 
-            transform-origin: bottom; 
-            z-index: 12; 
-            box-shadow: inset 0 35px 50px rgba(0,0,0,0.95);
-        }
-        .flap-left { 
-            top: 0; left: 0; width: 50%; height: 100%; 
-            clip-path: polygon(0 0, 100% 50%, 0 100%); 
-            transform-origin: left; 
-            z-index: 11; 
-            box-shadow: inset 35px 0 50px rgba(0,0,0,0.95);
-        }
-
-        .wax-seal-container {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 20;
-            cursor: pointer;
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
-
-        .wax-seal-img {
-            width: clamp(140px, 35vw, 200px);
-            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9));
-        }
-
-        /* ─── ANIMATION SEQUENCE ─── */
-        .unfold .flap-top { transform: rotateX(130deg); transition-delay: 0s; }
-        .unfold .flap-right { transform: rotateY(130deg); transition-delay: 0.05s; }
-        .unfold .flap-bottom { transform: rotateX(-130deg); transition-delay: 0.1s; }
-        .unfold .flap-left { transform: rotateY(-130deg); transition-delay: 0.15s; }
-        .unfold .wax-seal-container { opacity: 0; transform: translate(-50%, -50%) scale(0.7); pointer-events: none; }
-
-        /* Card lifts cleanly out of the frame setup */
+        /* Step 2: Extract card vertically upward out of the pocket */
         .unfold .envelope-card-preview {
-            transform: translateY(-30%) scale(0.98);
-            transition-delay: 0.45s;
+            transform: translateY(-65%) scale(0.98);
             z-index: 15;
+            transition-delay: 0.5s;
         }
 
-        /* Frame zoom expansion execution */
+        /* Step 3: Controlled zoom frame calculation preventing text layout clipping */
         .zoom-fullscreen .envelope-card-preview {
-            transform: translateY(0) scale(4);
+            transform: translateY(-25%) scale(2.2);
             opacity: 0;
-            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out 0.35s;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease-out 0.3s;
         }
 
         #landing-screen.hide { opacity: 0; visibility: hidden; }
 
-        /* ─── SCROLL PANELS ─── */
+        /* ─── SYSTEM MAIN CARDS ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
@@ -227,21 +214,23 @@
 
 <section id="landing-screen">
     <div class="envelope-container" id="envelope-viewport">
-        <div class="envelope-body" id="envelope">
+        <div class="envelope-body">
             
-            <!-- Internal Card Preview Component Layer -->
-            <div class="envelope-card-preview">
-                <p class="invite-text">It's our pleasure to cordially invite you</p>
+            <!-- Traditional Upper Flap Layer -->
+            <div class="flap-top" id="main-flap">
+                <div class="wax-seal-container" onclick="handleOpen()">
+                    <img src="01.png" class="wax-seal-img" alt="Wax Seal">
+                </div>
             </div>
 
-            <div class="flap flap-top"></div>
-            <div class="flap flap-right"></div>
-            <div class="flap flap-bottom"></div>
-            <div class="flap flap-left"></div>
-            
-            <div class="wax-seal-container" onclick="handleOpen()">
-                <img src="01.png" class="wax-seal-img" alt="Wax Seal">
+            <!-- Internal Invitation Slip Component with Updated Request Copy -->
+            <div class="envelope-card-preview">
+                <p class="invite-text">We request your presence at our joyous occasion!</p>
             </div>
+
+            <!-- Front Protective Pocket Trim -->
+            <div class="envelope-pocket"></div>
+            
         </div>
     </div>
 </section>
@@ -326,13 +315,14 @@
     }, { threshold: 0.15 });
 
     function handleOpen() {
-        const envelope = document.getElementById('envelope');
         const container = document.getElementById('envelope-viewport');
         const landing = document.getElementById('landing-screen');
         const content = document.getElementById('main-content');
         
-        envelope.classList.add('unfold');
+        // Trigger traditional single-flap upward flip
+        landing.classList.add('unfold');
         
+        // Stagger card vertical peek out followed by balanced screen-zoom handoff
         setTimeout(() => {
             container.classList.add('zoom-fullscreen');
             
@@ -340,11 +330,11 @@
                 landing.classList.add('hide');
                 content.style.display = 'block';
                 document.querySelectorAll('.card').forEach(card => observer.observe(card));
-            }, 600);
-        }, 1150); 
+            }, 550);
+        }, 1200); 
     }
 
-    // Google Sheets Async Submissions Script
+    // Google Form Pipeline Controller Action
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
