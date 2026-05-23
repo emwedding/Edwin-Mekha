@@ -83,59 +83,46 @@
             z-index: 15;
         }
 
-        /* ─── DEDICATED VIEWPORT FLUID OVERLAY (3D TRANSFORMS OPTIMIZED) ─── */
+        /* ─── DEDICATED VIEWPORT FLUID OVERLAY (MOBILE HARDWARE-TRANSFORM OPTIMIZED) ─── */
         #zoom-card-overlay {
             position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             background-color: var(--champagne);
             color: var(--paper-navy);
-            z-index: 3000; /* Bypasses envelope layout limits entirely */
+            z-index: 3000; /* Bypasses envelope limits entirely */
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            
+            padding: 40px 10vw;
             opacity: 0;
             pointer-events: none;
             
-            /* Set scale-transform origin to target centerpiece center metrics */
-            transform-origin: center center;
-            
-            /* Fluid properties handle clean vector scaling transitions down to the sub-pixel */
-            transition: top 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-                        left 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-                        width 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-                        height 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-                        padding 0.75s ease,
-                        opacity 0.2s ease-in-out;
+            /* Crucial: Scales directly from top-left layout point using clean hardware bounds */
+            transform-origin: top left;
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease-in-out;
         }
 
-        /* Fullscreen destination mode active transformation configuration */
+        /* Fullscreen destination mode - pure matrix transform scaling */
         #zoom-card-overlay.fullscreen-active {
             opacity: 1;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            padding: 40px 10vw;
+            transform: translate(0px, 0px) scale(1) !important;
+            pointer-events: auto;
         }
 
         /* HARD-LOCKED TYPOGRAPHY SYSTEM */
         .invite-text { 
             font-family: 'Tangerine', cursive !important; 
-            font-size: clamp(1.8rem, 4.8vw, 2.5rem) !important; 
+            font-size: clamp(2.3rem, 6.2vw, 3.8rem) !important; /* Locked uniformly to final viewport size bounds */
             line-height: 1.3 !important; 
             font-weight: 700 !important;
-            max-width: 90%;
+            max-width: 80%;
             margin: 0 auto;
             color: var(--paper-navy) !important;
-            transition: font-size 0.5s ease;
-        }
-
-        /* Expands organically without triggering rendering layout reflow steps */
-        #zoom-card-overlay.fullscreen-active .invite-text {
-            font-size: clamp(2.4rem, 6vw, 3.8rem) !important; 
-            max-width: 80%;
         }
 
         /* ─── ENVELOPE PANEL GEOMETRY ─── */
@@ -255,13 +242,13 @@
             .card { padding: 25px 5vw; }
             .cake-img { width: 75%; bottom: 0; right: -5%; opacity: 0.35; } 
             .details-flex { display: flex; flex-direction: column; gap: 25px; }
-            .invite-text { max-width: 90%; font-size: clamp(1.8rem, 5vw, 2.4rem) !important; }
+            .invite-text { max-width: 85%; font-size: clamp(1.8rem, 5.2vw, 2.3rem) !important; }
         }
     </style>
 </head>
 <body>
 
-<!-- High-Priority Spatial Translation Viewport Zoom Overlay Frame -->
+<!-- Mobile Matrix Hardware Acceleration Overlay Layer Frame -->
 <div id="zoom-card-overlay">
     <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
 </div>
@@ -272,7 +259,8 @@
             
             <!-- Original Card Anchor Preview Frame Element -->
             <div class="envelope-card-preview" id="internal-card">
-                <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
+                <!-- Scaled layout down explicitly to match standard initialization aspects cleanly -->
+                <p class="invite-text" style="transform: scale(0.62); width: 160%; max-width: none; flex-shrink: 0; transform-origin: center center;">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
 
             <!-- Envelope Panels -->
@@ -373,30 +361,31 @@
         const zoomOverlay = document.getElementById('zoom-card-overlay');
         const content = document.getElementById('main-content');
         
-        // 1. Pop flap and run extraction slide step up naturally
+        // 1. Trigger envelope opening slide sequence
         landing.classList.add('unfold');
         
-        // 2. Perform seamless hardware transform handoff step exactly at peak animation height
+        // 2. Perform frame-perfect transform calculation matrix handoff at extraction point peak
         setTimeout(() => {
             const bounds = internalCard.getBoundingClientRect();
             
-            // Match overlay's initial dimensions exactly to the card's active positions
+            // Calculate structural matrix scale coefficients relative directly to window sizes
+            const scaleX = bounds.width / window.innerWidth;
+            const scaleY = bounds.height / window.innerHeight;
+            
+            // Fast-map layout bounds securely using hardware transform mechanics without transition properties active
             zoomOverlay.style.transition = 'none';
-            zoomOverlay.style.top = bounds.top + 'px';
-            zoomOverlay.style.left = bounds.left + 'px';
-            zoomOverlay.style.width = bounds.width + 'px';
-            zoomOverlay.style.height = bounds.height + 'px';
+            zoomOverlay.style.transform = `translate(${bounds.left}px, ${bounds.top}px) scale(${scaleX}, ${scaleY})`;
             zoomOverlay.style.opacity = '1';
             
-            // Force rendering refresh pass to lock layout bounds ahead of transform steps
+            // Force rendering pass step explicitly to lock configuration properties cleanly
             zoomOverlay.offsetHeight; 
             
-            // 3. Deactivate base card frame and ignite fluid zoom transition layout safely over top flap
+            // 3. Deactivate base frame element context and cleanly zoom using vector matrix rules over top flap elements
             internalCard.style.opacity = '0';
-            zoomOverlay.style.transition = 'top 0.75s cubic-bezier(0.16, 1, 0.3, 1), left 0.75s cubic-bezier(0.16, 1, 0.3, 1), width 0.75s cubic-bezier(0.16, 1, 0.3, 1), height 0.75s cubic-bezier(0.16, 1, 0.3, 1), padding 0.75s ease-in-out, opacity 0.2s ease-in-out';
+            zoomOverlay.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease-in-out';
             zoomOverlay.classList.add('fullscreen-active');
             
-            // 4. Lock frame presentation comfortably for exactly 2.5 seconds
+            // 4. Lock standard presentation setup modes safely for exactly 2.5 seconds
             setTimeout(() => {
                 zoomOverlay.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
                 landing.style.transition = "opacity 0.5s ease-in-out";
@@ -419,7 +408,7 @@
                 
             }, 2500);
             
-        }, 800); // Wait time for slide-up completion
+        }, 800); // Synchronize directly with extraction animation timing thresholds
     }
 
     // Google Forms Pipeline Handler
