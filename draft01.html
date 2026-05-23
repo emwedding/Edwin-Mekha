@@ -40,6 +40,7 @@
             transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.4s;
         }
 
+        /* Enforces a realistic envelope aspect ratio on desktop and mobile */
         .envelope-container {
             position: relative;
             width: 100%;
@@ -63,6 +64,7 @@
             z-index: 10;
         }
 
+        /* Highly defined edge shadow lines */
         .flap-top { 
             top: 0; left: 0; width: 100%; height: 50%; 
             clip-path: polygon(0 0, 100% 0, 50% 100%); 
@@ -107,6 +109,7 @@
             filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9));
         }
 
+        /* Fast Spiral Sequence Triggers */
         .unfold .flap-top { transform: rotateX(130deg); transition-delay: 0s; }
         .unfold .flap-right { transform: rotateY(130deg); transition-delay: 0.08s; }
         .unfold .flap-bottom { transform: rotateX(-130deg); transition-delay: 0.16s; }
@@ -115,7 +118,7 @@
         
         #landing-screen.hide { opacity: 0; visibility: hidden; }
 
-        /* ─── CONTENT CARDS ─── */
+        /* ─── SCROLL REVEAL CONTENT CARDS ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
@@ -145,6 +148,7 @@
         .card-3 { background-color: var(--champagne); text-align: center; color: var(--paper-navy); }
         .card-4 { background-color: var(--deep-dark-navy); color: var(--white); text-align: center; }
 
+        /* HERO AREA RESPONSIVENESS */
         .card-1 .title { font-family: var(--font-woodland); font-size: clamp(2.3rem, 7vw, 4.8rem); line-height: 1.1; color: var(--paper-navy); z-index: 2; }
         .card-1 .quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 15px; z-index: 2; }
         .cake-img { 
@@ -155,6 +159,7 @@
             z-index: 1; 
         }
 
+        /* TEXT CLAMPING (Eliminates mobile spillover) */
         .card-2 .title, .card-4 .rsvp-title { 
             font-family: var(--font-amoresa); 
             font-size: clamp(3.2rem, 9vw, 6.5rem); 
@@ -163,10 +168,12 @@
         .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7vw, 4.5rem); color: var(--gold); margin: 8px 0; }
         .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(0.8rem, 2.8vw, 0.95rem); line-height: 1.6; max-width: 90%; margin: 0 auto; }
 
+        /* LOCATION STYLING */
         .card-3 .sub-title { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 6.5vw, 4.2rem); color: var(--gold); }
         .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(0.95rem, 3.5vw, 1.3rem); margin-bottom: 15px; line-height: 1.5; }
         .map-btn { display: inline-block; background: var(--paper-navy); color: white; padding: 14px 28px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; }
 
+        /* RSVP INTERACTIVES */
         .rsvp-subtitle { font-family: var(--font-woodland); font-size: clamp(0.7rem, 2.5vw, 0.9rem); margin-bottom: 25px; display: block; }
         .counter-container { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.2); margin: 15px auto; max-width: 280px; }
         .counter-btn { width: 50px; height: 50px; font-size: 1.8rem; color: var(--gold); background: none; border: none; cursor: pointer; }
@@ -239,7 +246,6 @@
         <h1 class="rsvp-title" style="color: var(--gold); font-family: var(--font-woodland);">RSVP SOON!</h1>
         <span class="rsvp-subtitle" id="rsvp-status-msg">We can’t wait to celebrate with you!</span>
         
-        <!-- API-linked Background Submission Handling Form Layout -->
         <form id="google-rsvp-form" style="margin: 0 auto; width: 100%; max-width: 280px; text-align: left;">
             <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland);">FULL NAME</label>
             <input type="text" id="guest-name-input" style="width:100%; padding: 12px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 15px;" required>
@@ -288,7 +294,7 @@
         }, 500);
     }
 
-    // ─── GOOGLE SHEETS INTERFACE CONTROLLER ───
+    // ─── BACKGROUND GOOGLE SHEETS HANDLER ───
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -298,7 +304,7 @@
         submitBtn.disabled = true;
         submitBtn.innerText = "SENDING...";
 
-        // BRIDE & GROOM PLACEHOLDERS: Swap out these string keys with your direct Google Form IDs
+        // NOTE: Swap these out with your live Form key identifiers when setup
         const formActionURL = "https://docs.google.com/forms/d/e/1FAIpQLSfXXXXXXXXXXXXX/formResponse"; 
         const nameEntryID = "entry.1111111111"; 
         const guestEntryID = "entry.2222222222"; 
@@ -306,12 +312,10 @@
         const nameValue = document.getElementById('guest-name-input').value;
         const guestValue = currentGuests;
 
-        // Compile payload safely via application form url-encoding protocols
         const formData = new FormData();
         formData.append(nameEntryID, nameValue);
         formData.append(guestEntryID, guestValue);
 
-        // Fetch intercept payload transmission loop (CORS opaque safe mode configuration)
         fetch(formActionURL, {
             method: 'POST',
             mode: 'no-cors',
@@ -324,7 +328,7 @@
             console.error('Error:', error);
             submitBtn.disabled = false;
             submitBtn.innerText = "SEND RSVP";
-            alert("Something went wrong. Please check your network connection.");
+            alert("Something went wrong. Please check your connection.");
         });
     });
 </script>
