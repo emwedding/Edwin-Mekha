@@ -331,6 +331,7 @@
                 translateZ(-2px);
 
             opacity: 1;
+            z-index: 1 !important; /* RECTIFIED MODIFICATION 1: Drops the flap layering immediately behind emerging card path contexts */
         }
 
         .open-flap .wax-seal-container {
@@ -974,26 +975,23 @@
 
                 setTimeout(() => {
 
-                    document.querySelectorAll('.card')
-                        .forEach(card => observer.observe(card));
+                    /* RECTIFIED MODIFICATION 2: Simultaneous linear transition sequence removes flash artifact pipelines */
+                    overlay.style.transition = "opacity 0.45s ease-in-out, transform 0.45s ease-in-out";
+                    landing.style.transition = "opacity 0.45s ease-in-out";
 
                     landing.style.opacity = '0';
-
-                    overlay.style.transition =
-                        "opacity 0.45s ease, transform 0.45s ease";
-
                     overlay.style.opacity = '0';
-
-                    overlay.style.transform =
-                        'scale(0.985)';
+                    overlay.style.transform = 'scale(0.985)';
 
                     setTimeout(() => {
 
-                        landing.remove();
-
-                        overlay.remove();
+                        landing.style.display = 'none';
+                        overlay.style.display = 'none';
 
                         document.body.classList.add('ready-scroll');
+
+                        document.querySelectorAll('.card')
+                            .forEach(card => observer.observe(card));
 
                     }, 450);
 
