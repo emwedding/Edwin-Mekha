@@ -60,7 +60,6 @@
             position: absolute;
             inset: 10px;
             background-color: var(--champagne);
-            /* Locked at z-index 9 so it stays BEHIND the side and bottom flaps initially */
             z-index: 9; 
             padding: 40px 32px;
             display: flex;
@@ -69,11 +68,9 @@
             text-align: center;
             color: var(--paper-navy);
             box-shadow: 0 0 25px rgba(0,0,0,0.35);
-            
-            /* Tucked completely inside the base fold initialization */
             transform: translateY(35%) scale(0.94); 
             opacity: 0;
-            transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+            transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, z-index 0s;
         }
 
         .envelope-card-preview .invite-text { 
@@ -85,14 +82,13 @@
             max-width: 85%;
         }
 
-        /* ─── DEFINED SHADOW FOUR-FLAP GEOMETRY ─── */
+        /* ─── FOUR-FLAP SHADOW LAYERING ─── */
         .flap {
             position: absolute;
             background-color: var(--paper-navy);
             transition: transform 0.75s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Top folding triangular flap */
         .flap-top { 
             top: 0; left: 0; width: 100%; height: 50%; 
             clip-path: polygon(0 0, 100% 0, 50% 100%); 
@@ -102,7 +98,6 @@
             border-bottom: 0.5px solid rgba(255,255,255,0.08);
         }
         
-        /* Side and bottom flaps stay at z-index 11-13, trapping the card inside the pocket */
         .flap-right { top: 0; right: 0; width: 50%; height: 100%; clip-path: polygon(100% 0, 100% 100%, 0 50%); z-index: 13; box-shadow: inset -35px 0 50px rgba(0,0,0,0.95); }
         .flap-bottom { bottom: 0; left: 0; width: 100%; height: 50%; clip-path: polygon(50% 0, 100% 100%, 0 100%); z-index: 12; box-shadow: inset 0 35px 50px rgba(0,0,0,0.95); }
         .flap-left { top: 0; left: 0; width: 50%; height: 100%; clip-path: polygon(0 0, 100% 50%, 0 100%); z-index: 11; box-shadow: inset 35px 0 50px rgba(0,0,0,0.95); }
@@ -128,36 +123,34 @@
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
         }
 
-        /* ─── PHYSICAL ANIMATION SEQUENCE ─── */
-        /* Step 1: Upper panel opens vertically */
+        /* ─── TRANSITION ACTIONS ─── */
         .unfold .flap-top { transform: rotateX(150deg); }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
 
-        /* Step 2: Card emerges out from inside the lower pockets */
+        /* Card extracts smoothly above the lower pockets */
         .unfold .envelope-card-preview {
             transform: translateY(-58%) scale(1);
             opacity: 1;
-            transition-delay: 0.6s; /* Waits for upper flap to clear */
+            z-index: 15; /* Safely clears the flap layer order */
+            transition-delay: 0.6s;
         }
 
-        /* Step 3: Card zooms out to capture full viewport cleanly */
-        .zoom-fullscreen .envelope-card-preview {
+        /* FIXED: Absolute full frame positioning context completely isolates the card from container bounds */
+        .envelope-container.zoom-fullscreen .envelope-card-preview {
             position: fixed;
             inset: 0;
             width: 100vw;
             height: 100vh;
             max-width: none;
             aspect-ratio: auto;
-            transform: translateY(0) scale(1);
-            z-index: 2000; /* Overrides envelope frame layouts entirely */
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), inset 0.8s, width 0.8s, height 0.8s;
+            transform: translate(0, 0) scale(1);
+            z-index: 2000;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), inset 0.8s, width 0.8s, height 0.8s, opacity 0.6s ease;
         }
 
-        /* Step 4: Card softly dissolves into the scrollable content cards */
-        .dissolve-card .envelope-card-preview {
+        .envelope-container.dissolve-card .envelope-card-preview {
             opacity: 0;
-            transform: translateY(-20px) scale(1);
-            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+            transform: translateY(-30px) scale(1);
         }
 
         #landing-screen.hide { opacity: 0; visibility: hidden; }
@@ -340,7 +333,7 @@
         // Step 1: Open the upper flap vertically
         landing.classList.add('unfold');
         
-        // Step 2: Trigger the Fullscreen Zoom
+        // Step 2: Extract Card out to peek location
         setTimeout(() => {
             container.classList.add('zoom-fullscreen');
             
@@ -352,10 +345,10 @@
                     landing.classList.add('hide');
                     content.style.display = 'block';
                     document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                }, 600); // Wait for dissolve transition to complete
-            }, 1800); // 1.8s hold time
+                }, 600); 
+            }, 1800); 
             
-        }, 1500); // Time window for top flap opening and card peek animation to finish
+        }, 1500); 
     }
 
     // Google Form Data Handling Script
