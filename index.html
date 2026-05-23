@@ -60,7 +60,7 @@
             position: absolute;
             inset: 10px;
             background-color: var(--champagne);
-            z-index: 9; /* Stays securely BEHIND side and bottom flaps */
+            z-index: 9; /* Stays behind side and bottom flaps initially */
             padding: 40px 32px;
             display: flex;
             align-items: center;
@@ -69,10 +69,14 @@
             color: var(--paper-navy);
             box-shadow: 0 0 25px rgba(0,0,0,0.35);
             
-            /* Tucked completely inside the envelope on initialization */
             transform: translateY(35%) scale(0.94); 
             opacity: 0;
             transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+        }
+
+        /* FIXED: Elevate the card's depth layer order on open so it pulls out OVER the opened top flap */
+        .unfold .envelope-card-preview {
+            z-index: 25 !important;
         }
 
         .invite-text { 
@@ -125,11 +129,10 @@
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
         }
 
-        /* ─── TRANSITION TRIGGERS ─── */
+        /* ─── TRANSITION ACTIONS ─── */
         .unfold .flap-top { transform: rotateX(150deg); }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
 
-        /* Card pulls out elegantly from INSIDE the lower pocket flaps */
         .unfold .envelope-card-preview {
             transform: translateY(-58%) scale(1);
             opacity: 1;
@@ -144,14 +147,13 @@
             height: 100vh;
             background-color: var(--champagne);
             color: var(--paper-navy);
-            z-index: 3000; /* Completely overrides the envelope context box */
+            z-index: 3000; 
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 40px;
             
-            /* Hidden initially, scaled down slightly at screen center */
             opacity: 0;
             transform: scale(0.6); 
             pointer-events: none;
@@ -159,21 +161,11 @@
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease, visibility 0.6s;
         }
 
-        /* Smooth central zoom activation */
         #fullscreen-zoom-card.active {
             opacity: 1;
             transform: scale(1);
             visibility: visible;
         }
-
-        /* Soft dissolve fadeout into invitation timeline */
-        #fullscreen-zoom-card.dissolve {
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
-        }
-
-        #landing-screen.hide { opacity: 0; visibility: hidden; }
 
         /* ─── SCROLL PANELS ─── */
         #main-content { 
@@ -244,7 +236,7 @@
 </head>
 <body>
 
-<!-- Isolated Fullscreen Reading Overlay (Prevents structural right-side clipping glitch) -->
+<!-- Isolated Fullscreen Reading Overlay -->
 <div id="fullscreen-zoom-card">
     <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
 </div>
@@ -253,8 +245,8 @@
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Mechanical Pull-Out Slip (Tucked inside pocket panel context) -->
-            <div class="envelope-card-preview">
+            <!-- Mechanical Pull-Out Slip -->
+            <div class="envelope-card-preview" id="sliding-card">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
 
@@ -358,27 +350,30 @@
         // Stage 1: Upper panel creases open on click
         landing.classList.add('unfold');
         
-        // Stage 2: Let the nested preview card pull out cleanly from inside the pocket folds
+        // Stage 2: Let the nested preview card pull out over the flap smoothly
         setTimeout(() => {
-            // Instant seamless activation of isolated center-zoom context overlay
             zoomOverlay.classList.add('active');
             
             // Stage 3: Hold pristine fullscreen reading display for exactly 1.8 seconds
             setTimeout(() => {
-                zoomOverlay.classList.add('dissolve');
+                // FIXED: Dissolve BOTH landing screen envelope and zoom card down together so the envelope doesn't flash back into view
+                zoomOverlay.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+                zoomOverlay.style.opacity = "0";
+                zoomOverlay.style.transform = "translateY(-30px)";
                 
-                // Stage 4: Clean fadeout handover into timeline boards
+                landing.style.opacity = "0";
+                
                 setTimeout(() => {
                     landing.classList.add('hide');
                     content.style.display = 'block';
                     document.querySelectorAll('.card').forEach(card => observer.observe(card));
                 }, 600);
-            }, 1800); // Complete 1.8s hold time
+            }, 1800); // 1.8s hold time
             
-        }, 1400); // Pacing for top flap clearance and vertical pull-out travel time
+        }, 1500); // Flow time for top flap clearance and slide travel 
     }
 
-    // Google Forms API Endpoint Wireframe Loop
+    // Google Forms Pipeline
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
