@@ -33,84 +33,112 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        body,
-        html {
+        html,
+        body {
             height: 100%;
-            background-color: var(--deep-dark-navy);
             overflow: hidden;
+            background: var(--deep-dark-navy);
             font-family: 'Montserrat', sans-serif;
+        }
+
+        body.ready-scroll {
+            overflow: auto;
         }
 
         /* ───────────────── LANDING SCREEN ───────────────── */
 
         #landing-screen {
+
             position: fixed;
             inset: 0;
+
             z-index: 1000;
+
             display: flex;
-            justify-content: center;
             align-items: center;
-            background-color: #BDB095;
+            justify-content: center;
+
             padding: 24px;
+
+            background: #BDB095;
+
+            overflow: hidden;
         }
 
         .envelope-container {
+
             position: relative;
+
             width: 100%;
             max-width: 530px;
+
             aspect-ratio: 1.5;
-            perspective: 2500px;
+
+            perspective: 2400px;
+
             transform-style: preserve-3d;
-            filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.6));
+
+            filter:
+                drop-shadow(0 30px 60px rgba(0, 0, 0, 0.6));
         }
 
         .envelope-body {
+
             position: absolute;
             inset: 0;
+
             background: #030a12;
+
             transform-style: preserve-3d;
         }
 
         /* ───────────────── INTERNAL CARD ───────────────── */
 
         .envelope-card-preview {
+
             position: absolute;
+
             inset: 12px;
-            background-color: var(--champagne);
-            padding: 20px 30px;
+
+            background: var(--champagne);
 
             display: flex;
             align-items: center;
             justify-content: center;
+
             text-align: center;
+
+            padding: 20px 30px;
+
+            box-shadow:
+                0 0 25px rgba(0, 0, 0, 0.35);
 
             color: var(--paper-navy);
 
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
-
-            transform:
-                translateY(35%)
-                scale(0.94)
-                translateZ(1px);
+            z-index: 20;
 
             opacity: 0;
 
-            z-index: 20;
+            transform:
+                translateY(38%)
+                scale(0.94)
+                translateZ(1px);
 
             transition:
-                transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
-                opacity 0.4s ease;
+                transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.35s ease;
         }
 
-        /* Card emerges AFTER flap opens */
+        /* CARD REVEAL */
 
-        .unfold .envelope-card-preview {
+        .card-emerge {
+
+            opacity: 1;
+
             transform:
                 translateY(-56%)
                 scale(1)
                 translateZ(50px);
-
-            opacity: 1;
         }
 
         /* ───────────────── OVERLAY CARD ───────────────── */
@@ -119,34 +147,43 @@
 
             position: fixed;
 
-            background-color: var(--champagne);
-
-            color: var(--paper-navy);
-
-            z-index: 3000;
-
             display: flex;
             align-items: center;
             justify-content: center;
 
             text-align: center;
 
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            background: var(--champagne);
+
+            color: var(--paper-navy);
+
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.4);
+
+            z-index: 3000;
 
             opacity: 0;
 
             pointer-events: none;
 
+            will-change:
+                transform,
+                opacity,
+                top,
+                left,
+                width,
+                height;
+
             transition:
-                top 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                left 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                height 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                padding 0.7s ease,
-                opacity 0.15s ease-in-out;
+                top 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+                left 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+                width 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+                height 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.72s ease,
+                opacity 0.2s ease;
         }
 
-        #zoom-card-overlay.fullscreen-active {
+        #zoom-card-overlay.fullscreen {
 
             opacity: 1;
 
@@ -161,35 +198,39 @@
 
         .invite-text {
 
-            font-family: 'Tangerine', cursive !important;
+            font-family: var(--font-amoresa);
 
-            font-size: clamp(1.8rem, 4.8vw, 2.5rem) !important;
+            font-size: clamp(1.8rem, 4.8vw, 2.5rem);
 
-            line-height: 1.3 !important;
+            line-height: 1.3;
 
-            font-weight: 700 !important;
+            font-weight: 700;
+
+            color: var(--paper-navy);
 
             max-width: 90%;
-
-            margin: 0 auto;
-
-            color: var(--paper-navy) !important;
         }
 
-        #zoom-card-overlay.fullscreen-active .invite-text {
+        #zoom-card-overlay.fullscreen .invite-text {
 
-            font-size: clamp(2.4rem, 6vw, 3.8rem) !important;
+            font-size:
+                clamp(2.4rem, 6vw, 3.8rem);
 
             max-width: 80%;
         }
 
-        /* ───────────────── ENVELOPE FLAPS ───────────────── */
+        /* ───────────────── FLAPS ───────────────── */
 
         .flap {
+
             position: absolute;
-            background-color: var(--paper-navy);
+
+            background: var(--paper-navy);
+
+            backface-visibility: hidden;
+
             transition:
-                transform 0.55s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
                 opacity 0.2s ease;
         }
 
@@ -201,61 +242,92 @@
             width: 100%;
             height: 50%;
 
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            clip-path:
+                polygon(0 0, 100% 0, 50% 100%);
 
             transform-origin: top center;
 
             z-index: 14;
+
+            transform:
+                rotateX(0deg)
+                translateZ(0px);
 
             box-shadow:
                 inset 0 -35px 50px rgba(0, 0, 0, 0.95);
 
             border-bottom:
                 0.5px solid rgba(255, 255, 255, 0.08);
-
-            transform: rotateX(0deg) translateZ(0px);
         }
 
         .flap-right {
+
             top: 0;
             right: 0;
+
             width: 50%;
             height: 100%;
-            clip-path: polygon(100% 0, 100% 100%, 0 50%);
+
+            clip-path:
+                polygon(100% 0, 100% 100%, 0 50%);
+
             z-index: 13;
-            box-shadow: inset -35px 0 50px rgba(0, 0, 0, 0.95);
+
+            box-shadow:
+                inset -35px 0 50px rgba(0, 0, 0, 0.95);
         }
 
         .flap-bottom {
+
             bottom: 0;
             left: 0;
+
             width: 100%;
             height: 50%;
-            clip-path: polygon(50% 0, 100% 100%, 0 100%);
+
+            clip-path:
+                polygon(50% 0, 100% 100%, 0 100%);
+
             z-index: 12;
-            box-shadow: inset 0 35px 50px rgba(0, 0, 0, 0.95);
+
+            box-shadow:
+                inset 0 35px 50px rgba(0, 0, 0, 0.95);
         }
 
         .flap-left {
+
             top: 0;
             left: 0;
+
             width: 50%;
             height: 100%;
-            clip-path: polygon(0 0, 100% 50%, 0 100%);
+
+            clip-path:
+                polygon(0 0, 100% 50%, 0 100%);
+
             z-index: 11;
-            box-shadow: inset 35px 0 50px rgba(0, 0, 0, 0.95);
+
+            box-shadow:
+                inset 35px 0 50px rgba(0, 0, 0, 0.95);
         }
 
-        /* FIXED */
+        /* FLAP OPEN */
 
-        .unfold .flap-top {
-            transform: rotateX(180deg) translateZ(-8px);
+        .open-flap .flap-top {
+
+            transform:
+                rotateX(180deg)
+                translateZ(-8px);
+
             opacity: 0;
         }
 
-        .unfold .wax-seal-container {
+        .open-flap .wax-seal-container {
+
             opacity: 0;
+
             pointer-events: none;
+
             animation: none;
         }
 
@@ -274,8 +346,6 @@
 
             z-index: 25;
 
-            cursor: pointer;
-
             width: clamp(120px, 28vw, 160px);
 
             aspect-ratio: 1;
@@ -284,7 +354,10 @@
             align-items: center;
             justify-content: center;
 
-            animation: seal-pulse 2s infinite ease-in-out;
+            cursor: pointer;
+
+            animation:
+                seal-pulse 2s infinite ease-in-out;
         }
 
         .wax-seal-img {
@@ -322,15 +395,13 @@
             }
         }
 
-        /* ───────────────── CONTENT CARDS ───────────────── */
+        /* ───────────────── CONTENT ───────────────── */
 
         #main-content {
 
-            display: block;
-
             height: 100vh;
 
-            overflow-y: scroll;
+            overflow-y: auto;
 
             scroll-snap-type: y mandatory;
         }
@@ -355,101 +426,218 @@
 
             opacity: 0;
 
-            transform: translateY(20px);
+            transform: translateY(24px);
 
             transition:
-                opacity 0.6s ease,
-                transform 0.6s ease;
+                opacity 0.7s ease,
+                transform 0.7s ease;
         }
 
         .card.is-visible {
+
             opacity: 1;
+
             transform: translateY(0);
         }
 
         .card-1 {
-            background-color: var(--champagne);
+            background: var(--champagne);
         }
 
         .card-2 {
-            background-color: var(--deep-dark-navy);
+            background: var(--deep-dark-navy);
             color: white;
             text-align: center;
         }
 
         .card-3 {
-            background-color: var(--champagne);
+            background: var(--champagne);
             color: var(--paper-navy);
             text-align: center;
         }
 
         .card-4 {
-            background-color: var(--deep-dark-navy);
+            background: var(--deep-dark-navy);
             color: white;
             text-align: center;
         }
 
         .card-1 .title {
+
             font-family: var(--font-woodland);
+
             font-size: clamp(2.3rem, 7vw, 4.8rem);
+
             line-height: 1.1;
         }
 
         .card-1 .quote {
+
             font-family: var(--font-amoresa);
+
             font-size: clamp(2rem, 5vw, 3rem);
+
             margin-top: 15px;
         }
 
         .cake-img {
+
             position: absolute;
+
             bottom: 2%;
             right: -5%;
+
             width: clamp(240px, 55vw, 480px);
+
             opacity: 0.8;
         }
 
         .card-2 .title,
         .card-4 .rsvp-title {
+
             font-family: var(--font-amoresa);
+
             font-size: clamp(3.2rem, 9vw, 6.5rem);
         }
 
         .card-2 .names {
+
             font-family: var(--font-amoresa);
+
             font-size: clamp(2.3rem, 7vw, 4.5rem);
+
             color: var(--gold);
+
             margin: 8px 0;
         }
 
         .card-2 .body-text {
+
             font-family: var(--font-woodland);
+
             font-size: clamp(0.8rem, 2.8vw, 0.95rem);
+
             line-height: 1.6;
         }
 
         .card-3 .sub-title {
+
             font-family: var(--font-amoresa);
+
             font-size: clamp(2.8rem, 6.5vw, 4.2rem);
+
             color: var(--gold);
         }
 
         .card-3 .detail-text {
+
             font-family: var(--font-woodland);
+
             font-size: clamp(0.95rem, 3.5vw, 1.3rem);
+
             margin-bottom: 15px;
+
             line-height: 1.5;
         }
 
         .map-btn {
+
             display: inline-block;
+
             background: var(--paper-navy);
+
             color: white;
+
             padding: 14px 28px;
+
             text-decoration: none;
+
             font-family: var(--font-woodland);
+
             font-size: 0.8rem;
+
             letter-spacing: 2px;
+        }
+
+        /* RSVP */
+
+        .rsvp-subtitle {
+
+            font-family: var(--font-woodland);
+
+            font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+
+            margin-bottom: 25px;
+
+            display: block;
+        }
+
+        .counter-container {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            border: 1px solid rgba(255, 255, 255, 0.2);
+
+            margin: 15px auto;
+
+            max-width: 280px;
+        }
+
+        .counter-btn {
+
+            width: 50px;
+            height: 50px;
+
+            font-size: 1.8rem;
+
+            color: var(--gold);
+
+            background: none;
+
+            border: none;
+
+            cursor: pointer;
+        }
+
+        .guest-num {
+
+            font-family: var(--font-woodland);
+
+            font-size: 1.8rem;
+        }
+
+        .submit-btn {
+
+            background: var(--gold);
+
+            color: var(--deep-dark-navy);
+
+            padding: 18px;
+
+            width: 100%;
+            max-width: 280px;
+
+            font-weight: bold;
+
+            border: none;
+
+            font-family: var(--font-woodland);
+
+            cursor: pointer;
+        }
+
+        .footer-name {
+
+            font-family: var(--font-amoresa);
+
+            font-size: clamp(2.3rem, 7.5vw, 3.8rem);
+
+            color: var(--gold);
+
+            margin-top: 5px;
         }
 
         @media (max-width: 600px) {
@@ -478,7 +666,7 @@
 
 <body>
 
-    <!-- OVERLAY CARD -->
+    <!-- OVERLAY -->
 
     <div id="zoom-card-overlay">
 
@@ -494,7 +682,7 @@
 
         <div class="envelope-container">
 
-            <div class="envelope-body">
+            <div class="envelope-body" id="envelope-body">
 
                 <div class="envelope-card-preview" id="internal-card">
 
@@ -509,7 +697,7 @@
                 <div class="flap flap-right"></div>
                 <div class="flap flap-top"></div>
 
-                <div class="wax-seal-container" onclick="handleOpen()">
+                <div class="wax-seal-container" id="seal-btn">
 
                     <img src="01.png" class="wax-seal-img" alt="Wax Seal">
 
@@ -609,9 +797,82 @@
 
         </section>
 
+        <section class="card card-4">
+
+            <h1 class="rsvp-title"
+                style="color:var(--gold);font-family:var(--font-woodland);">
+                RSVP SOON!
+            </h1>
+
+            <span class="rsvp-subtitle" id="rsvp-status-msg">
+                We can’t wait to celebrate with you!
+            </span>
+
+            <form id="google-rsvp-form"
+                style="margin:0 auto;width:100%;max-width:280px;text-align:left;">
+
+                <label style="font-size:0.7rem;letter-spacing:1px;font-family:var(--font-woodland);">
+                    FULL NAME
+                </label>
+
+                <input type="text"
+                    id="guest-name-input"
+                    style="width:100%;padding:12px;background:none;border:1px solid rgba(255,255,255,0.2);color:white;margin-bottom:15px;"
+                    required>
+
+                <label style="font-size:0.7rem;letter-spacing:1px;font-family:var(--font-woodland);">
+                    NUMBER OF GUESTS
+                </label>
+
+                <div class="counter-container">
+
+                    <button type="button"
+                        class="counter-btn"
+                        onclick="updateGuests(-1)">-</button>
+
+                    <div class="guest-num" id="guestCountDisplay">1</div>
+
+                    <button type="button"
+                        class="counter-btn"
+                        onclick="updateGuests(1)">+</button>
+
+                </div>
+
+                <button type="submit"
+                    class="submit-btn"
+                    id="submit-btn-text">
+                    SEND RSVP
+                </button>
+
+            </form>
+
+            <div style="margin-top:25px;">
+
+                <p style="font-family:var(--font-woodland);font-size:0.7rem;opacity:0.7;">
+                    WITH BEST COMPLIMENTS FROM
+                </p>
+
+                <p class="footer-name">Shimon Mathew Thomas</p>
+
+            </div>
+
+        </section>
+
     </main>
 
     <script>
+
+        let currentGuests = 1;
+
+        function updateGuests(val) {
+
+            currentGuests += val;
+
+            if (currentGuests < 1) currentGuests = 1;
+            if (currentGuests > 20) currentGuests = 20;
+
+            document.getElementById('guestCountDisplay').innerText = currentGuests;
+        }
 
         const observer = new IntersectionObserver((entries) => {
 
@@ -625,83 +886,130 @@
 
         }, { threshold: 0.15 });
 
-        function handleOpen() {
+        const envelope =
+            document.getElementById('envelope-body');
 
-            const landing = document.getElementById('landing-screen');
-            const internalCard = document.getElementById('internal-card');
-            const zoomOverlay = document.getElementById('zoom-card-overlay');
-            const content = document.getElementById('main-content');
+        const internalCard =
+            document.getElementById('internal-card');
 
-            /* STEP 1 — OPEN FLAP */
+        const overlay =
+            document.getElementById('zoom-card-overlay');
 
-            landing.classList.add('unfold');
+        const landing =
+            document.getElementById('landing-screen');
+
+        const sealBtn =
+            document.getElementById('seal-btn');
+
+        sealBtn.addEventListener('click', () => {
+
+            /* STEP 1 — OPEN FLAP ONLY */
+
+            envelope.classList.add('open-flap');
 
             /* STEP 2 — WAIT FOR FLAP */
 
             setTimeout(() => {
 
-                internalCard.style.opacity = '1';
+                internalCard.classList.add('card-emerge');
 
-            }, 180);
+            }, 520);
 
-            /* STEP 3 — WAIT FOR CARD TO EMERGE */
+        }, { once: true });
+
+        /* STEP 3 — WAIT FOR CARD EMERGENCE TO FINISH */
+
+        internalCard.addEventListener('transitionend', (e) => {
+
+            if (!e.propertyName.includes('transform')) return;
+
+            const bounds =
+                internalCard.getBoundingClientRect();
+
+            overlay.style.top =
+                bounds.top + 'px';
+
+            overlay.style.left =
+                bounds.left + 'px';
+
+            overlay.style.width =
+                bounds.width + 'px';
+
+            overlay.style.height =
+                bounds.height + 'px';
+
+            overlay.offsetHeight;
+
+            requestAnimationFrame(() => {
+
+                internalCard.style.opacity = '0';
+
+                overlay.classList.add('fullscreen');
+
+            });
+
+            /* STEP 4 — HOLD FULLSCREEN */
 
             setTimeout(() => {
 
-                const bounds = internalCard.getBoundingClientRect();
+                document.querySelectorAll('.card')
+                    .forEach(card => observer.observe(card));
 
-                zoomOverlay.style.top = bounds.top + 'px';
-                zoomOverlay.style.left = bounds.left + 'px';
-                zoomOverlay.style.width = bounds.width + 'px';
-                zoomOverlay.style.height = bounds.height + 'px';
+                /* REMOVE ENVELOPE BEFORE FADE */
 
-                zoomOverlay.offsetHeight;
+                landing.style.opacity = '0';
 
-                /* PREVENT FLASH */
+                overlay.style.transition =
+                    "opacity 0.45s ease, transform 0.45s ease";
 
-                internalCard.style.visibility = 'hidden';
+                overlay.style.opacity = '0';
 
-                zoomOverlay.classList.add('fullscreen-active');
-
-                /* STEP 4 — FULLSCREEN HOLD */
+                overlay.style.transform =
+                    'scale(0.985)';
 
                 setTimeout(() => {
 
-                    content.style.position = "fixed";
-                    content.style.inset = "0";
-                    content.style.zIndex = "1";
-                    content.style.opacity = "1";
+                    landing.remove();
 
-                    document.querySelectorAll('.card').forEach(card => {
-                        observer.observe(card);
-                    });
+                    overlay.remove();
 
-                    /* REMOVE ENVELOPE BEFORE FADE */
+                    document.body.classList.add('ready-scroll');
 
-                    landing.style.display = "none";
+                }, 450);
 
-                    zoomOverlay.style.transition =
-                        "opacity 0.45s ease, transform 0.45s ease";
+            }, 2500);
 
-                    zoomOverlay.style.opacity = "0";
-                    zoomOverlay.style.transform = "scale(0.985)";
+        }, { once: true });
 
-                    setTimeout(() => {
+        /* RSVP */
 
-                        zoomOverlay.style.display = 'none';
+        document.getElementById('google-rsvp-form')
+            .addEventListener('submit', function (e) {
 
-                        document.body.style.overflow = "auto";
-                        document.documentElement.style.overflow = "auto";
+                e.preventDefault();
 
-                        content.style.position = "relative";
+                const submitBtn =
+                    document.getElementById('submit-btn-text');
 
-                    }, 450);
+                const statusMsg =
+                    document.getElementById('rsvp-status-msg');
 
-                }, 2500);
+                submitBtn.disabled = true;
 
-            }, 850);
+                submitBtn.innerText = "SENDING...";
 
-        }
+                setTimeout(() => {
+
+                    submitBtn.innerText = "THANK YOU!";
+
+                    statusMsg.innerText =
+                        "Your RSVP has been beautifully recorded.";
+
+                    statusMsg.style.color = "var(--gold)";
+
+                }, 1200);
+
+            });
 
     </script>
 
