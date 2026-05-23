@@ -48,19 +48,12 @@
             perspective: 2500px;
             filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
             z-index: 10;
-            transition: transform 0.7s ease-in-out;
         }
 
         .envelope-body {
             position: absolute;
             inset: 0;
             background: #030a12;
-        }
-        
-        /* Allow card to break boundaries cleanly when scaling up */
-        .unfold-zoom .envelope-container,
-        .unfold-zoom .envelope-body {
-            overflow: visible !important;
         }
 
         /* ─── PHYSICAL INTERNAL POCKET CARD ─── */
@@ -76,55 +69,55 @@
             color: var(--paper-navy);
             box-shadow: 0 0 25px rgba(0,0,0,0.35);
             
-            /* Hidden inside lower envelope bounds initially */
+            /* Tucked inside lower envelope bounds initially */
             transform: translateY(35%) scale(0.94);
             opacity: 0;
             z-index: 9;
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
-        /* Card slides out of the envelope pocket */
+        /* Card slides out completely clear of envelope pocket bounds */
         .unfold .envelope-card-preview {
             transform: translateY(-56%) scale(1);
             opacity: 1;
-            z-index: 25; /* Higher than all flaps */
+            z-index: 15; /* Safely above the left/right/bottom panels */
         }
 
-        /* Pure CSS Zoom Mode: Eliminates dynamic JavaScript sizing calculations entirely */
-        .unfold-zoom .envelope-card-preview {
-            z-index: 9999 !important;
-            position: fixed !important;
-            inset: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            transform: translate(0, 0) scale(1) !important;
-            margin: 0 !important;
-            padding: 40px 10vw !important;
-            max-width: none !important;
-            max-height: none !important;
-            transition: inset 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-                        width 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-                        height 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-                        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-                        padding 0.7s ease-in-out;
+        /* ─── HARDWARE-ACCELERATED STATIC FULLSCREEN OVERLAY ─── */
+        #zoom-card-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--champagne);
+            color: var(--paper-navy);
+            z-index: 3000; /* Completely outside envelope DOM stacking context */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 10vw;
+            
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Pure opacity crossfade: completely bypasses mobile typography reflow bugs */
+        #zoom-card-overlay.fullscreen-active {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         /* HARD-LOCKED TYPOGRAPHY SYSTEM */
         .invite-text { 
             font-family: 'Tangerine', cursive !important; 
-            font-size: clamp(1.8rem, 4.8vw, 2.5rem) !important; 
+            font-size: clamp(2rem, 5.5vw, 3.4rem) !important; 
             line-height: 1.3 !important; 
             font-weight: 700 !important;
-            max-width: 90%;
+            max-width: 85%;
             margin: 0 auto;
             color: var(--paper-navy) !important;
-            transition: font-size 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* Text scales smoothly to matches card container limits */
-        .unfold-zoom .invite-text {
-            font-size: clamp(2.4rem, 6vw, 3.8rem) !important; 
-            max-width: 80%;
         }
 
         /* ─── ENVELOPE PANEL GEOMETRY ─── */
@@ -176,7 +169,7 @@
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        .unfold .flap-top { transform: rotateX(150deg); z-index: 5; } /* Retracts behind everything else once opened */
+        .unfold .flap-top { transform: rotateX(150deg); z-index: 5; } /* Flaps tuck completely away out of the card line-of-sight */
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
         #landing-screen.hide { display: none; }
@@ -244,18 +237,22 @@
             .card { padding: 25px 5vw; }
             .cake-img { width: 75%; bottom: 0; right: -5%; opacity: 0.35; } 
             .details-flex { display: flex; flex-direction: column; gap: 25px; }
-            .invite-text { max-width: 90%; font-size: clamp(1.6rem, 5vw, 2.2rem) !important; }
-            .unfold-zoom .invite-text { font-size: clamp(2.1rem, 5.8vw, 3.2rem) !important; }
+            .invite-text { max-width: 90%; font-size: clamp(1.8rem, 5vw, 2.4rem) !important; }
         }
     </style>
 </head>
 <body>
 
+<!-- Independent Fullscreen Overlay View -->
+<div id="zoom-card-overlay">
+    <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
+</div>
+
 <section id="landing-screen">
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Unified Single Card Frame Base -->
+            <!-- Inner Card Preview Anchor -->
             <div class="envelope-card-preview" id="internal-card">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
@@ -354,35 +351,44 @@
 
     function handleOpen() {
         const landing = document.getElementById('landing-screen');
+        const internalCard = document.getElementById('internal-card');
+        const zoomOverlay = document.getElementById('zoom-card-overlay');
         const content = document.getElementById('main-content');
         
-        // 1. Slit envelope open and emerge card smoothly
+        // 1. Pop flap and extraction slide animation start
         landing.classList.add('unfold');
         
-        // 2. Scale the card cleanly to full screen using pure CSS layout styles
+        // 2. Crossfade handoff occurs right at peak height
         setTimeout(() => {
-            landing.classList.add('unfold-zoom');
+            // Activate overlay smoothly over the base card
+            zoomOverlay.classList.add('fullscreen-active');
             
-            // 3. Keep fullscreen layout active for exactly 2.5 seconds
+            // Hide initial base card preview context completely behind it
+            internalCard.style.opacity = '0';
+            
+            // 3. Keep presentation frame static for exactly 2.5 seconds
             setTimeout(() => {
-                landing.style.transition = "opacity 0.6s ease-in-out";
+                zoomOverlay.style.transition = "opacity 0.5s ease-in-out";
+                landing.style.transition = "opacity 0.5s ease-in-out";
+                
+                zoomOverlay.style.opacity = "0";
                 landing.style.opacity = "0";
                 
                 content.style.display = 'block';
                 
                 setTimeout(() => {
+                    zoomOverlay.style.display = 'none';
                     landing.classList.add('hide');
                     
-                    // Release standard window scrolling mechanisms
                     document.body.style.overflow = "auto";
                     document.documentElement.style.overflow = "auto";
                     
                     document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                }, 600); 
+                }, 500); 
                 
             }, 2500);
             
-        }, 800); // Wait time for slide-up completion
+        }, 800); // 800ms match transition durations completely
     }
 
     // Google Forms Pipeline Handler
