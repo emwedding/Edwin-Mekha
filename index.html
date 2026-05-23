@@ -37,7 +37,7 @@
             align-items: center;
             background-color: #BDB095;
             padding: 24px;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.4s ease-in-out; /* Match overlay fade timing */
         }
 
         .envelope-container {
@@ -72,7 +72,7 @@
             /* Tucked inside lower envelope bounds initially */
             transform: translateY(35%) scale(0.94);
             opacity: 0;
-            z-index: 20; /* RECTIFIED: Elevated above flat panels to slide over them */
+            z-index: 20; 
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
@@ -148,7 +148,6 @@
             z-index: 14; 
             box-shadow: inset 0 -35px 50px rgba(0,0,0,0.95);
             border-bottom: 0.5px solid rgba(255,255,255,0.08);
-            /* RECTIFIED: Tracks z-index update instantly via step-end at the close of transform */
             transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.1s step-end;
         }
         
@@ -159,15 +158,17 @@
         /* Fold open top panel logic */
         .unfold .flap-top { 
             transform: rotateX(150deg); 
-            z-index: 5; /* RECTIFIED: Instantly slips backward behind the rising card context */
+            z-index: 5; 
         }
+        
+        .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
         /* PULSING WAX SEAL */
         .wax-seal-container {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 25; /* Elevated above top flap threshold boundary */
+            z-index: 25; 
             cursor: pointer;
             width: clamp(120px, 28vw, 160px);
             aspect-ratio: 1;
@@ -190,8 +191,6 @@
             50% { transform: translate(-50%, -50%) scale(1.05); }
             100% { transform: translate(-50%, -50%) scale(1); }
         }
-
-        .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
         #landing-screen.hide { display: none; }
 
@@ -252,7 +251,7 @@
         .guest-num { font-family: var(--font-woodland); font-size: 1.8rem; }
         .submit-btn { background: var(--gold); color: var(--deep-dark-navy); padding: 18px; width: 100%; max-width: 280px; font-weight: bold; border: none; font-family: var(--font-woodland); cursor: pointer; }
 
-        .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7.5vw, 3.8rem); color: var(--gold); margin-top: 5px; }
+        .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7.5vw, 3.8rem); color: var(--gold); margin-top: 5px 0 0 0; }
 
         @media (max-width: 600px) {
             .card { padding: 25px 5vw; }
@@ -398,9 +397,9 @@
             // Step 4: Keep full-screen presentation completely locked for exactly 2.5 seconds
             setTimeout(() => {
                 
-                // Simultaneous Crossfade: Fade everything out gracefully at once
-                zoomOverlay.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
-                landing.style.transition = "opacity 0.5s ease-in-out";
+                // RECTIFIED: Exact timing match (0.4s) prevents the envelope background from popping out early
+                zoomOverlay.style.transition = "opacity 0.4s ease-in-out, transform 0.4s ease-in-out";
+                landing.style.transition = "opacity 0.4s ease-in-out";
                 
                 zoomOverlay.style.opacity = "0";
                 zoomOverlay.style.transform = "scale(0.96)";
@@ -419,7 +418,7 @@
                     
                     // Activate timeline scroll visibility observers
                     document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                }, 500); 
+                }, 400); // Clean transition handoff alignment window
                 
             }, 2500); // 2.5 Second Hold
             
