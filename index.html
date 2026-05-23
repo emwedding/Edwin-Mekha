@@ -27,7 +27,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── REALISTIC PROPORTIONAL ENVELOPE SURROUND ─── */
+        /* ─── TRADITIONAL ENVELOPE SURROUND ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -37,67 +37,55 @@
             align-items: center;
             background-color: #BDB095;
             padding: 20px;
-            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.4s;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s;
         }
 
-        /* Enforces a realistic envelope aspect ratio on desktop and mobile */
         .envelope-container {
             position: relative;
             width: 100%;
-            max-width: 550px;
-            aspect-ratio: 1.618;
-            perspective: 1500px;
-            filter: drop-shadow(0 30px 50px rgba(0,0,0,0.6));
+            max-width: 500px;
+            aspect-ratio: 1.4;
+            perspective: 2000px;
         }
 
+        /* The back pocket of the envelope */
         .envelope-body {
             position: absolute;
             inset: 0;
-            background: var(--paper-navy);
-            overflow: visible;
+            background: #030a12;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.65);
         }
 
-        .flap {
+        /* Fixed structural lower pocket panels (Left, Right, Bottom cuts) */
+        .envelope-pocket {
             position: absolute;
-            background-color: var(--paper-navy);
-            transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
-            z-index: 10;
+            inset: 0;
+            background: var(--paper-navy);
+            clip-path: polygon(0% 40%, 50% 70%, 100% 40%, 100% 100%, 0% 100%);
+            z-index: 12;
+            box-shadow: inset 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        /* Highly defined edge shadow lines */
-        .flap-top { 
-            top: 0; left: 0; width: 100%; height: 50%; 
-            clip-path: polygon(0 0, 100% 0, 50% 100%); 
-            transform-origin: top; 
-            z-index: 14; 
-            box-shadow: inset 0 -35px 50px rgba(0,0,0,0.95);
-            border-bottom: 0.5px solid rgba(255,255,255,0.08);
-        }
-        .flap-right { 
-            top: 0; right: 0; width: 50%; height: 100%; 
-            clip-path: polygon(100% 0, 100% 100%, 0 50%); 
-            transform-origin: right; 
-            z-index: 13; 
-            box-shadow: inset -35px 0 50px rgba(0,0,0,0.95);
-        }
-        .flap-bottom { 
-            bottom: 0; left: 0; width: 100%; height: 50%; 
-            clip-path: polygon(50% 0, 100% 100%, 0 100%); 
-            transform-origin: bottom; 
-            z-index: 12; 
-            box-shadow: inset 0 35px 50px rgba(0,0,0,0.95);
-        }
-        .flap-left { 
-            top: 0; left: 0; width: 50%; height: 100%; 
-            clip-path: polygon(0 0, 100% 50%, 0 100%); 
-            transform-origin: left; 
-            z-index: 11; 
-            box-shadow: inset 35px 0 50px rgba(0,0,0,0.95);
+        /* ─── TRADITIONAL UPPER FLAP (Swings up on X-axis) ─── */
+        .flap-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-color: var(--paper-navy);
+            clip-path: polygon(0 0, 100 0, 50% 100%);
+            transform-origin: top center;
+            z-index: 14;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border-bottom: 0.5px solid rgba(255,255,255,0.05);
         }
 
         .wax-seal-container {
             position: absolute;
-            top: 50%; left: 50%;
+            top: 100%;
+            left: 50%;
             transform: translate(-50%, -50%);
             z-index: 20;
             cursor: pointer;
@@ -105,20 +93,55 @@
         }
 
         .wax-seal-img {
-            width: clamp(140px, 35vw, 200px);
-            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9));
+            width: clamp(130px, 32vw, 175px);
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
         }
 
-        /* Fast Spiral Sequence Triggers */
-        .unfold .flap-top { transform: rotateX(130deg); transition-delay: 0s; }
-        .unfold .flap-right { transform: rotateY(130deg); transition-delay: 0.08s; }
-        .unfold .flap-bottom { transform: rotateX(-130deg); transition-delay: 0.16s; }
-        .unfold .flap-left { transform: rotateY(-130deg); transition-delay: 0.24s; }
-        .unfold .wax-seal-container { opacity: 0; transform: translate(-50%, -50%) scale(0.7); pointer-events: none; }
-        
+        /* ─── INVITATION CARD INTERIOR (Slid between back and pocket) ─── */
+        .envelope-card-preview {
+            position: absolute;
+            inset: 10px;
+            bottom: 20px;
+            background-color: var(--champagne);
+            z-index: 10;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: var(--paper-navy);
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.25);
+            transform: translateY(0) scale(0.96);
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+        }
+
+        .envelope-card-preview .title { font-family: var(--font-woodland); font-size: clamp(1.4rem, 4.5vw, 2.3rem); line-height: 1.2; }
+        .envelope-card-preview .quote { font-family: var(--font-amoresa); font-size: clamp(1.8rem, 4vw, 2.2rem); margin-top: 10px; }
+
+        /* ─── CHOREOGRAPHED OPENING SEQUENCE ─── */
+        /* Step 1: Flip top triangle up 180 degrees */
+        .unfold .flap-top {
+            transform: rotateX(180deg);
+            z-index: 8; /* Drops behind the body when opened out */
+        }
+        .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
+
+        /* Step 2: Slide up out of the lower pocket */
+        .unfold .envelope-card-preview {
+            transform: translateY(-60%) scale(0.98);
+            z-index: 15; /* Ascends above lower front pocket graphics */
+            transition-delay: 0.5s;
+        }
+
+        /* Step 3: Zoom full frame across view */
+        .zoom-fullscreen .envelope-card-preview {
+            transform: translateY(0) scale(4);
+            opacity: 0;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out 0.4s;
+        }
+
         #landing-screen.hide { opacity: 0; visibility: hidden; }
 
-        /* ─── SCROLL REVEAL CONTENT CARDS ─── */
+        /* ─── MAIN CONTENT SCROLL PANELS ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
@@ -148,7 +171,7 @@
         .card-3 { background-color: var(--champagne); text-align: center; color: var(--paper-navy); }
         .card-4 { background-color: var(--deep-dark-navy); color: var(--white); text-align: center; }
 
-        /* HERO AREA RESPONSIVENESS */
+        /* TEXT SAFE CONTAINMENTS */
         .card-1 .title { font-family: var(--font-woodland); font-size: clamp(2.3rem, 7vw, 4.8rem); line-height: 1.1; color: var(--paper-navy); z-index: 2; }
         .card-1 .quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 15px; z-index: 2; }
         .cake-img { 
@@ -159,7 +182,6 @@
             z-index: 1; 
         }
 
-        /* TEXT CLAMPING (Eliminates mobile spillover) */
         .card-2 .title, .card-4 .rsvp-title { 
             font-family: var(--font-amoresa); 
             font-size: clamp(3.2rem, 9vw, 6.5rem); 
@@ -168,12 +190,10 @@
         .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7vw, 4.5rem); color: var(--gold); margin: 8px 0; }
         .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(0.8rem, 2.8vw, 0.95rem); line-height: 1.6; max-width: 90%; margin: 0 auto; }
 
-        /* LOCATION STYLING */
         .card-3 .sub-title { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 6.5vw, 4.2rem); color: var(--gold); }
         .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(0.95rem, 3.5vw, 1.3rem); margin-bottom: 15px; line-height: 1.5; }
         .map-btn { display: inline-block; background: var(--paper-navy); color: white; padding: 14px 28px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; }
 
-        /* RSVP INTERACTIVES */
         .rsvp-subtitle { font-family: var(--font-woodland); font-size: clamp(0.7rem, 2.5vw, 0.9rem); margin-bottom: 25px; display: block; }
         .counter-container { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.2); margin: 15px auto; max-width: 280px; }
         .counter-btn { width: 50px; height: 50px; font-size: 1.8rem; color: var(--gold); background: none; border: none; cursor: pointer; }
@@ -192,16 +212,25 @@
 <body>
 
 <section id="landing-screen">
-    <div class="envelope-container">
-        <div class="envelope-body" id="envelope">
-            <div class="flap flap-top"></div>
-            <div class="flap flap-right"></div>
-            <div class="flap flap-bottom"></div>
-            <div class="flap flap-left"></div>
+    <div class="envelope-container" id="envelope-viewport">
+        <div class="envelope-body">
             
-            <div class="wax-seal-container" onclick="handleOpen()">
-                <img src="01.png" class="wax-seal-img" alt="Wax Seal">
+            <!-- Traditional Upper Hinge Flap Leaf -->
+            <div class="flap-top" id="main-flap">
+                <div class="wax-seal-container" onclick="handleOpen()">
+                    <img src="01.png" class="wax-seal-img" alt="Wax Seal">
+                </div>
             </div>
+
+            <!-- Internal Champagne Invitation Slip -->
+            <div class="envelope-card-preview">
+                <h2 class="title">Mekha & Edwin</h2>
+                <p class="quote">Save Our Date</p>
+            </div>
+
+            <!-- Lower Structural Pocket Shield -->
+            <div class="envelope-pocket"></div>
+            
         </div>
     </div>
 </section>
@@ -275,7 +304,7 @@
         document.getElementById('guestCountDisplay').innerText = currentGuests;
     }
 
-    const observer = new IntersectionObserver((entries) => {
+    const rsvpObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('is-visible');
@@ -286,15 +315,27 @@
     }, { threshold: 0.15 });
 
     function handleOpen() {
-        document.getElementById('envelope').classList.add('unfold');
-        document.getElementById('main-content').style.display = 'block';
+        const topFlap = document.getElementById('main-flap');
+        const container = document.getElementById('envelope-viewport');
+        const landing = document.getElementById('landing-screen');
+        const mainContent = document.getElementById('main-content');
+        
+        // Execute Step 1 & 2: Structural open and extract sliding animation trigger
+        landing.classList.add('unfold');
+        
+        // Step 3: Trigger the clean viewport zoom handover sequence
         setTimeout(() => {
-            document.getElementById('landing-screen').classList.add('hide');
-            document.querySelectorAll('.card').forEach(card => observer.observe(card));
-        }, 500);
+            container.classList.add('zoom-fullscreen');
+            
+            setTimeout(() => {
+                landing.classList.add('hide');
+                mainContent.style.display = 'block';
+                document.querySelectorAll('.card').forEach(card => rsvpObserver.observe(card));
+            }, 600);
+        }, 1250); 
     }
 
-    // ─── BACKGROUND GOOGLE SHEETS HANDLER ───
+    // Background asynchronous data post execution script
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -304,7 +345,6 @@
         submitBtn.disabled = true;
         submitBtn.innerText = "SENDING...";
 
-        // NOTE: Swap these out with your live Form key identifiers when setup
         const formActionURL = "https://docs.google.com/forms/d/e/1FAIpQLSfXXXXXXXXXXXXX/formResponse"; 
         const nameEntryID = "entry.1111111111"; 
         const guestEntryID = "entry.2222222222"; 
