@@ -40,6 +40,7 @@
             transition: opacity 0.3s ease-in-out;
         }
 
+        /* FLAWLESS ENVELOPE BOUNDS */
         .envelope-container {
             position: relative;
             width: 100%;
@@ -48,7 +49,7 @@
             perspective: 2500px;
             filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
             z-index: 10;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.3, 1);
         }
 
         .envelope-body {
@@ -58,12 +59,12 @@
             transition: opacity 0.4s ease-in-out;
         }
 
-        /* ─── ONE UNIFIED INVITATION SLIP (NO CLONES) ─── */
+        /* ─── SINGLE UNIFIED MECHANICAL INVITATION CARD ─── */
         #invitation-card {
             position: absolute;
             inset: 12px;
             background-color: var(--champagne);
-            padding: 35px 25px;
+            padding: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -71,17 +72,17 @@
             color: var(--paper-navy);
             box-shadow: 0 0 25px rgba(0,0,0,0.35);
             
-            /* Tucked inside the envelope pocket layout initially */
+            /* Tucked perfectly inside the envelope base folder initially */
             transform: translateY(35%) scale(0.94);
             opacity: 0;
-            z-index: 25; /* Always floats safely on top of envelope layers */
+            z-index: 9; /* Securely inside pocket panels */
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
                         opacity 0.4s ease,
                         inset 0.6s cubic-bezier(0.25, 1, 0.3, 1),
                         padding 0.6s cubic-bezier(0.25, 1, 0.3, 1);
         }
 
-        /* HARD-LOCKED TYPOGRAPHY SYSTEM */
+        /* TYPOGRAPHY L0CKED TO TANGERINE SCRIPT */
         .invite-text { 
             font-family: 'Tangerine', cursive !important; 
             font-size: clamp(1.8rem, 4.8vw, 2.5rem) !important; 
@@ -90,21 +91,24 @@
             max-width: 90%;
             margin: 0 auto;
             color: var(--paper-navy) !important;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1);
+            transition: font-size 0.6s cubic-bezier(0.25, 1, 0.3, 1);
         }
 
-        /* ─── SEAMLESS HARDWARE-ACCELERATED TIMELINE STEPS ─── */
+        /* ─── SEQUENTIAL ANIMATION STEPS ─── */
         .unfold .flap-top { transform: rotateX(150deg); }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
-        /* Step 1: Card emerges perfectly over the opened flap layout */
+        /* Step 1: Card emerges perfectly upwards from behind the pocket layer */
         .unfold #invitation-card {
             transform: translateY(-56%) scale(1);
             opacity: 1;
+            z-index: 25; /* Floats safely over the opened top flap */
+            transition-delay: 0.35s;
         }
 
-        /* Step 2: Seamless Fullscreen Viewport Zoom (No duplicate element jump) */
+        /* Step 2: Fullscreen viewport zoom transition (Same physical element) */
         .zoom-active .envelope-container {
+            perspective: none;
             position: fixed;
             inset: 0;
             max-width: none;
@@ -122,7 +126,12 @@
             box-shadow: none;
         }
 
-        /* Smoothly dissolves envelope layers out entirely during the zoom step */
+        .zoom-active .invite-text {
+            font-size: clamp(2.2rem, 6vw, 3.5rem) !important;
+            max-width: 80%;
+        }
+
+        /* Cross-dissolves envelope panels to zero opacity during zoom to kill flash glitch */
         .zoom-active .flap,
         .zoom-active .envelope-body {
             opacity: 0;
@@ -252,7 +261,7 @@
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Single Continuous Invitation Slip Element -->
+            <!-- Single Continuous Invitation Card Element -->
             <div class="envelope-card-preview" id="invitation-card">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
@@ -351,24 +360,23 @@
 
     function handleOpen() {
         const landing = document.getElementById('landing-screen');
-        const viewport = document.getElementById('envelope-viewport');
         const content = document.getElementById('main-content');
         
         // Stage 1: Fold open top flap quickly
         landing.classList.add('unfold');
         
-        // Stage 2: Card emerges out of internal container pocket naturally
+        // Stage 2: Card runs its flawless emergence path out of pocket
         setTimeout(() => {
-            // Stage 3: Smoothly scale the exact same card into fullscreen view (Blocks any jumps)
+            // Stage 3: Smoothly scale the exact same card to fullscreen view (Blocks jumps/duplicate cards)
             landing.classList.add('zoom-active');
             
             // Stage 4: Hold completely locked for exactly 2.5 seconds (2500ms)
             setTimeout(() => {
-                // Snappy 300ms cross-dissolve removes both overlay steps together to block flashes
+                // Snappy 300ms cross-dissolve removes both layers together to lock out flashes
                 landing.style.transition = "opacity 0.3s ease-in-out";
                 landing.style.opacity = "0";
                 
-                // Mount the timeline panels underneath cleanly
+                // Activate the underlying content layout container
                 content.style.display = 'block';
                 
                 setTimeout(() => {
@@ -377,7 +385,7 @@
                 }, 300);
             }, 2500); 
             
-        }, 950); // Exact window track balance
+        }, 950); // Exact loop pace match for initial slide-out finish
     }
 
     // Google Form Handling Pipeline
