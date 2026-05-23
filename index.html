@@ -45,7 +45,7 @@
             overflow: auto;
         }
 
-        /* ───────────────── LANDING SCREEN ───────────────── */
+        /* ───────────────── LANDING ───────────────── */
 
         #landing-screen {
 
@@ -58,11 +58,13 @@
             align-items: center;
             justify-content: center;
 
-            padding: 24px;
-
             background: #BDB095;
 
+            padding: 24px;
+
             overflow: hidden;
+
+            transition: opacity 0.45s ease;
         }
 
         .envelope-container {
@@ -110,10 +112,10 @@
 
             padding: 20px 30px;
 
+            color: var(--paper-navy);
+
             box-shadow:
                 0 0 25px rgba(0, 0, 0, 0.35);
-
-            color: var(--paper-navy);
 
             z-index: 20;
 
@@ -126,10 +128,14 @@
 
             transition:
                 transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 0.35s ease;
+                opacity 0.4s ease;
+
+            will-change:
+                transform,
+                opacity;
         }
 
-        /* CARD REVEAL */
+        /* REVEAL CARD */
 
         .card-emerge {
 
@@ -311,7 +317,7 @@
                 inset 35px 0 50px rgba(0, 0, 0, 0.95);
         }
 
-        /* FLAP OPEN */
+        /* OPEN FLAP */
 
         .open-flap .flap-top {
 
@@ -699,7 +705,9 @@
 
                 <div class="wax-seal-container" id="seal-btn">
 
-                    <img src="01.png" class="wax-seal-img" alt="Wax Seal">
+                    <img src="01.png"
+                        class="wax-seal-img"
+                        alt="Wax Seal">
 
                 </div>
 
@@ -709,7 +717,7 @@
 
     </section>
 
-    <!-- MAIN CONTENT -->
+    <!-- CONTENT -->
 
     <main id="main-content">
 
@@ -731,7 +739,9 @@
                 17TH JULY 2026
             </p>
 
-            <img src="02.png" class="cake-img" alt="Wedding Cake">
+            <img src="02.png"
+                class="cake-img"
+                alt="Wedding Cake">
 
         </section>
 
@@ -804,7 +814,8 @@
                 RSVP SOON!
             </h1>
 
-            <span class="rsvp-subtitle" id="rsvp-status-msg">
+            <span class="rsvp-subtitle"
+                id="rsvp-status-msg">
                 We can’t wait to celebrate with you!
             </span>
 
@@ -830,7 +841,8 @@
                         class="counter-btn"
                         onclick="updateGuests(-1)">-</button>
 
-                    <div class="guest-num" id="guestCountDisplay">1</div>
+                    <div class="guest-num"
+                        id="guestCountDisplay">1</div>
 
                     <button type="button"
                         class="counter-btn"
@@ -852,7 +864,9 @@
                     WITH BEST COMPLIMENTS FROM
                 </p>
 
-                <p class="footer-name">Shimon Mathew Thomas</p>
+                <p class="footer-name">
+                    Shimon Mathew Thomas
+                </p>
 
             </div>
 
@@ -871,7 +885,8 @@
             if (currentGuests < 1) currentGuests = 1;
             if (currentGuests > 20) currentGuests = 20;
 
-            document.getElementById('guestCountDisplay').innerText = currentGuests;
+            document.getElementById('guestCountDisplay')
+                .innerText = currentGuests;
         }
 
         const observer = new IntersectionObserver((entries) => {
@@ -901,9 +916,15 @@
         const sealBtn =
             document.getElementById('seal-btn');
 
+        let hasOpened = false;
+
         sealBtn.addEventListener('click', () => {
 
-            /* STEP 1 — OPEN FLAP ONLY */
+            if (hasOpened) return;
+
+            hasOpened = true;
+
+            /* STEP 1 — OPEN FLAP */
 
             envelope.classList.add('open-flap');
 
@@ -913,73 +934,69 @@
 
                 internalCard.classList.add('card-emerge');
 
-            }, 520);
+            }, 620);
 
-        }, { once: true });
-
-        /* STEP 3 — WAIT FOR CARD EMERGENCE TO FINISH */
-
-        internalCard.addEventListener('transitionend', (e) => {
-
-            if (!e.propertyName.includes('transform')) return;
-
-            const bounds =
-                internalCard.getBoundingClientRect();
-
-            overlay.style.top =
-                bounds.top + 'px';
-
-            overlay.style.left =
-                bounds.left + 'px';
-
-            overlay.style.width =
-                bounds.width + 'px';
-
-            overlay.style.height =
-                bounds.height + 'px';
-
-            overlay.offsetHeight;
-
-            requestAnimationFrame(() => {
-
-                internalCard.style.opacity = '0';
-
-                overlay.classList.add('fullscreen');
-
-            });
-
-            /* STEP 4 — HOLD FULLSCREEN */
+            /* STEP 3 — WAIT FOR CARD TO FULLY EMERGE */
 
             setTimeout(() => {
 
-                document.querySelectorAll('.card')
-                    .forEach(card => observer.observe(card));
+                const bounds =
+                    internalCard.getBoundingClientRect();
 
-                /* REMOVE ENVELOPE BEFORE FADE */
+                overlay.style.top =
+                    bounds.top + 'px';
 
-                landing.style.opacity = '0';
+                overlay.style.left =
+                    bounds.left + 'px';
 
-                overlay.style.transition =
-                    "opacity 0.45s ease, transform 0.45s ease";
+                overlay.style.width =
+                    bounds.width + 'px';
 
-                overlay.style.opacity = '0';
+                overlay.style.height =
+                    bounds.height + 'px';
 
-                overlay.style.transform =
-                    'scale(0.985)';
+                overlay.offsetHeight;
+
+                requestAnimationFrame(() => {
+
+                    internalCard.style.opacity = '0';
+
+                    overlay.classList.add('fullscreen');
+
+                });
+
+                /* STEP 4 — HOLD */
 
                 setTimeout(() => {
 
-                    landing.remove();
+                    document.querySelectorAll('.card')
+                        .forEach(card => observer.observe(card));
 
-                    overlay.remove();
+                    landing.style.opacity = '0';
 
-                    document.body.classList.add('ready-scroll');
+                    overlay.style.transition =
+                        "opacity 0.45s ease, transform 0.45s ease";
 
-                }, 450);
+                    overlay.style.opacity = '0';
 
-            }, 2500);
+                    overlay.style.transform =
+                        'scale(0.985)';
 
-        }, { once: true });
+                    setTimeout(() => {
+
+                        landing.remove();
+
+                        overlay.remove();
+
+                        document.body.classList.add('ready-scroll');
+
+                    }, 450);
+
+                }, 2500);
+
+            }, 1550);
+
+        });
 
         /* RSVP */
 
