@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Mekha & Edwin | Wedding Invitation</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=400;600&family=Tangerine:wght=700&family=Montserrat:wght=300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Tangerine:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -37,7 +37,7 @@
             align-items: center;
             background-color: #BDB095;
             padding: 24px;
-            transition: opacity 0.6s ease-in-out;
+            transition: opacity 0.3s ease-in-out; /* FASTER SCREEN DISAPPEARANCE */
         }
 
         .envelope-container {
@@ -59,9 +59,9 @@
         /* ─── MECHANICAL INTERNAL SLIP CARD ─── */
         .envelope-card-preview {
             position: absolute;
-            inset: 10px;
+            inset: 12px;
             background-color: var(--champagne);
-            padding: 30px 24px;
+            padding: 20px 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -69,28 +69,29 @@
             color: var(--paper-navy);
             box-shadow: 0 0 25px rgba(0,0,0,0.35);
             
-            /* Securely hidden inside lower pocket bounds on initialize */
+            /* Hidden inside lower pocket bounds on initialize */
             transform: translateY(35%) scale(0.94);
             opacity: 0;
             z-index: 9;
-            transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease; /* FASTER EMERGENCE */
         }
 
         .unfold .envelope-card-preview {
-            transform: translateY(-58%) scale(1);
+            transform: translateY(-56%) scale(1);
             opacity: 1;
             z-index: 25; 
-            transition-delay: 0.6s;
+            transition-delay: 0.35s; /* SPEEDY DELAY OVERHEAD */
         }
 
-        /* CARD TYPOGRAPHY (Balanced & Reduced to prevent text bleed) */
+        /* SPECIFIC CARD TYPOGRAPHY (Locks Tangerine, fits borders perfectly) */
         .invite-text { 
-            font-family: var(--font-amoresa); 
-            font-size: clamp(1.8rem, 5vw, 2.8rem); 
-            line-height: 1.3; 
+            font-family: var(--font-amoresa) !important; 
+            font-size: clamp(1.8rem, 4.8vw, 2.5rem); 
+            line-height: 1.2; 
             font-weight: 700;
-            max-width: 85%;
+            max-width: 90%;
             margin: 0 auto;
+            color: var(--paper-navy);
         }
 
         /* ─── COPIED TRUE FULLSCREEN OVERLAY ─── */
@@ -107,12 +108,12 @@
             opacity: 0;
             pointer-events: none;
             
-            /* Centralized scaling system independent of aspect wrappers */
-            transition: top 0.8s cubic-bezier(0.25, 1, 0.3, 1),
-                        left 0.8s cubic-bezier(0.25, 1, 0.3, 1),
-                        width 0.8s cubic-bezier(0.25, 1, 0.3, 1),
-                        height 0.8s cubic-bezier(0.25, 1, 0.3, 1),
-                        opacity 0.2s ease;
+            /* Snappy zoom tracking curves */
+            transition: top 0.55s cubic-bezier(0.25, 1, 0.3, 1),
+                        left 0.55s cubic-bezier(0.25, 1, 0.3, 1),
+                        width 0.55s cubic-bezier(0.25, 1, 0.3, 1),
+                        height 0.55s cubic-bezier(0.25, 1, 0.3, 1),
+                        opacity 0.15s ease;
         }
 
         #cloned-fullscreen-card.zoomed {
@@ -121,18 +122,19 @@
             left: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
-            padding: 40px 8vw;
+            padding: 40px 10vw;
         }
 
         #cloned-fullscreen-card.zoomed .invite-text {
-            font-size: clamp(2.2rem, 6.5vw, 3.8rem); /* Completely stable text rendering context */
+            font-size: clamp(2.2rem, 6vw, 3.5rem); 
+            max-width: 80%;
         }
 
-        /* ─── ENVELOPE SHADOW GEOMETRY FLAPS ─── */
+        /* ─── ENVELOPE PANEL GEOMETRY ─── */
         .flap {
             position: absolute;
             background-color: var(--paper-navy);
-            transition: transform 0.75s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .flap-top { 
@@ -161,7 +163,7 @@
             align-items: center;
             justify-content: center;
             animation: seal-pulse 2s infinite ease-in-out;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.25s ease;
         }
 
         .wax-seal-img {
@@ -201,8 +203,7 @@
             position: relative;
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            overflow: hidden;
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
         .card.is-visible { opacity: 1; transform: translateY(0); }
@@ -265,7 +266,7 @@
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
 
-            <!-- Complete 4-Panel Outer Stationery Shell -->
+            <!-- Complete 4-Panel Outer Shell -->
             <div class="flap flap-left"></div>
             <div class="flap flap-bottom"></div>
             <div class="flap flap-right"></div>
@@ -363,46 +364,46 @@
         const zoomCard = document.getElementById('cloned-fullscreen-card');
         const content = document.getElementById('main-content');
         
-        // Stage 1: Upper triangular flap folds open cleanly
+        // Stage 1: Upper panel creases open quickly
         landing.classList.add('unfold');
         
-        // Stage 2: Card glides up out of the pocket
+        // Stage 2: Card emerges with optimized speed curve
         setTimeout(() => {
-            // Read exact vector bounding metrics of the slid card
             const currentRect = internalCard.getBoundingClientRect();
             
-            // Map the zoom canvas position precisely to cover the sliding piece
+            // Map the layout bounds instantly over the card frame
             zoomCard.style.top = currentRect.top + 'px';
             zoomCard.style.left = currentRect.left + 'px';
             zoomCard.style.width = currentRect.width + 'px';
             zoomCard.style.height = currentRect.height + 'px';
             zoomCard.style.opacity = '1';
             
-            // Toggle visibility flag on next processing loop
             requestAnimationFrame(() => {
-                internalCard.style.opacity = '0'; // Hide underlying duplication source safely
-                zoomCard.classList.add('zoomed');  // Expand dynamically edge-to-edge
+                internalCard.style.opacity = '0'; 
+                zoomCard.classList.add('zoomed');  // Snappy fullscreen zoom hand-off
                 
-                // Stage 3: Hold pristine center presentation for exactly 2.5 seconds (2500ms)
+                // Stage 3: Explicitly locked for 2.5 seconds reading window
                 setTimeout(() => {
-                    // Unified cross-dissolve removes both envelope background and card cleanly
-                    zoomCard.style.transition = "opacity 0.6s ease-in-out, transform 0.6s ease-in-out";
+                    // SNAPPY FADE DURATION: 300ms cross dissolve sequence straight into card 1
+                    zoomCard.style.transition = "opacity 0.3s ease-in-out, transform 0.3s ease-in-out";
                     zoomCard.style.opacity = "0";
-                    zoomCard.style.transform = "translateY(-20px)";
+                    zoomCard.style.transform = "translateY(-15px)";
+                    landing.style.transition = "opacity 0.3s ease-in-out";
                     landing.style.opacity = "0";
                     
                     setTimeout(() => {
                         landing.classList.add('hide');
+                        content.style.style.display = 'block'; /* Dynamic viewport activation override */
                         content.style.display = 'block';
                         document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                    }, 600);
+                    }, 300);
                 }, 2500); 
             });
             
-        }, 1500); // Wait threshold allowing flap fold path completion
+        }, 1050); // Faster card lift trigger window
     }
 
-    // Google Form Handling Script Loop
+    // Google Form Pipeline Hook
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
