@@ -97,6 +97,9 @@
         /* ─── STATICALLY ANCHORED STABLE OVERLAY (NO CALCULATION JUMPS) ─── */
         #cloned-fullscreen-card {
             position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background-color: var(--champagne);
             color: var(--paper-navy);
             z-index: 3000;
@@ -106,13 +109,15 @@
             text-align: center;
             box-shadow: 0 0 40px rgba(0,0,0,0.4);
             
+            /* FIX: Completely ignore pointer interactions while hidden */
+            pointer-events: none; 
+            
             /* Statically locked matching initial emergence vector bounds */
             width: calc(100% - 48px);
             max-width: 506px;
             height: calc((100% - 48px) / 1.5 - 24px);
             max-height: 329px;
             opacity: 0;
-            pointer-events: none;
             
             /* Clean hardware scale expansion transitions */
             transition: transform 0.55s cubic-bezier(0.25, 1, 0.3, 1),
@@ -132,6 +137,7 @@
             height: 100vh !important;
             max-height: 100vh !important;
             padding: 40px 10vw;
+            transform: translate(-50%, -50%) scale(1);
         }
 
         #cloned-fullscreen-card.zoomed .invite-text {
@@ -261,7 +267,7 @@
 </head>
 <body>
 
-<!-- Static Cloned Zoom Viewport Layout Canvas (Never positions dynamically) -->
+<!-- Static Cloned Zoom Viewport Layout Canvas -->
 <div id="cloned-fullscreen-card">
     <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
 </div>
@@ -382,10 +388,10 @@
             
             // Stage 3: Keep the fullscreen card completely stable for 2.5 seconds (2500ms)
             setTimeout(() => {
-                // TWEAK 2: Drop the fullscreen zoom card overlay FIRST to expose the envelope context briefly
+                // Drop the fullscreen zoom card overlay FIRST to expose the envelope context briefly
                 zoomCard.style.transition = "opacity 0.3s ease-in-out, transform 0.3s ease-in-out";
                 zoomCard.style.opacity = "0";
-                zoomCard.style.transform = "translateY(-15px)";
+                zoomCard.style.transform = "translate(-50%, calc(-50% - 15px))";
                 
                 // Expose the blue envelope underneath briefly before triggering template transition
                 setTimeout(() => {
@@ -393,7 +399,12 @@
                     landing.style.opacity = "0";
                     
                     // Render the scrollable main content cards directly underneath
+                    content.style.with = "100%";
                     content.style.display = 'block';
+                    
+                    // Allow normal page scrolling after landing section is hidden
+                    document.body.style.overflow = "auto";
+                    document.documentElement.style.overflow = "auto";
                     
                     setTimeout(() => {
                         landing.classList.add('hide');
