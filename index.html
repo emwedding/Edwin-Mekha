@@ -135,16 +135,16 @@
                 opacity;
         }
 
-        /* REVEAL CARD */
+        /* REFINED CARD EMERGENCE */
 
         .card-emerge {
 
             opacity: 1;
 
             transform:
-                translateY(-56%)
+                translateY(-42%)
                 scale(1)
-                translateZ(50px);
+                translateZ(36px);
         }
 
         /* ───────────────── OVERLAY CARD ───────────────── */
@@ -264,6 +264,11 @@
 
             border-bottom:
                 0.5px solid rgba(255, 255, 255, 0.08);
+
+            /* FIX */
+
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
         }
 
         .flap-right {
@@ -317,15 +322,15 @@
                 inset 35px 0 50px rgba(0, 0, 0, 0.95);
         }
 
-        /* OPEN FLAP */
+        /* REFINED FLAP OPENING */
 
         .open-flap .flap-top {
 
             transform:
-                rotateX(180deg)
-                translateZ(-8px);
+                rotateX(135deg)
+                translateZ(-2px);
 
-            opacity: 0;
+            opacity: 1;
         }
 
         .open-flap .wax-seal-container {
@@ -934,9 +939,9 @@
 
                 internalCard.classList.add('card-emerge');
 
-            }, 620);
+            }, 720);
 
-            /* STEP 3 — WAIT FOR CARD TO FULLY EMERGE */
+            /* STEP 3 — WAIT FOR CARD */
 
             setTimeout(() => {
 
@@ -994,7 +999,7 @@
 
                 }, 2500);
 
-            }, 1550);
+            }, 1750);
 
         });
 
