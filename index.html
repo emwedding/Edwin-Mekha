@@ -27,6 +27,173 @@
             font-family: 'Montserrat', sans-serif;
         }
 
+        /* ─── BASE VIEW STAGE ─── */
+        #landing-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #BDB095;
+            padding: 24px;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .envelope-container {
+            position: relative;
+            width: 100%;
+            max-width: 530px;
+            aspect-ratio: 1.5;
+            perspective: 2500px;
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+            z-index: 10;
+        }
+
+        .envelope-body {
+            position: absolute;
+            inset: 0;
+            background: #030a12;
+        }
+
+        /* ─── PHYSICAL INTERNAL POCKET CARD ─── */
+        .envelope-card-preview {
+            position: absolute;
+            inset: 12px;
+            background-color: var(--champagne);
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--paper-navy);
+            box-shadow: 0 0 25px rgba(0,0,0,0.35);
+            
+            /* Tucked inside lower envelope bounds initially */
+            transform: translateY(35%) scale(0.94);
+            opacity: 0;
+            z-index: 20; 
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+        }
+
+        /* Card slides out completely clear of envelope pocket bounds */
+        .unfold .envelope-card-preview {
+            transform: translateY(-56%) scale(1);
+            opacity: 1;
+        }
+
+        /* ─── DEDICATED VIEWPORT FLUID OVERLAY ─── */
+        #zoom-card-overlay {
+            position: fixed;
+            background-color: var(--champagne);
+            color: var(--paper-navy);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            
+            opacity: 0;
+            pointer-events: none;
+            
+            /* Fluid sizing pipeline tracking physical width/height updates safely */
+            transition: top 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        left 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        height 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        padding 0.7s ease,
+                        opacity 0.15s ease-in-out;
+        }
+
+        /* Fullscreen state transforms bounds comfortably without text-clipping */
+        #zoom-card-overlay.fullscreen-active {
+            opacity: 1;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            padding: 40px 10vw;
+        }
+
+        /* HARD-LOCKED TYPOGRAPHY SYSTEM */
+        .invite-text { 
+            font-family: 'Tangerine', cursive !important; 
+            font-size: clamp(1.8rem, 4.8vw, 2.5rem) !important; 
+            line-height: 1.3 !important; 
+            font-weight: 700 !important;
+            max-width: 90%;
+            margin: 0 auto;
+            color: var(--paper-navy) !important;
+            transition: font-size 0.5s ease;
+        }
+
+        /* Expands naturally within spacious fullscreen container margins */
+        #zoom-card-overlay.fullscreen-active .invite-text {
+            font-size: clamp(2.4rem, 6vw, 3.8rem) !important; 
+            max-width: 80%;
+        }
+
+        /* ─── ENVELOPE PANEL GEOMETRY ─── */
+        .flap {
+            position: absolute;
+            background-color: var(--paper-navy);
+            transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .flap-top { 
+            top: 0; left: 0; width: 100%; height: 50%; 
+            clip-path: polygon(0 0, 100% 0, 50% 100%); 
+            transform-origin: top center; 
+            z-index: 14; 
+            box-shadow: inset 0 -35px 50px rgba(0,0,0,0.95);
+            border-bottom: 0.5px solid rgba(255,255,255,0.08);
+            transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.1s step-end;
+        }
+        
+        .flap-right { top: 0; right: 0; width: 50%; height: 100%; clip-path: polygon(100% 0, 100% 100%, 0 50%); z-index: 13; box-shadow: inset -35px 0 50px rgba(0,0,0,0.95); }
+        .flap-bottom { bottom: 0; left: 0; width: 100%; height: 50%; clip-path: polygon(50% 0, 100% 100%, 0 100%); z-index: 12; box-shadow: inset 0 35px 50px rgba(0,0,0,0.95); }
+        .flap-left { top: 0; left: 0; width: 50%; height: 100%; clip-path: polygon(0 0, 100% 50%, 0 100%); z-index: 11; box-shadow: inset 35px 0 50px rgba(0,0,0,0.95); }
+
+        /* Fold open top panel logic */
+        .unfold .flap-top { 
+            transform: rotateX(150deg); 
+            z-index: 5 !important; /* RECTIFIED: Drops behind the emerging card layer immediately */
+        }
+        
+        .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
+
+        /* PULSING WAX SEAL */
+        .wax-seal-container {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 25; 
+            cursor: pointer;
+            width: clamp(120px, 28vw, 160px);
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: seal-pulse 2s infinite ease-in-out;
+            transition: opacity 0.25s ease;
+        }
+
+        .wax-seal-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
+        }
+
+        @keyframes seal-pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        #landing-screen.hide { display: none; }
+
         /* ─── SCROLLABLE CONTENT TIMELINE CARDS ─── */
         #main-content { 
             display: block; 
@@ -86,180 +253,29 @@
 
         .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7.5vw, 3.8rem); color: var(--gold); margin-top: 5px; }
 
-        /* ─── FIXED INTERACTIVE PRESENTER STAGE ─── */
-        #landing-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #BDB095;
-            padding: 24px;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        #landing-screen.hide { display: none; }
-
-        /* THE ONE TRUE INNER INVITATION CARD */
-        .envelope-card-preview {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.85);
-            width: calc(100% - 72px);
-            max-width: 480px;
-            height: auto;
-            aspect-ratio: 1.4;
-            background-color: var(--champagne);
-            padding: 30px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--paper-navy);
-            z-index: 1005; /* Keeps card above the sliding envelope container */
-            opacity: 0;
-            
-            /* Hardware-accelerated transformations */
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-                        opacity 0.5s ease-in-out;
-        }
-
-        .unfold .envelope-card-preview {
-            opacity: 1;
-        }
-
-        /* Screen zoom expansion view setup */
-        .unfold .envelope-card-preview.zoomed-view {
-            width: 100vw !important;
-            height: 100vh !important;
-            max-width: 100vw !important;
-            max-height: 100vh !important;
-            transform: translate(-50%, -50%) scale(1.001) !important;
-            padding: 40px 10vw;
-        }
-
-        /* HARD-LOCKED TYPOGRAPHY SYSTEM */
-        .invite-text { 
-            font-family: 'Tangerine', cursive !important; 
-            font-size: clamp(1.9rem, 5.5vw, 3.2rem) !important; 
-            line-height: 1.3 !important; 
-            font-weight: 700 !important;
-            max-width: 90%;
-            margin: 0 auto;
-            color: var(--paper-navy) !important;
-        }
-
-        /* ─── OUTER ENVELOPE MECHANICAL WRAPPER ─── */
-        .envelope-container {
-            position: relative;
-            width: 100%;
-            max-width: 530px;
-            aspect-ratio: 1.5;
-            perspective: 2500px;
-            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
-            z-index: 1000; /* RECTIFIED: Kept lower than card layer context to clear visual overlap paths */
-            
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
-                        opacity 0.4s ease-in-out;
-        }
-
-        /* Envelope drops down smoothly, pulling away from fixed card placement context */
-        .unfold .envelope-container {
-            transform: translateY(65%);
-        }
-
-        .unfold .envelope-container.fade-out-envelope {
-            opacity: 0;
-        }
-
-        .envelope-body {
-            position: absolute;
-            inset: 0;
-            background: #030a12;
-        }
-
-        /* ─── ENVELOPE PANEL GEOMETRY ─── */
-        .flap {
-            position: absolute;
-            background-color: var(--paper-navy);
-            transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .flap-top { 
-            top: 0; left: 0; width: 100%; height: 50%; 
-            clip-path: polygon(0 0, 100% 0, 50% 100%); 
-            transform-origin: top center; 
-            z-index: 14; 
-            box-shadow: inset 0 -35px 50px rgba(0,0,0,0.95);
-            border-bottom: 0.5px solid rgba(255,255,255,0.08);
-            /* Tracks dynamic layout stack updates using step-end timing properties */
-            transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.1s step-end;
-        }
-        
-        .flap-right { top: 0; right: 0; width: 50%; height: 100%; clip-path: polygon(100% 0, 100% 100%, 0 50%); z-index: 13; box-shadow: inset -35px 0 50px rgba(0,0,0,0.95); }
-        .flap-bottom { bottom: 0; left: 0; width: 100%; height: 50%; clip-path: polygon(50% 0, 100% 100%, 0 100%); z-index: 12; box-shadow: inset 0 35px 50px rgba(0,0,0,0.95); }
-        .flap-left { top: 0; left: 0; width: 50%; height: 100%; clip-path: polygon(0 0, 100% 50%, 0 100%); z-index: 11; box-shadow: inset 35px 0 50px rgba(0,0,0,0.95); }
-
-        /* Fold open top panel logic */
-        .unfold .flap-top { 
-            transform: rotateX(150deg); 
-            z-index: 1 !important; /* RECTIFIED: Drops background layer placement instantly on animation launch */
-        }
-        
-        .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
-
-        /* PULSING WAX SEAL */
-        .wax-seal-container {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 25; 
-            cursor: pointer;
-            width: clamp(120px, 28vw, 160px);
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: seal-pulse 2s infinite ease-in-out;
-            transition: opacity 0.25s ease;
-        }
-
-        .wax-seal-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
-        }
-
         @media (max-width: 600px) {
             .card { padding: 25px 5vw; }
             .cake-img { width: 75%; bottom: 0; right: -5%; opacity: 0.35; } 
             .details-flex { display: flex; flex-direction: column; gap: 25px; }
-            .envelope-card-preview { width: calc(100% - 32px); padding: 20px; }
-        }
-        
-        @keyframes seal-pulse {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.05); }
-            100% { transform: translate(-50%, -50%) scale(1); }
         }
     </style>
 </head>
 <body>
 
-<!-- The Primary Interactive Presenter Stage -->
-<section id="landing-screen">
-    
-    <!-- True Fixed Invitation Sheet Layers -->
-    <div class="envelope-card-preview" id="internal-card">
-        <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
-    </div>
+<!-- Perfectly Separated Visual Zoom Overlay Frame -->
+<div id="zoom-card-overlay">
+    <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
+</div>
 
-    <!-- Outer Structural Sliding Shield Container -->
+<section id="landing-screen">
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
+            
+            <!-- Original Card Anchor -->
+            <div class="envelope-card-preview" id="internal-card">
+                <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
+            </div>
+
             <!-- Envelope Panels -->
             <div class="flap flap-left"></div>
             <div class="flap flap-bottom"></div>
@@ -354,37 +370,57 @@
 
     function handleOpen() {
         const landing = document.getElementById('landing-screen');
-        const envelope = document.getElementById('envelope-viewport');
         const internalCard = document.getElementById('internal-card');
+        const zoomOverlay = document.getElementById('zoom-card-overlay');
+        const content = document.getElementById('main-content');
         
-        // Stage 1: Flaps fold open and envelope glides down to reveal the fixed card
+        // Step 1: Open the envelope flap naturally
         landing.classList.add('unfold');
         
-        // Stage 2: Once the envelope drops out of the way, fade it out and expand the card
+        // Step 2: Capture dimensions at peak extraction height
         setTimeout(() => {
-            envelope.classList.add('fade-out-envelope');
-            internalCard.classList.add('zoomed-view');
+            const bounds = internalCard.getBoundingClientRect();
             
-            // Stage 3: Keep card completely stable for exactly 2.5 seconds (2500ms)
+            // Map overlay dimensions exactly to match the emerged card down to the pixel
+            zoomOverlay.style.top = bounds.top + 'px';
+            zoomOverlay.style.left = bounds.left + 'px';
+            zoomOverlay.style.width = bounds.width + 'px';
+            zoomOverlay.style.height = bounds.height + 'px';
+            
+            // Force browser repaint to seamlessly hide the element swap
+            zoomOverlay.offsetHeight; 
+            
+            // Step 3: Handoff — hide inner pocket card, instantly show and expand overlay card
+            internalCard.style.opacity = '0';
+            zoomOverlay.classList.add('fullscreen-active');
+            
+            // Step 4: Keep full-screen presentation completely locked for exactly 2.5 seconds
             setTimeout(() => {
                 
-                // Pure crossfade: Fade out the main landing view container
+                // Complete crossfade applied simultaneously
+                zoomOverlay.style.transition = "opacity 0.4s ease-in-out, transform 0.4s ease-in-out";
+                landing.style.transition = "opacity 0.4s ease-in-out";
+                
+                // Dissolve landing frame components
+                zoomOverlay.style.opacity = "0";
+                zoomOverlay.style.transform = "scale(0.96)";
                 landing.style.opacity = "0";
                 
                 setTimeout(() => {
-                    landing.classList.add('hide'); 
+                    zoomOverlay.style.display = 'none';
+                    landing.style.display = 'none'; 
                     
                     // Unlock browser scrolling actions safely
                     document.body.style.overflow = "auto";
                     document.documentElement.style.overflow = "auto";
                     
-                    // Initialize background card animation visibility loops
+                    // Initialize scroll observer animations
                     document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                }, 500); // Wait smoothly for the fade out to finish
+                }, 400); 
                 
-            }, 2500);
+            }, 2500); // 2.5 Second Hold
             
-        }, 750); // Timing curve matches envelope dropping motion
+        }, 800); // Wait time for slide-up completion
     }
 
     // Google Forms Pipeline Handler
