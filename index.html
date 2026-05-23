@@ -94,7 +94,7 @@
             color: var(--paper-navy) !important;
         }
 
-        /* ─── TRUE IMMERSIVE FULLSCREEN OVERLAY ─── */
+        /* ─── STATICALLY ANCHORED STABLE OVERLAY (NO CALCULATION JUMPS) ─── */
         #cloned-fullscreen-card {
             position: fixed;
             background-color: var(--champagne);
@@ -105,23 +105,32 @@
             justify-content: center;
             text-align: center;
             box-shadow: 0 0 40px rgba(0,0,0,0.4);
+            
+            /* Statically locked matching initial emergence vector bounds */
+            width: calc(100% - 48px);
+            max-width: 506px;
+            height: calc((100% - 48px) / 1.5 - 24px);
+            max-height: 329px;
             opacity: 0;
             pointer-events: none;
             
-            /* Clean hardware zoom transitions */
-            transition: top 0.55s cubic-bezier(0.25, 1, 0.3, 1),
-                        left 0.55s cubic-bezier(0.25, 1, 0.3, 1),
+            /* Clean hardware scale expansion transitions */
+            transition: transform 0.55s cubic-bezier(0.25, 1, 0.3, 1),
                         width 0.55s cubic-bezier(0.25, 1, 0.3, 1),
                         height 0.55s cubic-bezier(0.25, 1, 0.3, 1),
-                        opacity 0.15s ease;
+                        max-width 0.55s cubic-bezier(0.25, 1, 0.3, 1),
+                        max-height 0.55s cubic-bezier(0.25, 1, 0.3, 1),
+                        padding 0.55s cubic-bezier(0.25, 1, 0.3, 1),
+                        opacity 0.2s ease-in-out;
         }
 
+        /* Screen-snapping fullscreen state trigger variables */
         #cloned-fullscreen-card.zoomed {
             opacity: 1;
-            top: 0 !important;
-            left: 0 !important;
             width: 100vw !important;
+            max-width: 100vw !important;
             height: 100vh !important;
+            max-height: 100vh !important;
             padding: 40px 10vw;
         }
 
@@ -252,7 +261,7 @@
 </head>
 <body>
 
-<!-- Cloned Zoom Viewport Canvas Interface -->
+<!-- Static Cloned Zoom Viewport Layout Canvas (Never positions dynamically) -->
 <div id="cloned-fullscreen-card">
     <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
 </div>
@@ -261,7 +270,7 @@
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Flawless Original Internal Card Pocket Piece -->
+            <!-- Flawless Mechanical Emergence Pocket Card -->
             <div class="envelope-card-preview" id="internal-card">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
@@ -360,53 +369,41 @@
 
     function handleOpen() {
         const landing = document.getElementById('landing-screen');
-        const internalCard = document.getElementById('internal-card');
         const zoomCard = document.getElementById('cloned-fullscreen-card');
         const content = document.getElementById('main-content');
         
-        // Stage 1: Upper panel creases open instantly
+        // Stage 1: Upper triangular panel folds open cleanly
         landing.classList.add('unfold');
         
-        // Stage 2: Flawless card emergence trajectory trigger
+        // Stage 2: Let original card slide up out of pocket completely
         setTimeout(() => {
-            const currentRect = internalCard.getBoundingClientRect();
+            // Activate overlay step 1 (Fades exactly over the stationary peak layer position)
+            zoomCard.classList.add('zoomed');
             
-            // Map cloned canvas positioning matching the top frame layout explicitly
-            zoomCard.style.top = currentRect.top + 'px';
-            zoomCard.style.left = currentRect.left + 'px';
-            zoomCard.style.width = currentRect.width + 'px';
-            zoomCard.style.height = currentRect.height + 'px';
-            zoomCard.style.opacity = '1'; // TWEAK 1: Fades overlay in right over the visible pocket card to trigger the twin zoom
-            
-            requestAnimationFrame(() => {
-                // internalCard.style.opacity = '0'; // REMOVED: Keep internal card visible to emphasize the distinct secondary element zoom
-                zoomCard.classList.add('zoomed');  // Immersive seamless zoom handoff 
+            // Stage 3: Keep the fullscreen card completely stable for 2.5 seconds (2500ms)
+            setTimeout(() => {
+                // TWEAK 2: Drop the fullscreen zoom card overlay FIRST to expose the envelope context briefly
+                zoomCard.style.transition = "opacity 0.3s ease-in-out, transform 0.3s ease-in-out";
+                zoomCard.style.opacity = "0";
+                zoomCard.style.transform = "translateY(-15px)";
                 
-                // Stage 3: Hold pristine fullscreen center presentation for exactly 2.5 seconds
+                // Expose the blue envelope underneath briefly before triggering template transition
                 setTimeout(() => {
-                    // TWEAK 2: Drop zoomed card overlay opacity FIRST to briefly showcase the blue envelope underneath
-                    zoomCard.style.transition = "opacity 0.3s ease-in-out, transform 0.3s ease-in-out";
-                    zoomCard.style.opacity = "0";
-                    zoomCard.style.transform = "translateY(-15px)";
+                    landing.style.transition = "opacity 0.3s ease-in-out";
+                    landing.style.opacity = "0";
                     
-                    // Delay background container fade-out slightly to ensure the envelope exposure is clear
+                    // Render the scrollable main content cards directly underneath
+                    content.style.display = 'block';
+                    
                     setTimeout(() => {
-                        landing.style.transition = "opacity 0.3s ease-in-out";
-                        landing.style.opacity = "0";
-                        
-                        // Activate timeline container directly underneath
-                        content.style.display = 'block';
-                        
-                        setTimeout(() => {
-                            landing.classList.add('hide');
-                            document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                        }, 300);
-                    }, 400); // Envelope brief showcase block duration
-                    
-                }, 2500); 
-            });
+                        landing.classList.add('hide');
+                        document.querySelectorAll('.card').forEach(card => observer.observe(card));
+                    }, 300);
+                }, 450); // Frame threshold duration for clear envelope flash showcase
+                
+            }, 2500);
             
-        }, 1050); // Fast emergence trigger matrix window
+        }, 1000); // Wait pacing time for extraction slide movement completion
     }
 
     // Google Forms Pipeline Async Handler
