@@ -27,7 +27,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── REALISTIC 4-FLAP STATIONERY ENVELOPE ─── */
+        /* ─── REALISTIC STATIONERY ENVELOPE ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -55,13 +55,13 @@
             background: #030a12;
         }
 
-        /* ─── MECHANICAL INTERNAL INVITATION SLIP ─── */
+        /* ─── SINGLE UNIFIED INVITATION SLIP ─── */
         .envelope-card-preview {
             position: absolute;
             inset: 10px;
             background-color: var(--champagne);
             z-index: 9; 
-            padding: 40px 32px;
+            padding: 40px 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -69,29 +69,29 @@
             color: var(--paper-navy);
             box-shadow: 0 0 25px rgba(0,0,0,0.35);
             
+            /* Tucked inside the envelope on initialization */
             transform: translateY(35%) scale(0.94); 
             opacity: 0;
-            transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+            transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), 
+                        opacity 0.5s ease, 
+                        inset 0.8s cubic-bezier(0.25, 1, 0.3, 1),
+                        padding 0.8s cubic-bezier(0.25, 1, 0.3, 1);
         }
 
-        .unfold .envelope-card-preview {
-            z-index: 25 !important;
-        }
-
-        .invite-text { 
-            font-family: var(--font-woodland); 
-            font-size: clamp(0.85rem, 2.8vw, 1.25rem); 
-            line-height: 1.6; 
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            max-width: 85%;
+        .envelope-card-preview .invite-text { 
+            font-family: var(--font-amoresa); 
+            font-size: clamp(2.2rem, 6.5vw, 4rem); 
+            line-height: 1.2; 
+            font-weight: 700;
+            max-width: 90%;
+            transition: font-size 0.8s cubic-bezier(0.25, 1, 0.3, 1);
         }
 
         /* ─── FOUR-FLAP SHADOW LAYERING ─── */
         .flap {
             position: absolute;
             background-color: var(--paper-navy);
-            transition: transform 0.75s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.75s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s cubic-bezier(0.25, 1, 0.3, 1);
         }
 
         .flap-top { 
@@ -103,10 +103,11 @@
             border-bottom: 0.5px solid rgba(255,255,255,0.08);
         }
         
-        .flap-right { top: 0; right: 0; width: 50%; height: 100%; clip-path: polygon(100% 0, 100% 100%, 0 50%); z-index: 13; box-shadow: inset -35px 0 50px rgba(0,0,0,0.95); }
-        .flap-bottom { bottom: 0; left: 0; width: 100%; height: 50%; clip-path: polygon(50% 0, 100% 100%, 0 100%); z-index: 12; box-shadow: inset 0 35px 50px rgba(0,0,0,0.95); }
-        .flap-left { top: 0; left: 0; width: 50%; height: 100%; clip-path: polygon(0 0, 100% 50%, 0 100%); z-index: 11; box-shadow: inset 35px 0 50px rgba(0,0,0,0.95); }
+        .flap-right { top: 0; right: 0; width: 50%; height: 100%; clip-path: polygon(100% 0, 100% 100%, 0 50%); z-index: 13; box-shadow: inset -35px 0 50px rgba(0,0,0,0.95); transform-origin: right center; }
+        .flap-bottom { bottom: 0; left: 0; width: 100%; height: 50%; clip-path: polygon(50% 0, 100% 100%, 0 100%); z-index: 12; box-shadow: inset 0 35px 50px rgba(0,0,0,0.95); transform-origin: bottom center; }
+        .flap-left { top: 0; left: 0; width: 50%; height: 100%; clip-path: polygon(0 0, 100% 50%, 0 100%); z-index: 11; box-shadow: inset 35px 0 50px rgba(0,0,0,0.95); transform-origin: left center; }
 
+        /* ─── PULSING WAX SEAL CONTAINER ─── */
         .wax-seal-container {
             position: absolute;
             top: 50%; left: 50%;
@@ -119,6 +120,7 @@
             align-items: center;
             justify-content: center;
             transition: opacity 0.3s ease;
+            animation: seal-pulse 2s infinite ease-in-out;
         }
 
         .wax-seal-img {
@@ -128,54 +130,52 @@
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
         }
 
-        /* ─── TRANSITION MODIFIERS ─── */
-        .unfold .flap-top { transform: rotateX(150deg); }
-        .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
+        @keyframes seal-pulse {
+            0% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85)); }
+            50% { transform: translate(-50%, -50%) scale(1.06); filter: drop-shadow(0 20px 35px rgba(0,0,0,0.95)); }
+            100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85)); }
+        }
 
+        /* ─── STAGE TRANSITIONS ─── */
+        .unfold .flap-top { transform: rotateX(150deg); }
+        .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
+
+        /* Card emerges smoothly upward from the pocket */
         .unfold .envelope-card-preview {
             transform: translateY(-58%) scale(1);
             opacity: 1;
+            z-index: 25; 
             transition-delay: 0.6s;
         }
 
-        /* ─── CONTINUOUS SMOOTH FULLSCREEN ZOOM CARD ─── */
-        #fullscreen-zoom-card {
+        /* FIXED: Seamless Viewport-bounded Zoom Configuration */
+        .zoom-active .envelope-card-preview {
             position: fixed;
-            background-color: var(--champagne);
-            color: var(--paper-navy);
-            z-index: 3000; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.4);
-            
-            /* Initially transparent, coordinates mapped smoothly via script */
-            opacity: 0;
-            pointer-events: none;
-            visibility: hidden;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
-                        top 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
-                        left 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
-                        width 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
-                        height 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
-                        opacity 0.3s ease, 
-                        visibility 0.3s;
-        }
-
-        /* Zoom expansion state */
-        #fullscreen-zoom-card.active {
-            opacity: 1;
-            visibility: visible;
-            top: 0 !important;
-            left: 0 !important;
+            inset: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
-            transform: scale(1) !important;
+            transform: translate(0, 0) scale(1) !important;
+            padding: 60px 10vw;
+            box-shadow: none;
+            z-index: 2000 !important;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
+                        inset 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
+                        width 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
+                        height 0.8s cubic-bezier(0.25, 1, 0.3, 1);
+        }
+        
+        .zoom-active .envelope-card-preview .invite-text {
+            font-size: clamp(3rem, 8vw, 5.5rem); 
         }
 
-        /* ─── SCROLL TIMELINE PANELS ─── */
+        .zoom-active .flap {
+            opacity: 0;
+            transform: scale(0.7);
+        }
+
+        #landing-screen.hide { opacity: 0; visibility: hidden; }
+
+        /* ─── SCROLL PANELS ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
@@ -244,21 +244,16 @@
 </head>
 <body>
 
-<!-- The Centered Zoom Canvas Component -->
-<div id="fullscreen-zoom-card">
-    <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
-</div>
-
 <section id="landing-screen">
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Structural Peek Slip Element -->
-            <div class="envelope-card-preview" id="sliding-card">
+            <!-- Single Continuous Invitation Card -->
+            <div class="envelope-card-preview" id="invitation-card">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
 
-            <!-- Complete 4-Panel Folding Paper Stationery Components -->
+            <!-- Complete 4-Panel Envelope Shell -->
             <div class="flap flap-left"></div>
             <div class="flap flap-bottom"></div>
             <div class="flap flap-right"></div>
@@ -352,54 +347,32 @@
 
     function handleOpen() {
         const landing = document.getElementById('landing-screen');
-        const internalCard = document.getElementById('sliding-card');
-        const zoomOverlay = document.getElementById('fullscreen-zoom-card');
+        const landingViewport = document.getElementById('envelope-viewport');
         const content = document.getElementById('main-content');
         
-        // Stage 1: Swing open top flap
+        // Stage 1 & 2: Crease open top flap and slide card out of pocket naturally
         landing.classList.add('unfold');
         
-        // Stage 2: Capture card bounding metrics once pulled out clearly
+        // Stage 3: Smoothly scale the card element into true full-viewport fixed screen center
         setTimeout(() => {
-            const rect = internalCard.getBoundingClientRect();
+            landingViewport.classList.add('zoom-active');
             
-            // Map the canvas layout overlay EXACTLY to match the physical slip dimensions
-            zoomOverlay.style.top = rect.top + 'px';
-            zoomOverlay.style.left = rect.left + 'px';
-            zoomOverlay.style.width = rect.width + 'px';
-            zoomOverlay.style.height = rect.height + 'px';
-            zoomOverlay.style.transform = 'none';
-            zoomOverlay.style.visibility = 'visible';
-            zoomOverlay.style.opacity = '1';
-            
-            // Hide the original mechanical card below it instantly to avoid duplicate rendering
-            internalCard.style.opacity = '0';
-            
-            // Force browser to register geometry before activating scale matrix
-            requestAnimationFrame(() => {
-                // Stage 3: Smoothly scale outward from absolute center screen context
-                zoomOverlay.classList.add('active');
+            // Stage 4: Hold in full frame for exactly 2.5 seconds (2500ms) then execute cross-dissolve fade
+            setTimeout(() => {
+                landing.style.transition = "opacity 0.7s ease-in-out";
+                landing.style.opacity = "0";
                 
-                // Stage 4: Hold in full view for exactly 2 seconds, then dissolve together smoothly
                 setTimeout(() => {
-                    zoomOverlay.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-                    zoomOverlay.style.opacity = "0";
-                    zoomOverlay.style.transform = "translateY(-30px)";
-                    
-                    landing.style.opacity = "0";
-                    
-                    setTimeout(() => {
-                        landing.classList.add('hide');
-                        content.style.display = 'block';
-                        document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                    }, 600);
-                }, 2000); // 2-second hold time
-            });
+                    landing.classList.add('hide');
+                    content.style.display = 'block';
+                    document.querySelectorAll('.card').forEach(card => observer.observe(card));
+                }, 700);
+            }, 2500); // 2.5 seconds reading window lock
             
-        }, 1500); // Pacing for initial pull travel out of envelope pocket
+        }, 1500); // Wait time for flap reveal and pull travel setup
     }
 
-    // Google Forms Pipeline
+    // Google Forms Submission Hook
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
