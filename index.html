@@ -27,7 +27,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── PHYSICAL PROPORTIONAL ENVELOPE CONTAINER ─── */
+        /* ─── REALISTIC 4-FLAP STATIONERY ENVELOPE ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -37,17 +37,16 @@
             align-items: center;
             background-color: #BDB095;
             padding: 24px;
-            transition: opacity 0.5s ease-in-out, visibility 0.5s;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s;
         }
 
-        /* Explicit aspect ratio bounds ensure it consistently reads as a physical letter envelope */
         .envelope-container {
             position: relative;
             width: 100%;
-            max-width: 520px;
+            max-width: 530px;
             aspect-ratio: 1.5;
-            perspective: 2000px;
-            filter: drop-shadow(0 25px 45px rgba(0,0,0,0.55));
+            perspective: 2500px;
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
         }
 
         .envelope-body {
@@ -56,69 +55,24 @@
             background: #030a12;
         }
 
-        /* ─── FIXED LOWER POCKET FRONT PANEL ─── */
-        .envelope-pocket {
-            position: absolute;
-            inset: 0;
-            background: var(--paper-navy);
-            clip-path: polygon(0% 45%, 50% 75%, 100% 45%, 100% 100%, 0% 100%);
-            z-index: 12;
-            box-shadow: inset 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        /* ─── SINGLE STRUCTURAL UPPER FLAP ─── */
-        .flap-top {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 50%;
-            background-color: var(--paper-navy);
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            transform-origin: top center;
-            z-index: 14;
-            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            border-bottom: 0.5px solid rgba(255,255,255,0.08);
-        }
-
-        /* Fixed Image Container logic to prevent cropping across window resizes */
-        .wax-seal-container {
-            position: absolute;
-            top: 100%; left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 20;
-            cursor: pointer;
-            width: clamp(120px, 28vw, 160px);
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.25s ease;
-        }
-
-        .wax-seal-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* Prevents text clipping or fractional rendering of image assets */
-            filter: drop-shadow(0 10px 18px rgba(0,0,0,0.75));
-        }
-
         /* ─── INTERNAL INVITATION SLIP ─── */
         .envelope-card-preview {
             position: absolute;
-            inset: 12px 12px 20px 12px;
+            inset: 10px;
             background-color: var(--champagne);
-            z-index: 10;
-            padding: 30px 24px;
+            z-index: 9;
+            padding: 40px 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: var(--paper-navy);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 0 25px rgba(0,0,0,0.35);
             
-            /* Securely tucked inside front pocket bounds initially */
+            /* Tucked perfectly inside the folder layout base initially */
             transform: translateY(35%) scale(0.94); 
             opacity: 0;
-            transition: transform 0.85s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+            transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
         }
 
         .envelope-card-preview .invite-text { 
@@ -127,30 +81,69 @@
             line-height: 1.6; 
             font-weight: 600;
             letter-spacing: 0.5px;
-            max-width: 90%;
+            max-width: 85%;
         }
 
-        /* ─── TIMED TRANSITION SEQUENCING ─── */
-        /* Step 1: Flip top flap open */
-        .unfold .flap-top {
-            transform: rotateX(180deg);
-            z-index: 8; 
+        /* ─── DEFINED SHADOW FOUR-FLAP GEOMETRY ─── */
+        .flap {
+            position: absolute;
+            background-color: var(--paper-navy);
+            transition: transform 0.75s cubic-bezier(0.25, 1, 0.5, 1);
         }
+
+        /* Top folding triangular panel leaf */
+        .flap-top { 
+            top: 0; left: 0; width: 100%; height: 50%; 
+            clip-path: polygon(0 0, 100% 0, 50% 100%); 
+            transform-origin: top center; 
+            z-index: 14; 
+            box-shadow: inset 0 -35px 50px rgba(0,0,0,0.95);
+            border-bottom: 0.5px solid rgba(255,255,255,0.08);
+        }
+        /* Fixed decorative side and bottom parameters creating the complete pocket view */
+        .flap-right { top: 0; right: 0; width: 50%; height: 100%; clip-path: polygon(100% 0, 100% 100%, 0 50%); z-index: 13; box-shadow: inset -35px 0 50px rgba(0,0,0,0.95); }
+        .flap-bottom { bottom: 0; left: 0; width: 100%; height: 50%; clip-path: polygon(50% 0, 100% 100%, 0 100%); z-index: 12; box-shadow: inset 0 35px 50px rgba(0,0,0,0.95); }
+        .flap-left { top: 0; left: 0; width: 50%; height: 100%; clip-path: polygon(0 0, 100% 50%, 0 100%); z-index: 11; box-shadow: inset 35px 0 50px rgba(0,0,0,0.95); }
+
+        .wax-seal-container {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            cursor: pointer;
+            width: clamp(120px, 28vw, 160px);
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .wax-seal-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
+        }
+
+        /* ─── DELIBERATE TRANSITION FLOW ─── */
+        /* Step 1: Upper panel opens exclusively */
+        .unfold .flap-top { transform: rotateX(150deg); }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
 
-        /* Step 2: Extract Card out of Lower pouch boundary safely */
+        /* Step 2: Card emerges out of front envelope folds cleanly and pauses for reading */
         .unfold .envelope-card-preview {
-            transform: translateY(-62%) scale(1);
+            transform: translateY(-58%) scale(1);
             opacity: 1;
-            z-index: 15; 
-            transition-delay: 0.4s;
+            z-index: 15; /* Pulls right above the remaining lower envelope elements */
+            transition-delay: 0.6s; /* Waits for the top flap to swing clear */
         }
 
-        /* Step 3: Zoom cleanly past camera viewports */
+        /* Step 3: Zoom expansion matrix transitioning softly out to full frame */
         .zoom-fullscreen .envelope-card-preview {
-            transform: translateY(-15%) scale(2.6);
+            transform: translateY(-15%) scale(2.5);
             opacity: 0;
-            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out 0.25s;
+            transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-out 0.4s;
         }
 
         #landing-screen.hide { opacity: 0; visibility: hidden; }
@@ -226,23 +219,22 @@
 
 <section id="landing-screen">
     <div class="envelope-container" id="envelope-viewport">
-        <div class="envelope-body">
+        <div class="envelope-body" id="envelope">
             
-            <!-- Traditional Structural Top Flap -->
-            <div class="flap-top" id="main-flap">
-                <div class="wax-seal-container" onclick="handleOpen()">
-                    <img src="01.png" class="wax-seal-img" alt="Wax Seal">
-                </div>
-            </div>
-
-            <!-- Internal Champagne Slide Object with Custom Request Text -->
+            <!-- Internal Invitation Preview Layer -->
             <div class="envelope-card-preview">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
 
-            <!-- Pocket Mask Front Cover Piece -->
-            <div class="envelope-pocket"></div>
+            <!-- Complete 4-Panel Envelope Structure Layout -->
+            <div class="flap flap-left"></div>
+            <div class="flap flap-bottom"></div>
+            <div class="flap flap-right"></div>
+            <div class="flap flap-top" id="main-flap"></div>
             
+            <div class="wax-seal-container" onclick="handleOpen()">
+                <img src="01.png" class="wax-seal-img" alt="Wax Seal">
+            </div>
         </div>
     </div>
 </section>
@@ -331,9 +323,10 @@
         const landing = document.getElementById('landing-screen');
         const content = document.getElementById('main-content');
         
+        // Step 1: Traditional single-flap upward flip opens exclusively
         landing.classList.add('unfold');
         
-        // Let top flap swing wide open, reveal text on sliding card, then perform clean zoom handover
+        // Step 2: Expanded pacing delay loop allows comfortable message reading
         setTimeout(() => {
             container.classList.add('zoom-fullscreen');
             
@@ -341,11 +334,11 @@
                 landing.classList.add('hide');
                 content.style.display = 'block';
                 document.querySelectorAll('.card').forEach(card => observer.observe(card));
-            }, 550);
-        }, 1350); 
+            }, 750); // Fluid fade duration into scroll interface
+        }, 2200); // 1.8 seconds reading pause window + slide execution overhead
     }
 
-    // Google forms backend integration hook
+    // Google Form API Endpoint Pipeline
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
