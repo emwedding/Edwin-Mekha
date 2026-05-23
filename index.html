@@ -27,7 +27,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── BASE SCREEN CONTEXT ─── */
+        /* ─── BASE VIEW STAGE ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -37,7 +37,7 @@
             align-items: center;
             background-color: #BDB095;
             padding: 24px;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .envelope-container {
@@ -45,84 +45,102 @@
             width: 100%;
             max-width: 530px;
             aspect-ratio: 1.5;
-            perspective: 2500px;
-            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+            perspective: 2000px;
             z-index: 10;
+            /* Uniform filter scale that behaves cleanly */
+            transition: filter 0.5s ease;
+        }
+
+        /* When zoomed, we kill the envelope container's shadow dynamically to prevent box-shadow stretching artifacts */
+        .envelope-container.zoomed-state {
+            filter: drop-shadow(0 0 0 rgba(0,0,0,0));
         }
 
         .envelope-body {
             position: absolute;
             inset: 0;
             background: #030a12;
+            transition: opacity 0.4s ease;
         }
 
-        /* ─── SINGLE MAGIC CARD MECHANIC ─── */
+        /* ─── THE ONE TRUE INNER CARD ─── */
         .envelope-card-preview {
             position: absolute;
             inset: 12px;
             background-color: var(--champagne);
-            padding: 20px 30px;
+            padding: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: var(--paper-navy);
-            box-shadow: 0 0 25px rgba(0,0,0,0.35);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             
-            /* Hidden inside lower pocket bounds on initialize */
-            transform: translateY(35%) scale(0.94);
+            /* Hidden initially deep within the card pocket */
+            transform: translateY(30%) scale(0.95);
             opacity: 0;
-            z-index: 25; /* Keep it above envelope flaps during execution */
+            z-index: 15;
             
-            /* Enhanced hardware accelerated transitions for position + scaling sizes */
-            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), 
-                        opacity 0.4s ease,
-                        width 0.6s cubic-bezier(0.25, 1, 0.3, 1),
-                        height 0.6s cubic-bezier(0.25, 1, 0.3, 1),
-                        inset 0.6s cubic-bezier(0.25, 1, 0.3, 1),
-                        padding 0.6s ease;
+            /* Single unified transition control pipeline */
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
+                        opacity 0.5s ease,
+                        padding 0.8s cubic-bezier(0.25, 1, 0.3, 1);
         }
 
-        /* Stage 1: Card emerges clearly up out of the envelope pocket */
+        /* Stage 1: Card emerges beautifully out of the envelope pocket */
         .unfold .envelope-card-preview {
-            transform: translateY(-65%) scale(1);
+            transform: translateY(-50%) scale(1);
             opacity: 1;
         }
 
-        /* Stage 2: Card smoothly expands to take over full screen dimensions */
-        .envelope-card-preview.fullscreen-zoom {
-            position: fixed;
-            inset: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            transform: translateY(0) scale(1) !important;
-            z-index: 3000 !important;
-            padding: 40px 10vw;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        /* Stage 2: The exact same card expands seamlessly to fill the screen */
+        .unfold .envelope-card-preview.zoom-step {
+            /* 
+               We calculate the precise inverse scale properties dynamically. 
+               Instead of fixed, we scale it out physically past its wrapper 
+            */
+            transform: translateY(-33.33%) scale(2.3); 
+            padding: 40px 12%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            z-index: 100;
         }
 
-        /* HARD-LOCKED TYPOGRAPHY SYSTEM */
+        /* Media adjustments to guarantee 100% fullscreen coverage regardless of screen ratio */
+        @media (max-width: 768px) {
+            .unfold .envelope-card-preview.zoom-step {
+                transform: translateY(-33.33%) scale(3.2);
+            }
+        }
+        @media (max-width: 480px) {
+            .unfold .envelope-card-preview.zoom-step {
+                transform: translateY(-33.33%) scale(4.5);
+            }
+        }
+
+        /* TYPOGRAPHY SYSTEM */
         .invite-text { 
             font-family: 'Tangerine', cursive !important; 
-            font-size: clamp(1.8rem, 4.8vw, 2.5rem) !important; 
+            font-size: clamp(1.6rem, 4.2vw, 2.3rem) !important; 
             line-height: 1.2 !important; 
             font-weight: 700 !important;
             max-width: 90%;
             margin: 0 auto;
             color: var(--paper-navy) !important;
-            transition: font-size 0.4s ease;
+            transition: transform 0.8s ease;
         }
 
-        .fullscreen-zoom .invite-text {
-            font-size: clamp(2.2rem, 6vw, 3.5rem) !important; 
-            max-width: 80%;
+        /* Counter-balance layout scaling matrix to keep text tack-sharp without rendering blurs */
+        .zoom-step .invite-text {
+            transform: scale(0.6);
+            font-size: clamp(2.8rem, 7vw, 4.2rem) !important;
+            max-width: 100%;
         }
 
         /* ─── ENVELOPE PANEL GEOMETRY ─── */
         .flap {
             position: absolute;
             background-color: var(--paper-navy);
-            transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
         .flap-top { 
@@ -137,6 +155,9 @@
         .flap-right { top: 0; right: 0; width: 50%; height: 100%; clip-path: polygon(100% 0, 100% 100%, 0 50%); z-index: 13; box-shadow: inset -35px 0 50px rgba(0,0,0,0.95); }
         .flap-bottom { bottom: 0; left: 0; width: 100%; height: 50%; clip-path: polygon(50% 0, 100% 100%, 0 100%); z-index: 12; box-shadow: inset 0 35px 50px rgba(0,0,0,0.95); }
         .flap-left { top: 0; left: 0; width: 50%; height: 100%; clip-path: polygon(0 0, 100% 50%, 0 100%); z-index: 11; box-shadow: inset 35px 0 50px rgba(0,0,0,0.95); }
+
+        /* Fading outer shell panels out during final zoom expansion */
+        .zoom-step ~ .flap { opacity: 0; pointer-events: none; }
 
         /* PULSING WAX SEAL */
         .wax-seal-container {
@@ -244,12 +265,12 @@
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Perfect Mechanical Single-Card Pipeline -->
+            <!-- The Only Card Instance -->
             <div class="envelope-card-preview" id="internal-card">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
 
-            <!-- Envelope Outer Shell Panels -->
+            <!-- Envelope Panels -->
             <div class="flap flap-left"></div>
             <div class="flap flap-bottom"></div>
             <div class="flap flap-right"></div>
@@ -343,41 +364,41 @@
 
     function handleOpen() {
         const landing = document.getElementById('landing-screen');
+        const viewport = document.getElementById('envelope-viewport');
+        const envelopeBg = document.getElementById('envelope');
         const internalCard = document.getElementById('internal-card');
         const content = document.getElementById('main-content');
         
-        // Stage 1: Flap folds open
+        // Step 1: Open the envelope flap
         landing.classList.add('unfold');
         
-        // Stage 2: Card cleanly slides halfway out of envelope pocket boundaries
+        // Step 2: Once card slides half-way up, seamlessly scale it to fill the screen
         setTimeout(() => {
+            viewport.classList.add('zoomed-state');
+            envelopeBg.style.opacity = "0"; // Fade the envelope base into dark background
+            internalCard.classList.add('zoom-step'); // Smooth CSS transform explosion takes over
             
-            // Stage 3: Smoothly grow the EXACT SAME card to full-screen display state
-            internalCard.classList.add('fullscreen-zoom');
-            
-            // Stage 4: Maintain full screen visibility for exactly 2.5 seconds (2500ms)
+            // Step 3: Hold the full-screen representation for exactly 2.5 seconds (2500ms)
             setTimeout(() => {
                 
-                // Pure Crossfade Transition: Fade out the entire landing layout as a single collective unit
+                // Clean Exit Crossfade: Smoothly fade out the entire landing layer out of view
                 landing.style.opacity = "0";
-                
-                // Instantly mount content maps directly behind the fading view layer
                 content.style.display = 'block';
                 
                 setTimeout(() => {
                     landing.classList.add('hide');
                     
-                    // Enable page viewport scrolling actions
+                    // Unlock browser scrolling mechanics
                     document.body.style.overflow = "auto";
                     document.documentElement.style.overflow = "auto";
                     
-                    // Fire scroll-linked card presentation animations
+                    // Trigger invitation text content presentations
                     document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                }, 500); // Wait smoothly for the fade transition to end complete out of sight
+                }, 600); // Wait for the landing layer fade out sequence to finish completely
                 
             }, 2500);
             
-        }, 800); // Time window for natural slider emergence tracking step
+        }, 800); // Perfect timing alignment for original pocket emergence glide
     }
 
     // Google Forms Pipeline Handler
