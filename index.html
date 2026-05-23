@@ -27,7 +27,7 @@
             font-family: 'Montserrat', sans-serif;
         }
 
-        /* ─── TRADITIONAL BACKING & BASE ─── */
+        /* ─── LANDING SCREEN ─── */
         #landing-screen {
             position: fixed;
             inset: 0;
@@ -55,17 +55,18 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.65);
         }
 
-        /* Lower front structural pocket overlay */
+        /* ─── FIXED LOWER POCKET FRONT ─── */
         .envelope-pocket {
             position: absolute;
             inset: 0;
             background: var(--paper-navy);
+            /* Traditional lower diamond pouch layout shape */
             clip-path: polygon(0% 45%, 50% 75%, 100% 45%, 100% 100%, 0% 100%);
             z-index: 12;
             box-shadow: inset 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        /* ─── SINGLE TRADITIONAL UPPER FLAP ─── */
+        /* ─── TRADITIONAL UPPER FLAP ─── */
         .flap-top {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 50%;
@@ -95,7 +96,6 @@
         /* ─── INSIDE CHAMPAGNE CARD ─── */
         .envelope-card-preview {
             position: absolute;
-            /* Anchored deep inside the lower envelope body pocket */
             inset: 15px 15px 25px 15px;
             background-color: var(--champagne);
             z-index: 10;
@@ -119,22 +119,22 @@
             max-width: 85%;
         }
 
-        /* ─── TRADITIONAL OPENING PIPELINE ─── */
-        /* Step 1: Swing single upper flap vertically open */
+        /* ─── TRANSITION ACTIONS ─── */
+        /* Step 1: Open upper flap */
         .unfold .flap-top {
             transform: rotateX(180deg);
-            z-index: 8;
+            z-index: 8; /* Push fold behind body on open */
         }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
 
-        /* Step 2: Extract card vertically upward out of the pocket */
+        /* Step 2: Emerge out of pocket */
         .unfold .envelope-card-preview {
             transform: translateY(-65%) scale(0.98);
-            z-index: 15;
+            z-index: 15; /* Slide out over the front pocket boundary */
             transition-delay: 0.5s;
         }
 
-        /* Step 3: Controlled zoom frame calculation preventing text layout clipping */
+        /* Step 3: Zoom screen proportions smoothly */
         .zoom-fullscreen .envelope-card-preview {
             transform: translateY(-25%) scale(2.2);
             opacity: 0;
@@ -143,7 +143,7 @@
 
         #landing-screen.hide { opacity: 0; visibility: hidden; }
 
-        /* ─── SYSTEM MAIN CARDS ─── */
+        /* ─── CONTENT CARDS ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
@@ -189,12 +189,14 @@
             width: 100%;
         }
         .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7vw, 4.5rem); color: var(--gold); margin: 8px 0; }
-        .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(0.8rem, 2.8vw, 0.95rem); line-height: 1.6; max-width: 90%; margin: 0 auto; }
+        .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(0.8rem, 2.8vw, 0.95rem); line-height: 1.6; max-width: 90%; margin: 0 align; margin: 0 auto; }
 
+        /* DETAILS ELEMENTS */
         .card-3 .sub-title { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 6.5vw, 4.2rem); color: var(--gold); }
         .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(0.95rem, 3.5vw, 1.3rem); margin-bottom: 15px; line-height: 1.5; }
         .map-btn { display: inline-block; background: var(--paper-navy); color: white; padding: 14px 28px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; }
 
+        /* RSVP INTERACTIVES */
         .rsvp-subtitle { font-family: var(--font-woodland); font-size: clamp(0.7rem, 2.5vw, 0.9rem); margin-bottom: 25px; display: block; }
         .counter-container { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.2); margin: 15px auto; max-width: 280px; }
         .counter-btn { width: 50px; height: 50px; font-size: 1.8rem; color: var(--gold); background: none; border: none; cursor: pointer; }
@@ -216,19 +218,19 @@
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body">
             
-            <!-- Traditional Upper Flap Layer -->
+            <!-- Traditional Upper Flap -->
             <div class="flap-top" id="main-flap">
                 <div class="wax-seal-container" onclick="handleOpen()">
                     <img src="01.png" class="wax-seal-img" alt="Wax Seal">
                 </div>
             </div>
 
-            <!-- Internal Invitation Slip Component with Updated Request Copy -->
+            <!-- Internal Invitation Slip Component -->
             <div class="envelope-card-preview">
                 <p class="invite-text">We request your presence at our joyous occasion!</p>
             </div>
 
-            <!-- Front Protective Pocket Trim -->
+            <!-- Front Pouch Overlay Panel -->
             <div class="envelope-pocket"></div>
             
         </div>
@@ -319,10 +321,10 @@
         const landing = document.getElementById('landing-screen');
         const content = document.getElementById('main-content');
         
-        // Trigger traditional single-flap upward flip
+        // Trigger flap open
         landing.classList.add('unfold');
         
-        // Stagger card vertical peek out followed by balanced screen-zoom handoff
+        // Stagger card vertical slide followed by screen zoom handover
         setTimeout(() => {
             container.classList.add('zoom-fullscreen');
             
@@ -334,7 +336,7 @@
         }, 1200); 
     }
 
-    // Google Form Pipeline Controller Action
+    // Google Form Handler Data Loop
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
