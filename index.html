@@ -69,6 +69,9 @@
             color: var(--paper-navy);
             box-shadow: 0 0 25px rgba(0,0,0,0.35);
             
+            /* FIXED: Prevents any structural text bleed completely */
+            overflow: hidden !important; 
+            
             /* Tucked inside lower envelope bounds initially */
             transform: translateY(35%) scale(0.94);
             opacity: 0;
@@ -102,6 +105,9 @@
             opacity: 0;
             pointer-events: none;
             
+            /* FIXED: Prevents zoom text overflow leakage */
+            overflow: hidden !important; 
+            
             transform-origin: top left;
             transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease-in-out;
         }
@@ -116,23 +122,15 @@
         /* HARD-LOCKED TYPOGRAPHY SYSTEM */
         .invite-text { 
             font-family: 'Tangerine', cursive !important; 
-            font-size: clamp(2.3rem, 6.2vw, 3.8rem) !important;
+            font-size: clamp(1.8rem, 5.2vw, 3.4rem) !important;
             line-height: 1.3 !important; 
             font-weight: 700 !important;
             color: var(--paper-navy) !important;
             
-            /* FIXED: Freeze typographic boundaries uniformly across layout containers */
-            width: 160%; 
-            max-width: none !important; 
-            flex-shrink: 0; 
-            transform: scale(0.62); 
-            transform-origin: center center;
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* Animate layout text matrix smoothly alongside hardware container scale transitions */
-        #zoom-card-overlay.fullscreen-active .invite-text {
-            transform: scale(1);
+            /* FIXED: Removed wide forced overrides to restore native auto-containment */
+            width: 100%;
+            max-width: 90% !important;
+            margin: 0 auto;
         }
 
         /* ─── ENVELOPE PANEL GEOMETRY ─── */
@@ -252,7 +250,7 @@
             .card { padding: 25px 5vw; }
             .cake-img { width: 75%; bottom: 0; right: -5%; opacity: 0.35; } 
             .details-flex { display: flex; flex-direction: column; gap: 25px; }
-            .invite-text { font-size: clamp(1.8rem, 5.2vw, 2.3rem) !important; }
+            .invite-text { max-width: 90%; font-size: clamp(1.6rem, 5.2vw, 2.2rem) !important; }
         }
     </style>
 </head>
@@ -370,33 +368,33 @@
         const zoomOverlay = document.getElementById('zoom-card-overlay');
         const content = document.getElementById('main-content');
         
-        // 1. Open envelope flap
+        // 1. Trigger envelope opening slide sequence
         landing.classList.add('unfold');
         
-        // 2. Perform handoff at extraction point peak height
+        // 2. Perform frame-perfect transform calculation matrix handoff at extraction point peak
         setTimeout(() => {
             const bounds = internalCard.getBoundingClientRect();
             
-            // Calculate matrix coefficients relative to layout window boundaries
+            // Calculate structural matrix scale coefficients relative directly to window sizes
             const scaleX = bounds.width / window.innerWidth;
             const scaleY = bounds.height / window.innerHeight;
             
-            // Fast-map screen coordinates invisibly before transform transitions execute
+            // Fast-map layout bounds securely using hardware transform mechanics without transition properties active
             zoomOverlay.style.transition = 'none';
             zoomOverlay.style.transform = `translate(${bounds.left}px, ${bounds.top}px) scale(${scaleX}, ${scaleY})`;
             zoomOverlay.style.opacity = '1';
             
-            // Force repaint cycle to confirm styles ahead of dynamic zoom step
+            // Force rendering pass step explicitly to lock configuration properties cleanly
             zoomOverlay.offsetHeight; 
             
-            // 3. Swap container visibilities and smoothly scale overlay to screen limits
+            // 3. Deactivate base frame element context and cleanly zoom using vector matrix rules over top flap elements
             internalCard.style.opacity = '0';
             zoomOverlay.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease-in-out';
             zoomOverlay.classList.add('fullscreen-active');
             
-            // 4. Clean crossfade execution block
+            // 4. Lock standard presentation setup modes safely for exactly 2.5 seconds
             setTimeout(() => {
-                // Initialize timeline content structure directly behind the opaque landing backdrop
+                // Set layout structure active underneath IMMEDIATELY.
                 content.style.display = 'block';
                 
                 // Fade out the landing mask container 
