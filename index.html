@@ -60,7 +60,7 @@
             position: absolute;
             inset: 10px;
             background-color: var(--champagne);
-            z-index: 9; /* Stays behind side and bottom flaps initially */
+            z-index: 9; 
             padding: 40px 32px;
             display: flex;
             align-items: center;
@@ -74,7 +74,6 @@
             transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
         }
 
-        /* FIXED: Elevate the card's depth layer order on open so it pulls out OVER the opened top flap */
         .unfold .envelope-card-preview {
             z-index: 25 !important;
         }
@@ -129,7 +128,7 @@
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.85));
         }
 
-        /* ─── TRANSITION ACTIONS ─── */
+        /* ─── TRANSITION MODIFIERS ─── */
         .unfold .flap-top { transform: rotateX(150deg); }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; }
 
@@ -139,12 +138,9 @@
             transition-delay: 0.6s;
         }
 
-        /* ─── ISOLATED PURE FULLSCREEN ZOOM OVERLAY ─── */
+        /* ─── CONTINUOUS SMOOTH FULLSCREEN ZOOM CARD ─── */
         #fullscreen-zoom-card {
             position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
             background-color: var(--champagne);
             color: var(--paper-navy);
             z-index: 3000; 
@@ -153,21 +149,33 @@
             justify-content: center;
             text-align: center;
             padding: 40px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.4);
             
+            /* Initially transparent, coordinates mapped smoothly via script */
             opacity: 0;
-            transform: scale(0.6); 
             pointer-events: none;
             visibility: hidden;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease, visibility 0.6s;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
+                        top 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
+                        left 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
+                        width 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
+                        height 0.8s cubic-bezier(0.25, 1, 0.3, 1), 
+                        opacity 0.3s ease, 
+                        visibility 0.3s;
         }
 
+        /* Zoom expansion state */
         #fullscreen-zoom-card.active {
             opacity: 1;
-            transform: scale(1);
             visibility: visible;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            transform: scale(1) !important;
         }
 
-        /* ─── SCROLL PANELS ─── */
+        /* ─── SCROLL TIMELINE PANELS ─── */
         #main-content { 
             display: none; 
             height: 100vh; 
@@ -236,7 +244,7 @@
 </head>
 <body>
 
-<!-- Isolated Fullscreen Reading Overlay -->
+<!-- The Centered Zoom Canvas Component -->
 <div id="fullscreen-zoom-card">
     <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
 </div>
@@ -245,12 +253,12 @@
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Mechanical Pull-Out Slip -->
+            <!-- Structural Peek Slip Element -->
             <div class="envelope-card-preview" id="sliding-card">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
 
-            <!-- Complete 4-Panel Folding Stationery Elements -->
+            <!-- Complete 4-Panel Folding Paper Stationery Components -->
             <div class="flap flap-left"></div>
             <div class="flap flap-bottom"></div>
             <div class="flap flap-right"></div>
@@ -344,33 +352,51 @@
 
     function handleOpen() {
         const landing = document.getElementById('landing-screen');
+        const internalCard = document.getElementById('sliding-card');
         const zoomOverlay = document.getElementById('fullscreen-zoom-card');
         const content = document.getElementById('main-content');
         
-        // Stage 1: Upper panel creases open on click
+        // Stage 1: Swing open top flap
         landing.classList.add('unfold');
         
-        // Stage 2: Let the nested preview card pull out over the flap smoothly
+        // Stage 2: Capture card bounding metrics once pulled out clearly
         setTimeout(() => {
-            zoomOverlay.classList.add('active');
+            const rect = internalCard.getBoundingClientRect();
             
-            // Stage 3: Hold pristine fullscreen reading display for exactly 1.8 seconds
-            setTimeout(() => {
-                // FIXED: Dissolve BOTH landing screen envelope and zoom card down together so the envelope doesn't flash back into view
-                zoomOverlay.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-                zoomOverlay.style.opacity = "0";
-                zoomOverlay.style.transform = "translateY(-30px)";
+            // Map the canvas layout overlay EXACTLY to match the physical slip dimensions
+            zoomOverlay.style.top = rect.top + 'px';
+            zoomOverlay.style.left = rect.left + 'px';
+            zoomOverlay.style.width = rect.width + 'px';
+            zoomOverlay.style.height = rect.height + 'px';
+            zoomOverlay.style.transform = 'none';
+            zoomOverlay.style.visibility = 'visible';
+            zoomOverlay.style.opacity = '1';
+            
+            // Hide the original mechanical card below it instantly to avoid duplicate rendering
+            internalCard.style.opacity = '0';
+            
+            // Force browser to register geometry before activating scale matrix
+            requestAnimationFrame(() => {
+                // Stage 3: Smoothly scale outward from absolute center screen context
+                zoomOverlay.classList.add('active');
                 
-                landing.style.opacity = "0";
-                
+                // Stage 4: Hold in full view for exactly 2 seconds, then dissolve together smoothly
                 setTimeout(() => {
-                    landing.classList.add('hide');
-                    content.style.display = 'block';
-                    document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                }, 600);
-            }, 1800); // 1.8s hold time
+                    zoomOverlay.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+                    zoomOverlay.style.opacity = "0";
+                    zoomOverlay.style.transform = "translateY(-30px)";
+                    
+                    landing.style.opacity = "0";
+                    
+                    setTimeout(() => {
+                        landing.classList.add('hide');
+                        content.style.display = 'block';
+                        document.querySelectorAll('.card').forEach(card => observer.observe(card));
+                    }, 600);
+                }, 2000); // 2-second hold time
+            });
             
-        }, 1500); // Flow time for top flap clearance and slide travel 
+        }, 1500); // Pacing for initial pull travel out of envelope pocket
     }
 
     // Google Forms Pipeline
