@@ -37,7 +37,7 @@
             align-items: center;
             background-color: #BDB095;
             padding: 24px;
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.4s ease-in-out;
         }
 
         .envelope-container {
@@ -73,14 +73,15 @@
             transform: translateY(35%) scale(0.94);
             opacity: 0;
             z-index: 9;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
+        /* FIXED: Slides COMPLETELY up past the top envelope border */
         .unfold .envelope-card-preview {
-            transform: translateY(-56%) scale(1);
+            transform: translateY(-105%) scale(0.95);
             opacity: 1;
             z-index: 25; 
-            transition-delay: 0.35s;
+            transition-delay: 0.4s;
         }
 
         /* HARD-LOCKED TYPOGRAPHY SYSTEM */
@@ -94,12 +95,12 @@
             color: var(--paper-navy) !important;
         }
 
-        /* ─── STATICALLY ANCHORED STABLE OVERLAY (NO CALCULATION JUMPS) ─── */
+        /* ─── STATICALLY ANCHORED STABLE OVERLAY ─── */
         #cloned-fullscreen-card {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(0.7);
             background-color: var(--champagne);
             color: var(--paper-navy);
             z-index: 3000;
@@ -109,27 +110,25 @@
             text-align: center;
             box-shadow: 0 0 40px rgba(0,0,0,0.4);
             
-            /* FIX: Completely ignore pointer interactions while hidden */
             pointer-events: none; 
+            opacity: 0;
             
-            /* Statically locked matching initial emergence vector bounds */
+            /* Match starting dimensional sizing of the emerged pocket card */
             width: calc(100% - 48px);
             max-width: 506px;
             height: calc((100% - 48px) / 1.5 - 24px);
             max-height: 329px;
-            opacity: 0;
             
-            /* Clean hardware scale expansion transitions */
-            transition: transform 0.55s cubic-bezier(0.25, 1, 0.3, 1),
-                        width 0.55s cubic-bezier(0.25, 1, 0.3, 1),
-                        height 0.55s cubic-bezier(0.25, 1, 0.3, 1),
-                        max-width 0.55s cubic-bezier(0.25, 1, 0.3, 1),
-                        max-height 0.55s cubic-bezier(0.25, 1, 0.3, 1),
-                        padding 0.55s cubic-bezier(0.25, 1, 0.3, 1),
-                        opacity 0.2s ease-in-out;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        max-width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        max-height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        padding 0.6s ease,
+                        opacity 0.3s ease-in-out;
         }
 
-        /* Screen-snapping fullscreen state trigger variables */
+        /* Screen-snapping fullscreen state trigger */
         #cloned-fullscreen-card.zoomed {
             opacity: 1;
             width: 100vw !important;
@@ -197,7 +196,7 @@
         .unfold .flap-top { transform: rotateX(150deg); }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
-        #landing-screen.hide { opacity: 0; visibility: hidden; }
+        #landing-screen.hide { display: none; }
 
         /* ─── SCROLLABLE CONTENT TIMELINE CARDS ─── */
         #main-content { 
@@ -276,12 +275,12 @@
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Flawless Mechanical Emergence Pocket Card -->
+            <!-- Pocket Card Frame -->
             <div class="envelope-card-preview" id="internal-card">
                 <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
             </div>
 
-            <!-- Complete 4-Panel Outer Shell Structure -->
+            <!-- Envelope Panels -->
             <div class="flap flap-left"></div>
             <div class="flap flap-bottom"></div>
             <div class="flap flap-right"></div>
@@ -378,43 +377,43 @@
         const zoomCard = document.getElementById('cloned-fullscreen-card');
         const content = document.getElementById('main-content');
         
-        // Stage 1: Upper triangular panel folds open cleanly
+        // Stage 1: Envelope flap folds open
         landing.classList.add('unfold');
         
-        // Stage 2: Let original card slide up out of pocket completely
+        // Stage 2: Wait for pocket card to fully emerge clear out of the envelope
         setTimeout(() => {
-            // Activate overlay step 1 (Fades exactly over the stationary peak layer position)
+            // Instantly transition cloned-card to full-screen zoom layout
             zoomCard.classList.add('zoomed');
             
-            // Stage 3: Keep the fullscreen card completely stable for 2.5 seconds (2500ms)
+            // Stage 3: Keep full-screen card locked flat for exactly 2.5 seconds (2500ms)
             setTimeout(() => {
-                // Drop the fullscreen zoom card overlay FIRST to expose the envelope context briefly
-                zoomCard.style.transition = "opacity 0.3s ease-in-out, transform 0.3s ease-in-out";
-                zoomCard.style.opacity = "0";
-                zoomCard.style.transform = "translate(-50%, calc(-50% - 15px))";
                 
-                // Expose the blue envelope underneath briefly before triggering template transition
+                // Crossfade: Fade OUT both the overlay card AND the background envelope simultaneously
+                zoomCard.style.transition = "opacity 0.4s ease-in-out";
+                landing.style.transition = "opacity 0.4s ease-in-out";
+                
+                zoomCard.style.opacity = "0";
+                landing.style.opacity = "0";
+                
+                // Prepare the timeline content cards directly behind the fade layer
+                content.style.display = 'block';
+                
+                // Clean cleanup once elements have faded away completely
                 setTimeout(() => {
-                    landing.style.transition = "opacity 0.3s ease-in-out";
-                    landing.style.opacity = "0";
+                    zoomCard.style.display = 'none';
+                    landing.classList.add('hide');
                     
-                    // Render the scrollable main content cards directly underneath
-                    content.style.with = "100%";
-                    content.style.display = 'block';
-                    
-                    // Allow normal page scrolling after landing section is hidden
+                    // Restore device viewport scrolling actions safely
                     document.body.style.overflow = "auto";
                     document.documentElement.style.overflow = "auto";
                     
-                    setTimeout(() => {
-                        landing.classList.add('hide');
-                        document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                    }, 300);
-                }, 450); // Frame threshold duration for clear envelope flash showcase
+                    // Fire timeline text animations
+                    document.querySelectorAll('.card').forEach(card => observer.observe(card));
+                }, 400); // Transitions finish completely out of view
                 
-            }, 2500);
+            }, 2500); // Stays expanded for exactly 2.5 seconds
             
-        }, 1000); // Wait pacing time for extraction slide movement completion
+        }, 1200); // Safe timing window for pocket card to finish its slide up
     }
 
     // Google Forms Pipeline Async Handler
