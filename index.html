@@ -37,7 +37,7 @@
             align-items: center;
             background-color: #BDB095;
             padding: 24px;
-            transition: opacity 0.3s ease-in-out; /* FASTER SCREEN DISAPPEARANCE */
+            transition: opacity 0.3s ease-in-out;
         }
 
         .envelope-container {
@@ -73,17 +73,17 @@
             transform: translateY(35%) scale(0.94);
             opacity: 0;
             z-index: 9;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease; /* FASTER EMERGENCE */
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
         .unfold .envelope-card-preview {
             transform: translateY(-56%) scale(1);
             opacity: 1;
             z-index: 25; 
-            transition-delay: 0.35s; /* SPEEDY DELAY OVERHEAD */
+            transition-delay: 0.35s;
         }
 
-        /* SPECIFIC CARD TYPOGRAPHY (Locks Tangerine, fits borders perfectly) */
+        /* CARD TYPOGRAPHY */
         .invite-text { 
             font-family: var(--font-amoresa) !important; 
             font-size: clamp(1.8rem, 4.8vw, 2.5rem); 
@@ -108,7 +108,6 @@
             opacity: 0;
             pointer-events: none;
             
-            /* Snappy zoom tracking curves */
             transition: top 0.55s cubic-bezier(0.25, 1, 0.3, 1),
                         left 0.55s cubic-bezier(0.25, 1, 0.3, 1),
                         width 0.55s cubic-bezier(0.25, 1, 0.3, 1),
@@ -384,17 +383,18 @@
                 
                 // Stage 3: Explicitly locked for 2.5 seconds reading window
                 setTimeout(() => {
-                    // SNAPPY FADE DURATION: 300ms cross dissolve sequence straight into card 1
+                    // FIXED: Cleaned up typo. Triggers 300ms cross dissolve sequence straight into card 1
                     zoomCard.style.transition = "opacity 0.3s ease-in-out, transform 0.3s ease-in-out";
                     zoomCard.style.opacity = "0";
                     zoomCard.style.transform = "translateY(-15px)";
                     landing.style.transition = "opacity 0.3s ease-in-out";
                     landing.style.opacity = "0";
                     
+                    // Activate main scroll layout container in background right before screen opacity zeros out
+                    content.style.display = 'block';
+                    
                     setTimeout(() => {
                         landing.classList.add('hide');
-                        content.style.style.display = 'block'; /* Dynamic viewport activation override */
-                        content.style.display = 'block';
                         document.querySelectorAll('.card').forEach(card => observer.observe(card));
                     }, 300);
                 }, 2500); 
