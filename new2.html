@@ -26,6 +26,7 @@
             background-color: var(--deep-dark-navy);
             overflow: hidden; 
             font-family: var(--font-sans);
+            color: var(--champagne);
         }
 
         /* ─── ENVELOPE BASE (UNTOUCHED) ─── */
@@ -66,309 +67,236 @@
         .unfold .flap-top { transform: rotateX(150deg); z-index: 5; }
         .unfold .wax-seal-container { opacity: 0; pointer-events: none; animation: none; }
 
+
+        /* ─── MAGICAL BACKGROUND EFFECTS ─── */
+        .magic-bg {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-color: var(--deep-dark-navy);
+            /* Stardust texture */
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .glowing-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: drift 20s infinite alternate ease-in-out;
+        }
+
+        .orb-1 { width: 60vw; height: 60vw; background: var(--gold); top: -20%; left: -20%; animation-duration: 25s; }
+        .orb-2 { width: 50vw; height: 50vw; background: #4a6fa5; bottom: -10%; right: -10%; animation-duration: 22s; animation-delay: -5s; }
+        .orb-3 { width: 40vw; height: 40vw; background: var(--champagne); top: 30%; left: 40%; opacity: 0.15; animation-duration: 30s; animation-delay: -15s; }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(10vw, 10vh) scale(1.2); }
+        }
+
         /* ─── MAIN SCROLL CONTAINER ─── */
         #main-content { 
-            display: none; height: 100vh; height: 100dvh; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; background-color: var(--deep-dark-navy);
+            display: none; height: 100vh; height: 100dvh; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; position: relative; z-index: 1;
         }
 
         .card { 
-            width: 100vw; min-height: 100vh; min-height: 100dvh; scroll-snap-align: start; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+            width: 100vw; min-height: 100vh; min-height: 100dvh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10vh 5vw;
         }
 
-        /* Entrance Animations */
-        .anim-up { opacity: 0; transform: translateY(50px); transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .anim-scale { opacity: 0; transform: scale(0.95); transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .card.is-visible .anim-up { opacity: 1; transform: translateY(0); }
-        .card.is-visible .anim-scale { opacity: 1; transform: scale(1); }
-        .d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.3s; } .d3 { transition-delay: 0.5s; } .d4 { transition-delay: 0.7s; }
+        /* ─── ETHEREAL ANIMATIONS ─── */
+        .reveal-glow { opacity: 0; transform: translateY(30px) scale(0.95); transition: all 1.5s cubic-bezier(0.2, 0.8, 0.2, 1); filter: blur(10px); }
+        .card.is-visible .reveal-glow { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        .d1 { transition-delay: 0.2s; } .d2 { transition-delay: 0.4s; } .d3 { transition-delay: 0.6s; } .d4 { transition-delay: 0.8s; }
 
-        /* ─── CARD 1: THE GRAND ARCHWAY (FIXED) ─── */
-        .card-1 { 
-            background: radial-gradient(circle at center, #0a1b2e 0%, var(--deep-dark-navy) 100%);
-            padding: 5vh 5vw;
+        @keyframes levitate {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
-        .hero-arch {
-            position: relative;
-            background-color: var(--champagne);
-            width: 90vw;
-            max-width: 500px;
-            min-height: 75vh; /* Replaced fixed height for flexible containment */
-            height: auto;
-            border-top-left-radius: 250px;
-            border-top-right-radius: 250px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10vh 6vw 8vh 6vw; /* Adjusted bottom padding to hold date naturally */
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-            z-index: 2;
-        }
-
-        .hero-arch::before {
-            content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid var(--gold); border-top-left-radius: 240px; border-top-right-radius: 240px; pointer-events: none; opacity: 0.6;
-        }
-
-        .arch-quote { font-family: var(--font-script); font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--paper-navy); text-align: center; line-height: 1.1; margin-bottom: 5px; z-index: 5; }
-        .arch-verse { font-family: var(--font-sans); font-size: clamp(0.6rem, 1.5vw, 0.8rem); letter-spacing: 5px; text-transform: uppercase; color: var(--paper-navy); opacity: 0.7; margin-bottom: 6vh; z-index: 5; text-align: center; }
-        
-        .arch-names { font-family: var(--font-serif); font-size: clamp(3.5rem, 9vw, 6rem); line-height: 0.9; color: var(--paper-navy); text-align: center; text-transform: uppercase; font-weight: 300; letter-spacing: 2px; z-index: 5; }
-        .arch-amp { font-family: var(--font-script); color: var(--gold); font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1; margin: 10px 0; text-transform: lowercase; }
-
-        .arch-date { font-family: var(--font-sans); font-size: clamp(0.8rem, 2vw, 1.1rem); letter-spacing: 6px; color: var(--paper-navy); margin-top: 4vh; z-index: 5; text-transform: uppercase; }
-
-        .hero-cake-overlay {
-            position: absolute;
-            bottom: -5vh;
-            right: -10vw;
-            width: clamp(200px, 45vw, 350px); /* Safely sized */
-            max-height: 45vh;
-            object-fit: contain;
-            z-index: 10;
-            filter: drop-shadow(-15px 15px 25px rgba(0,0,0,0.4));
-            pointer-events: none;
-        }
-
-        /* ─── CARD 2: THE OFFSET EDITORIAL FRAME ─── */
-        .card-2 { background-color: var(--champagne); padding: 5vw; }
-
-        .editorial-stagger {
-            position: relative;
-            background-color: var(--deep-dark-navy);
+        /* ─── GLASSMORPHISM PANEL ─── */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(200, 169, 107, 0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(200, 169, 107, 0.05);
+            border-radius: 30px;
+            padding: 8vh 6vw;
             width: 100%;
             max-width: 800px;
-            padding: 8vh 6vw;
             text-align: center;
-            z-index: 2;
+            animation: levitate 8s infinite ease-in-out;
         }
 
-        .editorial-stagger::after {
-            content: ''; position: absolute; top: 20px; left: 20px; right: -20px; bottom: -20px; border: 1px solid var(--gold); z-index: -1; pointer-events: none;
-        }
-
-        .e-title { font-family: var(--font-script); font-size: clamp(3.5rem, 8vw, 5.5rem); color: var(--gold); margin-bottom: 40px; }
-        .e-body { font-family: var(--font-sans); font-size: clamp(0.75rem, 1.8vw, 1rem); line-height: 2.2; letter-spacing: 3px; color: var(--champagne); text-transform: uppercase; margin-bottom: 30px; opacity: 0.8; }
+        /* ─── CARD 1: THE MAGIC AURA ─── */
+        .c1-text-wrapper { text-align: center; z-index: 10; margin-bottom: 5vh; }
         
-        .e-name { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--gold); font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
-        .e-with { font-family: var(--font-script); font-size: clamp(2.5rem, 5vw, 3.5rem); color: var(--white); margin: 10px 0; }
-
-        /* ─── CARD 3: THE OVERLAPPING PANELS (FIXED) ─── */
-        .card-3 { background-color: var(--deep-dark-navy); padding: 5vw; flex-direction: column; justify-content: center; }
-
-        .c3-header { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--champagne); letter-spacing: 12px; text-transform: uppercase; margin-bottom: 4vh; z-index: 10; position: relative; text-align: center; width: 100%; }
-
-        .overlap-container {
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px 0;
-        }
-
-        .panel-back {
-            position: absolute;
-            left: 5%;
-            width: 55%;
-            background: var(--champagne);
-            padding: 6vh 4vw;
-            text-align: left;
-            z-index: 1;
-        }
-
-        .panel-front {
-            position: absolute;
-            right: 5%;
-            bottom: -20px;
-            width: 50%;
-            background: var(--paper-navy);
-            border: 1px solid var(--gold);
-            padding: 6vh 4vw;
-            text-align: left;
-            z-index: 2;
-            box-shadow: -15px 15px 30px rgba(0,0,0,0.5);
-        }
-
-        .p-heading { font-family: var(--font-script); font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 15px; }
-        .panel-back .p-heading { color: var(--paper-navy); }
-        .panel-front .p-heading { color: var(--gold); }
-
-        .p-body { font-family: var(--font-sans); font-size: clamp(0.75rem, 1.5vw, 1rem); line-height: 2; letter-spacing: 2px; text-transform: uppercase; }
-        .panel-back .p-body { color: var(--paper-navy); }
-        .panel-front .p-body { color: var(--champagne); opacity: 0.8; }
-
-        .p-btn { display: inline-block; margin-top: 30px; padding: 12px 30px; border: 1px solid var(--gold); color: var(--gold); font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 4px; text-decoration: none; text-transform: uppercase; transition: 0.3s; }
-        .p-btn:hover { background: var(--gold); color: var(--paper-navy); }
-
-        /* ─── CARD 4: THE GOLDEN PILL RSVP (FIXED) ─── */
-        .card-4 { background: var(--champagne); padding: 5vw; }
-
-        .oval-rsvp {
-            background-color: var(--deep-dark-navy);
-            width: 90vw;
-            max-width: 500px;
-            height: auto;
-            min-height: 75vh;
-            /* Changed to an elegant tall pill shape rather than a strict circle to prevent clipping */
-            border-radius: 200px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 12vh 6vw;
-            position: relative;
-            text-align: center;
-        }
-
-        .oval-rsvp::before {
-            content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid var(--gold); border-radius: 190px; pointer-events: none; opacity: 0.6;
-        }
-
-        .o-title { font-family: var(--font-serif); font-size: clamp(2.5rem, 6vw, 4rem); color: var(--gold); text-transform: uppercase; letter-spacing: 6px; line-height: 1; }
-        .o-sub { font-family: var(--font-script); font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--champagne); margin-bottom: 6vh; }
-
-        .o-form { width: 100%; display: flex; flex-direction: column; gap: 30px; z-index: 5; }
+        .c1-quote { font-family: var(--font-script); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--gold); text-shadow: 0 0 15px rgba(200,169,107,0.6); margin-bottom: 5px; }
+        .c1-verse { font-family: var(--font-sans); font-size: clamp(0.7rem, 1.2vw, 0.9rem); letter-spacing: 6px; text-transform: uppercase; color: var(--champagne); opacity: 0.8; margin-bottom: 6vh; }
         
-        .o-label { font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; display: block; }
-        .o-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 10px 0; color: var(--white); font-family: var(--font-serif); font-size: 1.5rem; text-align: center; transition: 0.3s; }
-        .o-input:focus { outline: none; border-bottom-color: var(--gold); }
+        .c1-names { font-family: var(--font-serif); font-size: clamp(3.5rem, 10vw, 8rem); line-height: 1; color: var(--champagne); text-transform: uppercase; letter-spacing: 5px; font-weight: 300; text-shadow: 0 0 25px rgba(255,255,255,0.3); }
+        .c1-amp { font-family: var(--font-script); color: var(--gold); font-size: clamp(3rem, 7vw, 5rem); margin: 5px 0; text-shadow: 0 0 20px rgba(200,169,107,0.8); }
 
-        .o-counter { display: flex; align-items: center; justify-content: center; gap: 30px; }
-        .o-btn-count { background: none; border: none; color: var(--champagne); font-size: 2rem; cursor: pointer; }
-        .o-num { font-family: var(--font-serif); font-size: 2.2rem; color: var(--white); }
+        .c1-date { font-family: var(--font-sans); font-size: clamp(0.9rem, 2vw, 1.2rem); letter-spacing: 10px; color: var(--gold); margin-top: 6vh; text-transform: uppercase; }
 
-        .o-submit { background: var(--gold); color: var(--deep-dark-navy); border: none; padding: 15px; font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase; cursor: pointer; margin-top: 10px; transition: 0.3s; border-radius: 30px; }
+        .c1-cake {
+            width: clamp(220px, 45vw, 400px);
+            object-fit: contain;
+            z-index: 5;
+            animation: levitate 6s infinite ease-in-out reverse;
+            filter: drop-shadow(0 0 30px rgba(200,169,107,0.4));
+        }
+
+        /* ─── CARD 2: FLOATING INVITATION ─── */
+        .c2-title { font-family: var(--font-script); font-size: clamp(3.5rem, 7vw, 5.5rem); color: var(--gold); margin-bottom: 40px; text-shadow: 0 0 15px rgba(200,169,107,0.5); }
+        .c2-body { font-family: var(--font-sans); font-size: clamp(0.8rem, 1.5vw, 1rem); line-height: 2.2; letter-spacing: 3px; color: rgba(255,255,255,0.85); text-transform: uppercase; }
+        .c2-name { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--champagne); font-weight: 300; letter-spacing: 2px; text-transform: uppercase; margin: 25px 0; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        .c2-with { font-family: var(--font-script); font-size: clamp(2.5rem, 4vw, 3.5rem); color: var(--gold); }
+
+        /* ─── CARD 3: GLOWING DETAILS ─── */
+        .c3-title { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--gold); letter-spacing: 12px; text-transform: uppercase; margin-bottom: 6vh; text-shadow: 0 0 20px rgba(200,169,107,0.4); }
         
-        .o-footer { margin-top: 6vh; z-index: 5; }
-        .o-footer p:first-child { font-family: var(--font-sans); font-size: 0.6rem; letter-spacing: 2px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
-        .o-footer p:last-child { font-family: var(--font-script); font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--gold); margin-top: 5px; }
+        .c3-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; text-align: center; }
+        
+        .c3-heading { font-family: var(--font-script); font-size: clamp(2.5rem, 4vw, 3.5rem); color: var(--gold); margin-bottom: 15px; }
+        .c3-text { font-family: var(--font-sans); font-size: clamp(0.8rem, 1.2vw, 1rem); line-height: 2; letter-spacing: 2px; color: var(--champagne); text-transform: uppercase; }
 
-        /* ─── MOBILE RESPONSIVENESS OVERRIDES ─── */
+        .c3-btn { 
+            display: inline-block; margin-top: 50px; padding: 15px 40px; background: rgba(200,169,107,0.1); border: 1px solid var(--gold); color: var(--gold); font-family: var(--font-sans); font-size: 0.8rem; letter-spacing: 5px; text-decoration: none; text-transform: uppercase; transition: 0.4s; border-radius: 50px; box-shadow: 0 0 20px rgba(200,169,107,0.2);
+        }
+        .c3-btn:hover { background: var(--gold); color: var(--deep-dark-navy); box-shadow: 0 0 30px rgba(200,169,107,0.6); }
+
+        /* ─── CARD 4: ETHEREAL RSVP ─── */
+        .c4-glass { max-width: 500px; padding: 8vh 6vw; border-radius: 40px; }
+        .c4-title { font-family: var(--font-serif); font-size: clamp(2.5rem, 6vw, 4rem); color: var(--gold); text-transform: uppercase; letter-spacing: 6px; text-shadow: 0 0 15px rgba(200,169,107,0.5); }
+        .c4-sub { font-family: var(--font-script); font-size: clamp(2rem, 4vw, 3rem); color: var(--champagne); margin-bottom: 6vh; }
+
+        .c4-form { display: flex; flex-direction: column; gap: 35px; }
+        .c4-label { font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 4px; color: rgba(200,169,107,0.8); text-transform: uppercase; display: block; margin-bottom: 10px; }
+        
+        .c4-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.2); padding: 15px 0; color: var(--white); font-family: var(--font-serif); font-size: 1.8rem; text-align: center; transition: 0.3s; }
+        .c4-input:focus { outline: none; border-bottom: 1px solid var(--gold); box-shadow: 0 10px 20px -10px rgba(200,169,107,0.4); }
+
+        .c4-counter { display: flex; align-items: center; justify-content: center; gap: 40px; }
+        .c4-btn-count { background: none; border: none; color: var(--gold); font-size: 2.5rem; cursor: pointer; transition: 0.3s; font-family: var(--font-serif); }
+        .c4-btn-count:hover { text-shadow: 0 0 15px var(--gold); transform: scale(1.2); }
+        .c4-num { font-family: var(--font-serif); font-size: 2.5rem; color: var(--white); }
+
+        .c4-submit { background: rgba(200,169,107,0.15); color: var(--gold); border: 1px solid var(--gold); padding: 18px; font-family: var(--font-sans); font-size: 0.8rem; letter-spacing: 5px; text-transform: uppercase; cursor: pointer; margin-top: 15px; transition: 0.4s; border-radius: 50px; box-shadow: 0 0 20px rgba(200,169,107,0.2); }
+        .c4-submit:hover { background: var(--gold); color: var(--deep-dark-navy); box-shadow: 0 0 30px rgba(200,169,107,0.6); }
+
+        .c4-footer { margin-top: 6vh; }
+        .c4-footer p:first-child { font-family: var(--font-sans); font-size: 0.65rem; letter-spacing: 3px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+        .c4-footer p:last-child { font-family: var(--font-script); font-size: clamp(2rem, 4vw, 3rem); color: var(--gold); margin-top: 8px; text-shadow: 0 0 10px rgba(200,169,107,0.3); }
+
+        /* ─── MOBILE RESPONSIVENESS ─── */
         @media (max-width: 768px) {
-            /* Fix Arch Heights */
-            .hero-arch { min-height: 70vh; padding: 8vh 6vw; border-top-left-radius: 180px; border-top-right-radius: 180px; }
-            .hero-arch::before { border-top-left-radius: 170px; border-top-right-radius: 170px; }
-            
-            /* Fix Overlapping Details (Stacking naturally) */
-            .overlap-container { flex-direction: column; align-items: stretch; }
-            .panel-back, .panel-front {
-                position: relative; /* Reverts from absolute to natural flow */
-                width: 90%;
-                left: auto; right: auto; top: auto; bottom: auto;
-                padding: 5vh 6vw;
-            }
-            .panel-back { margin-left: 0; margin-right: auto; }
-            .panel-front { 
-                margin-left: auto; margin-right: 0; 
-                margin-top: -15%; /* Creates a clean, controlled overlap */
-                box-shadow: -10px 10px 25px rgba(0,0,0,0.5); 
-            }
-
-            /* Editorial Box Fix */
-            .editorial-stagger::after { top: 10px; left: 10px; right: -10px; bottom: -10px; }
-            
-            /* Oval RSVP Fix */
-            .oval-rsvp { padding: 8vh 8vw; border-radius: 120px; }
-            .oval-rsvp::before { border-radius: 110px; }
+            .glass-panel { padding: 6vh 5vw; border-radius: 25px; }
+            .c3-grid { grid-template-columns: 1fr; gap: 30px; }
+            .c1-text-wrapper { margin-bottom: 2vh; }
+            .c1-cake { max-height: 40vh; }
         }
     </style>
 </head>
 <body>
 
+<div class="magic-bg">
+    <div class="glowing-orb orb-1"></div>
+    <div class="glowing-orb orb-2"></div>
+    <div class="glowing-orb orb-3"></div>
+</div>
+
 <main id="main-content">
     
-    <!-- CARD 1: THE GRAND ARCHWAY -->
-    <section class="card card-1">
-        <div class="hero-arch anim-scale d1">
-            <p class="arch-quote anim-up d2">“He has made everything beautiful in His time”</p>
-            <p class="arch-verse anim-up d2">Ecclesiastes 3:11</p>
+    <section class="card">
+        <div class="c1-text-wrapper reveal-glow d1">
+            <p class="c1-quote">“He has made everything beautiful in His time”</p>
+            <p class="c1-verse">Ecclesiastes 3:11</p>
             
-            <div class="arch-names anim-up d3">MEKHA<div class="arch-amp">&</div>EDWIN</div> 
+            <div class="c1-names">MEKHA<div class="c1-amp">&</div>EDWIN</div> 
             
-            <div class="arch-date anim-up d4">17th July 2026</div>
-            
-            <img src="02.png" class="hero-cake-overlay anim-scale d4" alt="Wedding Element">
+            <div class="c1-date">17th July 2026</div>
         </div>
+        
+        <img src="02.png" class="c1-cake reveal-glow d3" alt="Wedding Element">
     </section>
 
-    <!-- CARD 2: THE OFFSET EDITORIAL FRAME -->
-    <section class="card card-2">
-        <div class="editorial-stagger anim-up d1">
-            <h1 class="e-title">You are Invited</h1>
+    <section class="card">
+        <div class="glass-panel reveal-glow d1">
+            <h1 class="c2-title">You are Invited</h1>
             
-            <p class="e-body">
+            <p class="c2-body">
                 Reji Thomas Mathew & Lekha Reji Thomas,<br>
-                HBR Layout, Bangalore<br>
-                <span style="font-size: 0.7em;">(Memuriyil, Elanthoor, Pathanamthitta)</span><br><br>
+                <span style="font-size: 0.8em; opacity: 0.6;">HBR Layout, Bangalore<br>(Memuriyil, Elanthoor, Pathanamthitta)</span><br><br>
                 request the honour of your presence and prayers<br>
                 at the wedding of their daughter,
             </p>
             
-            <h2 class="e-name">Mekha Susan Thomas</h2>
+            <h2 class="c2-name">Mekha Susan Thomas</h2>
             
-            <p class="e-with">with</p>
+            <p class="c2-with">with</p>
             
-            <h2 class="e-name">Edwin Roger Bright</h2>
+            <h2 class="c2-name">Edwin Roger Bright</h2>
             
-            <p class="e-body" style="margin-top: 30px; margin-bottom: 0;">
+            <p class="c2-body" style="margin-top: 30px; margin-bottom: 0;">
                 S/O M.J. Bright and Lissy Bright,<br>
-                Kamothe, Navi Mumbai
+                <span style="font-size: 0.8em; opacity: 0.6;">Kamothe, Navi Mumbai</span>
             </p>
         </div>
     </section>
 
-    <!-- CARD 3: THE OVERLAPPING PANELS -->
-    <section class="card card-3">
-        <h1 class="c3-header anim-up d1">DETAILS</h1>
-        
-        <div class="overlap-container">
-            <div class="panel-back anim-up d2">
-                <h2 class="p-heading">Date & Time</h2>
-                <p class="p-body">
-                    July 17, 2026 (Friday)<br><br>
-                    4:00pm — Wedding<br>
-                    7:00pm — Reception
-                </p>
+    <section class="card">
+        <div class="glass-panel reveal-glow d1">
+            <h1 class="c3-title">DETAILS</h1>
+            
+            <div class="c3-grid">
+                <div>
+                    <h2 class="c3-heading">Date & Time</h2>
+                    <p class="c3-text">
+                        July 17, 2026 (Friday)<br><br>
+                        4:00pm — Wedding<br>
+                        7:00pm — Reception
+                    </p>
+                </div>
+                
+                <div>
+                    <h2 class="c3-heading">Venue</h2>
+                    <p class="c3-text">
+                        The Kings Meadows<br><br>
+                        Under the auspices of<br>
+                        City Harvest AG Church, Bangalore
+                    </p>
+                </div>
             </div>
             
-            <div class="panel-front anim-up d3">
-                <h2 class="p-heading">Venue</h2>
-                <p class="p-body">
-                    The Kings Meadows<br><br>
-                    Under the auspices of<br>
-                    City Harvest AG Church, Bangalore
-                </p>
-                <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="p-btn">VIEW ON MAPS</a>
-            </div>
+            <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="c3-btn">VIEW ON MAPS</a>
         </div>
     </section>
 
-    <!-- CARD 4: THE GOLDEN PILL RSVP -->
-    <section class="card card-4">
-        <div class="oval-rsvp anim-scale d1">
-            <h1 class="o-title anim-up d2">RSVP SOON!</h1>
-            <p class="o-sub anim-up d2" id="rsvp-status-msg">We can’t wait to celebrate with you!</p>
+    <section class="card">
+        <div class="glass-panel c4-glass reveal-glow d1">
+            <h1 class="c4-title">RSVP SOON!</h1>
+            <p class="c4-sub" id="rsvp-status-msg">We can’t wait to celebrate with you!</p>
             
-            <form id="google-rsvp-form" class="o-form anim-up d3">
+            <form id="google-rsvp-form" class="c4-form">
                 <div>
-                    <label class="o-label">FULL NAME</label>
-                    <input type="text" id="guest-name-input" class="o-input" required>
+                    <label class="c4-label">FULL NAME</label>
+                    <input type="text" id="guest-name-input" class="c4-input" required>
                 </div>
                 
                 <div>
-                    <label class="o-label">NUMBER OF GUESTS</label>
-                    <div class="o-counter">
-                        <button type="button" class="o-btn-count" onclick="updateGuests(-1)">-</button>
-                        <div class="o-num" id="guestCountDisplay">1</div>
-                        <button type="button" class="o-btn-count" onclick="updateGuests(1)">+</button>
+                    <label class="c4-label">NUMBER OF GUESTS</label>
+                    <div class="c4-counter">
+                        <button type="button" class="c4-btn-count" onclick="updateGuests(-1)">-</button>
+                        <div class="c4-num" id="guestCountDisplay">1</div>
+                        <button type="button" class="c4-btn-count" onclick="updateGuests(1)">+</button>
                     </div>
                 </div>
                 
-                <button type="submit" class="o-submit" id="submit-btn-text">SEND RSVP</button>
+                <button type="submit" class="c4-submit" id="submit-btn-text">SEND RSVP</button>
             </form>
             
-            <div class="o-footer anim-up d4">
+            <div class="c4-footer">
                 <p>With best compliments from</p>
                 <p>Shimon Mathew Thomas</p>
             </div>
@@ -376,7 +304,6 @@
     </section>
 </main>
 
-<!-- ENVELOPE OVERLAY -->
 <section id="landing-screen">
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
@@ -433,7 +360,7 @@
                 document.body.style.overflow = "auto";
                 document.documentElement.style.overflow = "auto";
                 document.querySelectorAll('.card').forEach(card => observer.observe(card));
-                document.querySelector('.card-1').classList.add('is-visible');
+                document.querySelectorAll('.card')[0].classList.add('is-visible');
             }, 1800); 
         }, 1000); 
     }
@@ -446,7 +373,8 @@
         
         submitBtn.disabled = true;
         submitBtn.innerText = "SENDING...";
-        submitBtn.style.background = "var(--champagne)";
+        submitBtn.style.background = "var(--gold)";
+        submitBtn.style.color = "var(--deep-dark-navy)";
 
         const formActionURL = "https://docs.google.com/forms/d/e/1FAIpQLSfXXXXXXXXXXXXX/formResponse"; 
         const nameEntryID = "entry.1111111111"; 
@@ -465,12 +393,13 @@
             body: formData
         }).then(() => {
             submitBtn.innerText = "THANK YOU!";
-            statusMsg.innerText = "Your RSVP has been beautifully recorded.";
+            statusMsg.innerText = "Your RSVP has been recorded.";
         }).catch((error) => {
             console.error('Error:', error);
             submitBtn.disabled = false;
             submitBtn.innerText = "SEND RSVP";
-            submitBtn.style.background = "var(--gold)";
+            submitBtn.style.background = "rgba(200,169,107,0.15)";
+            submitBtn.style.color = "var(--gold)";
             alert("Something went wrong. Please check your connection.");
         });
     });
