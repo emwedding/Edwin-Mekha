@@ -82,7 +82,7 @@
         .card.is-visible .anim-scale { opacity: 1; transform: scale(1); }
         .d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.3s; } .d3 { transition-delay: 0.5s; } .d4 { transition-delay: 0.7s; }
 
-        /* ─── CARD 1: THE GRAND ARCHWAY ─── */
+        /* ─── CARD 1: THE GRAND ARCHWAY (FIXED) ─── */
         .card-1 { 
             background: radial-gradient(circle at center, #0a1b2e 0%, var(--deep-dark-navy) 100%);
             padding: 5vh 5vw;
@@ -93,37 +93,36 @@
             background-color: var(--champagne);
             width: 90vw;
             max-width: 500px;
-            height: 80vh;
+            min-height: 75vh; /* Replaced fixed height for flexible containment */
+            height: auto;
             border-top-left-radius: 250px;
             border-top-right-radius: 250px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12vh 8vw 5vh 8vw;
+            padding: 10vh 6vw 8vh 6vw; /* Adjusted bottom padding to hold date naturally */
             box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             z-index: 2;
         }
 
-        /* Inner delicate line */
         .hero-arch::before {
-            content: ''; position: absolute; inset: 12px; border: 1px solid var(--gold); border-top-left-radius: 240px; border-top-right-radius: 240px; pointer-events: none; opacity: 0.6;
+            content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid var(--gold); border-top-left-radius: 240px; border-top-right-radius: 240px; pointer-events: none; opacity: 0.6;
         }
 
         .arch-quote { font-family: var(--font-script); font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--paper-navy); text-align: center; line-height: 1.1; margin-bottom: 5px; z-index: 5; }
-        .arch-verse { font-family: var(--font-sans); font-size: clamp(0.6rem, 1.5vw, 0.8rem); letter-spacing: 5px; text-transform: uppercase; color: var(--paper-navy); opacity: 0.7; margin-bottom: 8vh; z-index: 5; }
+        .arch-verse { font-family: var(--font-sans); font-size: clamp(0.6rem, 1.5vw, 0.8rem); letter-spacing: 5px; text-transform: uppercase; color: var(--paper-navy); opacity: 0.7; margin-bottom: 6vh; z-index: 5; text-align: center; }
         
         .arch-names { font-family: var(--font-serif); font-size: clamp(3.5rem, 9vw, 6rem); line-height: 0.9; color: var(--paper-navy); text-align: center; text-transform: uppercase; font-weight: 300; letter-spacing: 2px; z-index: 5; }
-        .arch-amp { font-family: var(--font-script); color: var(--gold); font-size: 1.2em; line-height: 0.5; margin: 15px 0; text-transform: lowercase; }
+        .arch-amp { font-family: var(--font-script); color: var(--gold); font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1; margin: 10px 0; text-transform: lowercase; }
 
-        .arch-date { font-family: var(--font-sans); font-size: clamp(0.8rem, 2vw, 1.1rem); letter-spacing: 6px; color: var(--paper-navy); margin-top: auto; z-index: 5; text-transform: uppercase; margin-bottom: 15vh; }
+        .arch-date { font-family: var(--font-sans); font-size: clamp(0.8rem, 2vw, 1.1rem); letter-spacing: 6px; color: var(--paper-navy); margin-top: 4vh; z-index: 5; text-transform: uppercase; }
 
-        /* The Cake beautifully overlapping the arch */
         .hero-cake-overlay {
             position: absolute;
             bottom: -5vh;
-            right: -15vw;
-            width: clamp(280px, 60vw, 450px);
-            max-height: 50vh;
+            right: -10vw;
+            width: clamp(200px, 45vw, 350px); /* Safely sized */
+            max-height: 45vh;
             object-fit: contain;
             z-index: 10;
             filter: drop-shadow(-15px 15px 25px rgba(0,0,0,0.4));
@@ -143,22 +142,20 @@
             z-index: 2;
         }
 
-        /* The signature offset gold frame */
         .editorial-stagger::after {
-            content: ''; position: absolute; top: 25px; left: 25px; right: -25px; bottom: -25px; border: 1px solid var(--gold); z-index: -1; pointer-events: none;
+            content: ''; position: absolute; top: 20px; left: 20px; right: -20px; bottom: -20px; border: 1px solid var(--gold); z-index: -1; pointer-events: none;
         }
 
         .e-title { font-family: var(--font-script); font-size: clamp(3.5rem, 8vw, 5.5rem); color: var(--gold); margin-bottom: 40px; }
-        
         .e-body { font-family: var(--font-sans); font-size: clamp(0.75rem, 1.8vw, 1rem); line-height: 2.2; letter-spacing: 3px; color: var(--champagne); text-transform: uppercase; margin-bottom: 30px; opacity: 0.8; }
         
         .e-name { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--gold); font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
         .e-with { font-family: var(--font-script); font-size: clamp(2.5rem, 5vw, 3.5rem); color: var(--white); margin: 10px 0; }
 
-        /* ─── CARD 3: THE OVERLAPPING PANELS ─── */
-        .card-3 { background-color: var(--deep-dark-navy); padding: 5vw; flex-direction: column; }
+        /* ─── CARD 3: THE OVERLAPPING PANELS (FIXED) ─── */
+        .card-3 { background-color: var(--deep-dark-navy); padding: 5vw; flex-direction: column; justify-content: center; }
 
-        .c3-header { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--champagne); letter-spacing: 12px; text-transform: uppercase; margin-bottom: 8vh; }
+        .c3-header { font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--champagne); letter-spacing: 12px; text-transform: uppercase; margin-bottom: 4vh; z-index: 10; position: relative; text-align: center; width: 100%; }
 
         .overlap-container {
             position: relative;
@@ -167,13 +164,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 40vh;
+            padding: 20px 0;
         }
 
         .panel-back {
             position: absolute;
             left: 5%;
-            top: 0;
             width: 55%;
             background: var(--champagne);
             padding: 6vh 4vw;
@@ -205,26 +201,28 @@
         .p-btn { display: inline-block; margin-top: 30px; padding: 12px 30px; border: 1px solid var(--gold); color: var(--gold); font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 4px; text-decoration: none; text-transform: uppercase; transition: 0.3s; }
         .p-btn:hover { background: var(--gold); color: var(--paper-navy); }
 
-        /* ─── CARD 4: THE GOLDEN OVAL RSVP ─── */
+        /* ─── CARD 4: THE GOLDEN PILL RSVP (FIXED) ─── */
         .card-4 { background: var(--champagne); padding: 5vw; }
 
         .oval-rsvp {
             background-color: var(--deep-dark-navy);
             width: 90vw;
             max-width: 500px;
-            height: 85vh;
-            border-radius: 50%;
+            height: auto;
+            min-height: 75vh;
+            /* Changed to an elegant tall pill shape rather than a strict circle to prevent clipping */
+            border-radius: 200px; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 10vh 8vw;
+            padding: 12vh 6vw;
             position: relative;
             text-align: center;
         }
 
         .oval-rsvp::before {
-            content: ''; position: absolute; inset: 15px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; opacity: 0.6;
+            content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1px solid var(--gold); border-radius: 190px; pointer-events: none; opacity: 0.6;
         }
 
         .o-title { font-family: var(--font-serif); font-size: clamp(2.5rem, 6vw, 4rem); color: var(--gold); text-transform: uppercase; letter-spacing: 6px; line-height: 1; }
@@ -248,20 +246,31 @@
 
         /* ─── MOBILE RESPONSIVENESS OVERRIDES ─── */
         @media (max-width: 768px) {
-            .hero-arch { height: 75vh; padding: 8vh 6vw 5vh 6vw; border-top-left-radius: 180px; border-top-right-radius: 180px; }
+            /* Fix Arch Heights */
+            .hero-arch { min-height: 70vh; padding: 8vh 6vw; border-top-left-radius: 180px; border-top-right-radius: 180px; }
             .hero-arch::before { border-top-left-radius: 170px; border-top-right-radius: 170px; }
-            .arch-names { font-size: 3.2rem; }
-            .hero-cake-overlay { right: -5vw; bottom: -2vh; width: 75vw; }
+            
+            /* Fix Overlapping Details (Stacking naturally) */
+            .overlap-container { flex-direction: column; align-items: stretch; }
+            .panel-back, .panel-front {
+                position: relative; /* Reverts from absolute to natural flow */
+                width: 90%;
+                left: auto; right: auto; top: auto; bottom: auto;
+                padding: 5vh 6vw;
+            }
+            .panel-back { margin-left: 0; margin-right: auto; }
+            .panel-front { 
+                margin-left: auto; margin-right: 0; 
+                margin-top: -15%; /* Creates a clean, controlled overlap */
+                box-shadow: -10px 10px 25px rgba(0,0,0,0.5); 
+            }
 
-            .editorial-stagger::after { top: 15px; left: 15px; right: -15px; bottom: -15px; }
+            /* Editorial Box Fix */
+            .editorial-stagger::after { top: 10px; left: 10px; right: -10px; bottom: -10px; }
             
-            /* Un-overlap the panels on mobile so they stack cleanly */
-            .overlap-container { flex-direction: column; min-height: auto; gap: 30px; }
-            .panel-back, .panel-front { position: relative; width: 100%; left: 0; right: 0; top: 0; bottom: 0; padding: 5vh 6vw; }
-            .panel-front { box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-            
-            .oval-rsvp { height: 80vh; border-radius: 40%; padding: 8vh 6vw; }
-            .oval-rsvp::before { border-radius: 40%; inset: 10px; }
+            /* Oval RSVP Fix */
+            .oval-rsvp { padding: 8vh 8vw; border-radius: 120px; }
+            .oval-rsvp::before { border-radius: 110px; }
         }
     </style>
 </head>
@@ -335,7 +344,7 @@
         </div>
     </section>
 
-    <!-- CARD 4: THE GOLDEN OVAL RSVP -->
+    <!-- CARD 4: THE GOLDEN PILL RSVP -->
     <section class="card card-4">
         <div class="oval-rsvp anim-scale d1">
             <h1 class="o-title anim-up d2">RSVP SOON!</h1>
