@@ -69,31 +69,28 @@
             color: var(--paper-navy);
             box-shadow: 0 0 25px rgba(0,0,0,0.35);
             
-            /* FIXED: Prevents any structural text bleed completely */
             overflow: hidden !important; 
             
-            /* Tucked inside lower envelope bounds initially */
             transform: translateY(35%) scale(0.94);
             opacity: 0;
             z-index: 9;
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
         }
 
-        /* Card slides out completely clear of envelope pocket bounds */
         .unfold .envelope-card-preview {
             transform: translateY(-56%) scale(1);
             opacity: 1;
             z-index: 15;
         }
 
-        /* ─── DEDICATED VIEWPORT FLUID OVERLAY (MOBILE HARDWARE-TRANSFORM OPTIMIZED) ─── */
+        /* ─── DEDICATED VIEWPORT FLUID OVERLAY ─── */
         #zoom-card-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh; /* Fallback */
-            height: 100dvh; /* Modern dynamic viewport height to fix mobile address bar bugs */
+            height: 100vh; 
+            height: 100dvh; 
             background-color: var(--champagne);
             color: var(--paper-navy);
             z-index: 3000;
@@ -106,14 +103,12 @@
             opacity: 0;
             pointer-events: none;
             
-            /* FIXED: Prevents zoom text overflow leakage */
             overflow: hidden !important; 
             
             transform-origin: top left;
             transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease-in-out;
         }
 
-        /* Fullscreen destination mode - pure matrix transform scaling */
         #zoom-card-overlay.fullscreen-active {
             opacity: 1;
             transform: translate(0px, 0px) scale(1) !important;
@@ -127,8 +122,6 @@
             line-height: 1.3 !important; 
             font-weight: 700 !important;
             color: var(--paper-navy) !important;
-            
-            /* FIXED: Removed wide forced overrides to restore native auto-containment */
             width: 100%;
             max-width: 90% !important;
             margin: 0 auto;
@@ -191,16 +184,16 @@
         /* ─── SCROLLABLE CONTENT TIMELINE CARDS ─── */
         #main-content { 
             display: none; 
-            height: 100vh; /* Fallback */
-            height: 100dvh; /* Modern dynamic viewport height */
+            height: 100vh; 
+            height: 100dvh; 
             overflow-y: scroll; 
             scroll-snap-type: y mandatory;
         }
 
         .card {
             width: 100vw;
-            min-height: 100vh; /* Fallback */
-            min-height: 100dvh; /* Modern dynamic viewport height */
+            min-height: 100vh; 
+            min-height: 100dvh; 
             scroll-snap-align: start;
             display: flex;
             flex-direction: column;
@@ -250,13 +243,27 @@
         .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7.5vw, 3.8rem); color: var(--gold); margin-top: 5px; }
 
         @media (max-width: 600px) {
-            /* FIXED: Added padding-bottom bias to perfectly center text away from bottom-heavy graphics */
-            .card { padding: 25px 5vw 15vh; }
-            #zoom-card-overlay { padding: 40px 10vw 20vh; }
+            /* Restored centering but controlled the breathing room naturally */
+            .card { 
+                padding: 10vh 5vw 18vh; 
+                justify-content: center; 
+            }
+            #zoom-card-overlay { padding: 40px 10vw; }
             
             .cake-img { width: 75%; bottom: 0; right: -5%; opacity: 0.35; } 
-            .details-flex { display: flex; flex-direction: column; gap: 25px; }
-            .invite-text { max-width: 90%; font-size: clamp(1.6rem, 5.2vw, 2.2rem) !important; }
+            
+            /* Add dynamic margins to create cohesive visual groupings that scale with height */
+            .card-1 .title { margin-bottom: 2vh; }
+            .card-1 .quote { margin-top: 6vh; }
+            .card-1 p:nth-of-type(3) { margin-top: 5vh !important; } /* The Date */
+
+            .details-flex { display: flex; flex-direction: column; gap: 6vh; margin: 4vh 0; }
+            
+            .invite-text { 
+                max-width: 90%; 
+                font-size: clamp(1.6rem, 5.2vw, 2.2rem) !important; 
+                line-height: 1.6 !important; 
+            }
         }
     </style>
 </head>
@@ -374,36 +381,27 @@
         const zoomOverlay = document.getElementById('zoom-card-overlay');
         const content = document.getElementById('main-content');
         
-        // 1. Trigger envelope opening slide sequence
         landing.classList.add('unfold');
         
-        // 2. Perform frame-perfect transform calculation matrix handoff at extraction point peak
         setTimeout(() => {
             const bounds = internalCard.getBoundingClientRect();
             
-            // Calculate structural matrix scale coefficients relative directly to window sizes
             const scaleX = bounds.width / window.innerWidth;
             const scaleY = bounds.height / window.innerHeight;
             
-            // Fast-map layout bounds securely using hardware transform mechanics without transition properties active
             zoomOverlay.style.transition = 'none';
             zoomOverlay.style.transform = `translate(${bounds.left}px, ${bounds.top}px) scale(${scaleX}, ${scaleY})`;
             zoomOverlay.style.opacity = '1';
             
-            // Force rendering pass step explicitly to lock configuration properties cleanly
             zoomOverlay.offsetHeight; 
             
-            // 3. Deactivate base frame element context and cleanly zoom using vector matrix rules over top flap elements
             internalCard.style.opacity = '0';
             zoomOverlay.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease-in-out';
             zoomOverlay.classList.add('fullscreen-active');
             
-            // 4. Lock standard presentation setup modes safely for exactly 2.5 seconds
             setTimeout(() => {
-                // Set layout structure active underneath IMMEDIATELY.
                 content.style.display = 'block';
                 
-                // Fade out the landing mask container 
                 landing.style.opacity = "0";
                 
                 setTimeout(() => {
@@ -421,7 +419,6 @@
         }, 800);
     }
 
-    // Google Forms Pipeline Handler
     document.getElementById('google-rsvp-form').addEventListener('submit', function(e) {
         e.preventDefault();
         
