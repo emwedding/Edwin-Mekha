@@ -78,7 +78,7 @@
         }
 
         .unfold .envelope-card-preview {
-            transform: translateY(-56%) scale(1);
+            transform: translateY(-35%) scale(1);
             opacity: 1;
             z-index: 15;
         }
@@ -244,6 +244,11 @@
 
         /* ─── MOBILE OVERRIDES (THE BULLETPROOF LAYOUT) ─── */
         @media (max-width: 600px) {
+            
+            /* Preserve original perfect mobile emerge height */
+            .unfold .envelope-card-preview {
+                transform: translateY(-56%) scale(1);
+            }
             
             /* 1. General card reset */
             .card { 
