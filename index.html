@@ -245,39 +245,42 @@
         /* ─── MOBILE OVERRIDES (THE BULLETPROOF LAYOUT) ─── */
         @media (max-width: 600px) {
             
-            /* 1. General card reset to allow natural Flexbox centering without forced blank spaces */
+            /* 1. General card reset */
             .card { 
                 padding: 6dvh 5vw; 
                 justify-content: center; 
                 align-items: center; 
-                text-align: center; /* Fixes general text alignment */
+                text-align: center; 
             }
             #zoom-card-overlay { padding: 40px 10vw; }
             
-            /* 2. CARD 1: Centralized Cohesive Layout */
+            /* 2. CARD 1: Left-Aligned Editorial Layout with Controlled Top Space */
             .card-1 { 
-                padding-top: 6dvh; /* Reset to normal to eliminate the huge void on top */
+                padding-top: 12dvh; /* Eliminates the huge void by strictly controlling the top margin */
+                justify-content: flex-start; /* Pushes content upward rather than centering it */
+                align-items: flex-start; /* Forces all elements to align left */
+                text-align: left; /* Forces text to align left */
             }
             .card-1 .title { margin-bottom: 2dvh; }
             .card-1 .quote { 
                 margin-top: 4dvh; 
-                text-align: center; /* Forces multi-line text to center instead of defaulting to left-align */
+                text-align: left; 
                 line-height: 1.4; 
             }
             .card-1 p:nth-of-type(3) { 
-                margin-top: 4dvh !important; /* Pulls the date back up into the content group */
+                margin-top: 4dvh !important; 
                 z-index: 2; 
                 position: relative;
             }
 
-            /* 3. CAKE IMAGE: Perfect Center & Watermark Opacity */
+            /* 3. CAKE IMAGE: Restored to Bottom Right & Full Opacity */
             .cake-img { 
                 width: 75%; 
                 bottom: 0; 
-                right: auto; /* Removes the old off-center anchor */
-                left: 50%; 
-                transform: translateX(-50%); /* Mathematically centers the image */
-                opacity: 0.20; /* Drops to background so overlapping text remains 100% readable and uncluttered */
+                right: -5%; 
+                left: auto; 
+                transform: none; 
+                opacity: 0.85; /* Restored elegant opacity */
             } 
             
             /* CARD 2: Rhythmic De-clustering & Line Wrapping Fix */
