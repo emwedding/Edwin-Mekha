@@ -92,7 +92,8 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Modern dynamic viewport height to fix mobile address bar bugs */
             background-color: var(--champagne);
             color: var(--paper-navy);
             z-index: 3000;
@@ -190,14 +191,16 @@
         /* ─── SCROLLABLE CONTENT TIMELINE CARDS ─── */
         #main-content { 
             display: none; 
-            height: 100vh; 
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Modern dynamic viewport height */
             overflow-y: scroll; 
             scroll-snap-type: y mandatory;
         }
 
         .card {
             width: 100vw;
-            min-height: 100vh;
+            min-height: 100vh; /* Fallback */
+            min-height: 100dvh; /* Modern dynamic viewport height */
             scroll-snap-align: start;
             display: flex;
             flex-direction: column;
@@ -247,7 +250,10 @@
         .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7.5vw, 3.8rem); color: var(--gold); margin-top: 5px; }
 
         @media (max-width: 600px) {
-            .card { padding: 25px 5vw; }
+            /* FIXED: Added padding-bottom bias to perfectly center text away from bottom-heavy graphics */
+            .card { padding: 25px 5vw 15vh; }
+            #zoom-card-overlay { padding: 40px 10vw 20vh; }
+            
             .cake-img { width: 75%; bottom: 0; right: -5%; opacity: 0.35; } 
             .details-flex { display: flex; flex-direction: column; gap: 25px; }
             .invite-text { max-width: 90%; font-size: clamp(1.6rem, 5.2vw, 2.2rem) !important; }
