@@ -13,7 +13,6 @@
             --paper-navy: #05111D;
             --champagne: #F3EFE0;
             --gold: #C8A96B;
-            --gold-light: #d8be8d;
             --white: #ffffff;
             --font-serif: 'Cormorant Garamond', serif; 
             --font-script: 'Tangerine', cursive;
@@ -58,7 +57,7 @@
             background: #030a12;
         }
 
-        /* ─── PHYSICAL INTERNAL POCKET CARD (THE MINIATURE) ─── */
+        /* ─── PHYSICAL INTERNAL POCKET CARD (PREVIEW) ─── */
         .envelope-card-preview {
             position: absolute;
             inset: 12px;
@@ -93,7 +92,6 @@
             z-index: 15;
         }
 
-        /* ─── MINIATURE SCALE OVERRIDES ─── */
         #internal-card .card-1-title { 
             font-size: clamp(2rem, 6.5vw, 3rem); 
             line-height: 1; 
@@ -182,49 +180,72 @@
         .delay-4 { transition-delay: 0.7s; }
         .delay-5 { transition-delay: 0.9s; }
 
-        /* ─── CARD 1: THE EDITORIAL COVER ─── */
+        /* ─── CARD 1: THE REFINED COVER ─── */
         .card-1 { 
             background-color: var(--champagne); 
-            padding: 3vw; 
+            padding: 4vh 4vw; 
+            justify-content: center;
+            align-items: center;
         }
         
-        .editorial-border {
+        .card-1-border {
             position: relative;
             width: 100%;
+            max-width: 1200px;
             height: 100%;
+            min-height: 85vh; /* Ensures it stretches nicely without breaking */
             border: 1px solid var(--gold);
             display: flex;
             flex-direction: column;
             align-items: center; 
             justify-content: center;
             text-align: center; 
-            z-index: 2;
         }
 
-        .editorial-border::before {
+        .card-1-border::before {
             content: '';
             position: absolute;
             inset: 6px;
             border: 1px solid rgba(200, 169, 107, 0.3);
             pointer-events: none;
         }
+
+        /* Keeps text firmly above the cake */
+        .card-1-text-wrapper {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateY(-5vh); /* Slight lift to balance the bottom cake */
+        }
         
-        .top-verse {
+        .top-verse-quote {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--paper-navy);
+            margin-bottom: 5px;
+        }
+
+        .top-verse-ref {
             font-family: var(--font-sans);
             font-size: clamp(0.6rem, 1.2vw, 0.8rem);
             letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--paper-navy);
             margin-bottom: 6vh;
+            opacity: 0.8;
         }
 
         .main-names { 
             font-family: var(--font-serif); 
-            font-size: clamp(3.5rem, 9vw, 7rem); 
+            font-size: clamp(4rem, 10vw, 8rem); 
             line-height: 1; 
             color: var(--paper-navy); 
-            font-weight: 400;
+            font-weight: 300;
             letter-spacing: 2px;
+            text-transform: uppercase;
         }
         
         .main-names span {
@@ -233,36 +254,29 @@
             font-size: 1.2em;
             margin: 0 -10px;
             vertical-align: -10%;
+            text-transform: none;
         }
 
         .date-elegant {
             font-family: var(--font-sans);
-            font-size: clamp(0.7rem, 1.5vw, 1rem);
+            font-size: clamp(0.8rem, 1.5vw, 1.2rem);
             letter-spacing: 6px;
             text-transform: uppercase;
             color: var(--paper-navy);
             margin-top: 6vh;
-            display: flex;
-            align-items: center;
-            gap: 15px;
         }
 
-        .date-elegant::before, .date-elegant::after {
-            content: '';
-            width: 40px;
-            height: 1px;
-            background-color: var(--gold);
-        }
-
+        /* Fixed Cake Positioning */
         .cake-img { 
             position: absolute; 
-            bottom: -5%; 
-            right: -5%; 
-            width: clamp(250px, 35vw, 500px); 
-            opacity: 0.15; /* Acting as a watermark/texture */
+            bottom: 0; 
+            right: 0; 
+            width: clamp(220px, 45vw, 450px); 
+            max-height: 45vh; /* Prevents it from climbing too high */
+            object-fit: contain;
+            object-position: bottom right;
             z-index: 1; 
             pointer-events: none;
-            mix-blend-mode: multiply;
         }
 
         /* ─── CARD 2: THE FORMAL INVITATION ─── */
@@ -274,48 +288,41 @@
             padding: 10vh 5vw;
             text-align: center;
         }
-        
-        .fine-line-vertical {
-            width: 1px;
-            height: 80px;
-            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-            margin: 0 auto 30px auto;
-        }
 
-        .parents-text { 
-            font-family: var(--font-sans); 
-            font-size: clamp(0.7rem, 1.5vw, 0.9rem); 
-            line-height: 2; 
-            letter-spacing: 2px; 
-            color: #a0aec0;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-        }
-
-        .request-text {
-            font-family: var(--font-serif);
-            font-style: italic;
-            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+        .title-elegant {
+            font-family: var(--font-script);
+            font-size: clamp(3.5rem, 8vw, 6rem);
             color: var(--champagne);
             margin-bottom: 40px;
         }
 
+        .body-text-elegant { 
+            font-family: var(--font-serif); 
+            font-size: clamp(1rem, 2.2vw, 1.4rem); 
+            line-height: 1.8; 
+            color: #e2e8f0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
         .formal-name { 
             font-family: var(--font-serif); 
-            font-size: clamp(2.5rem, 5vw, 4rem); 
+            font-size: clamp(2.5rem, 5vw, 4.5rem); 
             color: var(--gold); 
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             font-weight: 300;
+            margin: 25px 0;
+            text-transform: uppercase;
         }
 
         .with-text {
             font-family: var(--font-script);
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
             color: var(--white);
-            margin: 15px 0;
+            margin: 5px 0;
         }
 
-        /* ─── CARD 3: THE DETAILS (SPLIT GRID) ─── */
+        /* ─── CARD 3: THE DETAILS (REFINED SPLIT GRID) ─── */
         .card-3 { 
             background-color: var(--champagne); 
             color: var(--paper-navy); 
@@ -337,11 +344,12 @@
 
         .section-title {
             font-family: var(--font-sans);
-            font-size: clamp(0.8rem, 2vw, 1rem);
-            letter-spacing: 8px;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            letter-spacing: 10px;
             text-transform: uppercase;
-            margin-bottom: 6vh;
-            color: var(--gold);
+            margin-bottom: 8vh;
+            color: var(--paper-navy);
+            font-weight: 400;
         }
 
         .details-grid {
@@ -354,34 +362,34 @@
         }
 
         .grid-divider {
-            background-color: rgba(200, 169, 107, 0.4);
+            background: linear-gradient(to bottom, transparent, rgba(200, 169, 107, 0.8), transparent);
             width: 1px;
             height: 100%;
         }
 
         .detail-heading { 
-            font-family: var(--font-serif); 
-            font-size: clamp(1.8rem, 3.5vw, 2.5rem); 
-            font-style: italic;
+            font-family: var(--font-script); 
+            font-size: clamp(2.5rem, 5vw, 3.5rem); 
+            color: var(--gold);
             margin-bottom: 15px; 
         }
 
         .detail-body { 
-            font-family: var(--font-sans); 
-            font-size: clamp(0.8rem, 1.5vw, 1rem); 
-            line-height: 2; 
-            letter-spacing: 1px;
+            font-family: var(--font-serif); 
+            font-size: clamp(1.1rem, 2vw, 1.4rem); 
+            line-height: 1.8; 
+            color: var(--paper-navy);
         }
 
         .map-btn-elegant { 
             display: inline-block; 
-            margin-top: 30px;
-            padding: 12px 30px;
+            margin-top: 40px;
+            padding: 14px 35px;
             border: 1px solid var(--paper-navy);
             color: var(--paper-navy);
             text-decoration: none;
             font-family: var(--font-sans);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             letter-spacing: 4px;
             text-transform: uppercase;
             transition: all 0.4s ease;
@@ -407,13 +415,13 @@
             color: var(--champagne);
             font-weight: 300;
             margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
         }
 
         .rsvp-sub {
-            font-family: var(--font-sans);
-            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
-            letter-spacing: 3px;
-            text-transform: uppercase;
+            font-family: var(--font-script);
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
             color: var(--gold);
             margin-bottom: 60px;
         }
@@ -426,7 +434,7 @@
 
         .input-line {
             position: relative;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         .minimal-input {
@@ -449,10 +457,16 @@
 
         .minimal-input::placeholder {
             color: rgba(255,255,255,0.3);
+        }
+
+        .form-label {
+            display: block;
             font-family: var(--font-sans);
             font-size: 0.8rem;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 15px;
         }
 
         .guest-counter-minimal {
@@ -460,31 +474,22 @@
             align-items: center;
             justify-content: center;
             gap: 30px;
-            margin-bottom: 50px;
-        }
-
-        .guest-counter-label {
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.5);
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 15px;
         }
 
         .counter-btn-minimal {
             background: none;
             border: none;
-            color: var(--gold);
+            color: var(--champagne);
             font-size: 2rem;
-            font-family: var(--font-serif);
+            font-family: var(--font-sans);
             cursor: pointer;
-            padding: 10px;
+            padding: 0 15px;
+            transition: color 0.3s;
         }
+        
+        .counter-btn-minimal:hover { color: var(--gold); }
 
         .guest-num-minimal {
             font-family: var(--font-serif);
@@ -494,45 +499,65 @@
         }
 
         .btn-submit-minimal {
-            background: var(--gold);
-            color: var(--deep-dark-navy);
-            border: none;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
             padding: 18px 40px;
             font-family: var(--font-sans);
             font-size: 0.8rem;
             letter-spacing: 4px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
             width: 100%;
+            margin-top: 20px;
         }
 
-        .btn-submit-minimal:hover { background: var(--white); }
+        .btn-submit-minimal:hover { 
+            background: var(--gold); 
+            color: var(--deep-dark-navy);
+        }
 
-        .footer-signoff {
+        .footer-block {
             margin-top: 8vh;
-            font-family: var(--font-script);
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            color: rgba(200, 169, 107, 0.6);
+            text-align: center;
+        }
+
+        .footer-text {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 10px;
+        }
+
+        .footer-name {
+            font-family: var(--font-serif);
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: var(--gold);
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         /* ─── MOBILE RESPONSIVENESS ─── */
         @media (max-width: 768px) {
-            .card-1 { padding: 4vw; }
-            .date-elegant::before, .date-elegant::after { width: 20px; }
+            .card-1 { padding: 3vh 3vw; }
+            .card-1-text-wrapper { transform: translateY(-8vh); } /* Push text up slightly more on mobile to clear cake */
+            .cake-img { width: 60vw; max-height: 40vh; }
             
             .details-grid {
                 grid-template-columns: 1fr;
-                gap: 50px;
+                gap: 40px;
             }
             .grid-divider {
-                width: 100px;
+                width: 80px;
                 height: 1px;
                 margin: 0 auto;
+                background: linear-gradient(to right, transparent, rgba(200, 169, 107, 0.8), transparent);
             }
-            
-            .parents-text { line-height: 1.8; }
-            .with-text { margin: 10px 0; }
+            .body-text-elegant { br { display: none; } } /* Let text flow naturally on small screens */
         }
     </style>
 </head>
@@ -540,83 +565,90 @@
 
 <main id="main-content">
     
-    <!-- CARD 1: EDITORIAL COVER -->
+    <!-- CARD 1: REFINED COVER -->
     <section class="card card-1">
-        <div class="editorial-border">
-            <p class="top-verse fade-up delay-1">“He has made everything beautiful in His time”<br><br><span style="color: var(--gold); font-style: italic; font-family: var(--font-serif); text-transform: none; letter-spacing: 1px; font-size: 1.1rem;">Ecclesiastes 3:11</span></p>
+        <div class="card-1-border">
             
-            <h1 class="main-names fade-up delay-2">Mekha <span>&</span> Edwin</h1> 
+            <div class="card-1-text-wrapper">
+                <p class="top-verse-quote fade-up delay-1">“He has made everything beautiful in His time”</p>
+                <p class="top-verse-ref fade-up delay-2">Ecclesiastes 3:11</p>
+                
+                <h1 class="main-names fade-up delay-3">MEKHA<br><span>&</span><br>EDWIN</h1> 
+                
+                <div class="date-elegant fade-up delay-4">17th July 2026</div>
+            </div>
             
-            <div class="date-elegant fade-up delay-3">July 17, 2026</div>
-            
-            <img src="02.png" class="cake-img fade-in delay-4" alt="Wedding Element">
+            <img src="02.png" class="cake-img fade-in delay-5" alt="Wedding Element">
         </div>
     </section>
 
     <!-- CARD 2: THE INVITATION -->
     <section class="card card-2">
-        <div class="fine-line-vertical fade-up delay-1"></div>
+        <h1 class="title-elegant fade-up delay-1">You are Invited</h1>
         
-        <p class="parents-text fade-up delay-2">
-            Reji Thomas Mathew & Lekha Reji Thomas<br>
-            <span style="font-size: 0.7em; color: rgba(255,255,255,0.3);">(HBR Layout, Bangalore • Memuriyil, Elanthoor, Pathanamthitta)</span>
+        <p class="body-text-elegant fade-up delay-2">
+            Reji Thomas Mathew & Lekha Reji Thomas,<br>
+            HBR Layout, Bangalore (Memuriyil, Elanthoor, Pathanamthitta),<br>
+            request the honour of your presence and prayers at the <br>
+            wedding of their daughter,
         </p>
         
-        <p class="request-text fade-up delay-3">joyfully request the honour of your presence<br>and prayers at the wedding of their daughter</p>
+        <h2 class="formal-name fade-up delay-3">Mekha Susan Thomas</h2>
         
-        <h2 class="formal-name fade-up delay-4">Mekha Susan Thomas</h2>
+        <p class="with-text fade-up delay-4">with</p>
         
-        <p class="with-text fade-up delay-5">with</p>
+        <h2 class="formal-name fade-up delay-5">Edwin Roger Bright</h2>
         
-        <h2 class="formal-name fade-up delay-4">Edwin Roger Bright</h2>
-        
-        <p class="parents-text fade-up delay-5" style="margin-top: 30px; margin-bottom: 0;">
-            <span style="font-size: 0.7em; color: rgba(255,255,255,0.3);">Son of M.J. Bright & Lissy Bright<br>Kamothe, Navi Mumbai</span>
+        <p class="body-text-elegant fade-up delay-5" style="margin-top: 25px;">
+            S/O M.J. Bright and Lissy Bright,<br>
+            Kamothe, Navi Mumbai
         </p>
     </section>
 
     <!-- CARD 3: THE DETAILS -->
     <section class="card card-3">
         <div class="card-3-inner">
-            <h3 class="section-title fade-up delay-1">The Details</h3>
+            <h3 class="section-title fade-up delay-1">DETAILS</h3>
             
             <div class="details-grid">
                 <div class="fade-up delay-2">
-                    <h2 class="detail-heading">When</h2>
+                    <h2 class="detail-heading">Date & Time</h2>
                     <p class="detail-body">
-                        <strong>Friday, July 17, 2026</strong><br><br>
-                        Holy Matrimony at 4:00 PM<br>
-                        Reception to follow at 7:00 PM
+                        July 17, 2026 (Friday)<br>
+                        4:00pm — Wedding<br>
+                        7:00pm — Reception
                     </p>
                 </div>
                 
                 <div class="grid-divider fade-in delay-3"></div>
                 
                 <div class="fade-up delay-4">
-                    <h2 class="detail-heading">Where</h2>
+                    <h2 class="detail-heading">Venue</h2>
                     <p class="detail-body">
-                        <strong>The Kings Meadows</strong><br><br>
-                        Under the auspices of<br>
-                        City Harvest AG Church, Bangalore
+                        The Kings Meadows<br>
+                        Under the auspices of City Harvest AG Church<br>
+                        Bangalore
                     </p>
-                    <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="map-btn-elegant">View Map</a>
                 </div>
             </div>
+            
+            <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="map-btn-elegant fade-up delay-5">VIEW ON MAPS</a>
         </div>
     </section>
 
     <!-- CARD 4: RSVP -->
     <section class="card card-4">
-        <h1 class="rsvp-header fade-up delay-1">Kindly Reply</h1>
-        <p class="rsvp-sub fade-up delay-2" id="rsvp-status-msg">We look forward to celebrating with you</p>
+        <h1 class="rsvp-header fade-up delay-1">RSVP SOON!</h1>
+        <p class="rsvp-sub fade-up delay-2" id="rsvp-status-msg">We can’t wait to celebrate with you!</p>
         
         <form id="google-rsvp-form" class="minimal-form fade-up delay-3">
             <div class="input-line">
-                <input type="text" id="guest-name-input" class="minimal-input" placeholder="M / M R S .   N A M E" required>
+                <label class="form-label">FULL NAME</label>
+                <input type="text" id="guest-name-input" class="minimal-input" required>
             </div>
             
-            <div class="input-line" style="margin-top: 60px;">
-                <span class="guest-counter-label">Number of Guests Attending</span>
+            <div class="input-line">
+                <label class="form-label">NUMBER OF GUESTS</label>
                 <div class="guest-counter-minimal">
                     <button type="button" class="counter-btn-minimal" onclick="updateGuests(-1)">-</button>
                     <div class="guest-num-minimal" id="guestCountDisplay">1</div>
@@ -624,11 +656,12 @@
                 </div>
             </div>
             
-            <button type="submit" class="btn-submit-minimal" id="submit-btn-text">Send RSVP</button>
+            <button type="submit" class="btn-submit-minimal" id="submit-btn-text">SEND RSVP</button>
         </form>
         
-        <div class="footer-signoff fade-up delay-4">
-            With best compliments from Shimon Mathew Thomas
+        <div class="footer-block fade-up delay-4">
+            <div class="footer-text">With best compliments from</div>
+            <div class="footer-name">Shimon Mathew Thomas</div>
         </div>
     </section>
 </main>
@@ -640,7 +673,7 @@
             <div class="envelope-card-preview" id="internal-card">
                 <div class="preview-frame">
                     <h1 class="card-1-title">MEKHA<br><span>&</span><br>EDWIN</h1> 
-                    <p class="card-1-date">July 17, 2026</p>
+                    <p class="card-1-date">17th July 2026</p>
                 </div>
                 <img src="02.png" class="preview-cake" alt="Wedding Cake">
             </div>
@@ -723,13 +756,13 @@
             body: formData
         }).then(() => {
             submitBtn.innerText = "THANK YOU!";
-            statusMsg.innerText = "Your RSVP has been recorded.";
+            statusMsg.innerText = "Your RSVP has been beautifully recorded.";
             statusMsg.style.color = "var(--gold)";
         }).catch((error) => {
             console.error('Error:', error);
             submitBtn.disabled = false;
             submitBtn.innerText = "SEND RSVP";
-            submitBtn.style.background = "var(--gold)";
+            submitBtn.style.background = "transparent";
             alert("Something went wrong. Please check your connection.");
         });
     });
