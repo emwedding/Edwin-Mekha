@@ -60,7 +60,7 @@
             position: absolute;
             inset: 12px;
             background-color: var(--champagne);
-            padding: 15px 25px;
+            padding: 20px 30px; /* Slightly increased padding for elegance */
             display: flex;
             align-items: flex-start;
             justify-content: flex-start;
@@ -75,52 +75,86 @@
         }
 
         .unfold .envelope-card-preview {
-            transform: translateY(-40%) scale(1); /* Popped up slightly higher */
+            transform: translateY(-40%) scale(1);
             opacity: 1;
             z-index: 15;
         }
 
-        /* ─── MINIATURE SCALE OVERRIDES (ENVELOPE ONLY) ─── */
+        /* ─── MINIATURE SCALE OVERRIDES (ENVELOPE ONLY - FIXED FOR PROPORTIONS) ─── */
         #internal-card .card-1-content-wrapper { 
             width: 100%; 
+            height: 100%; /* Forces content to distribute evenly */
             display: flex; 
             flex-direction: column; 
             align-items: flex-start; 
+            justify-content: center;
         }
-        #internal-card .card-1-title { font-size: 1.5rem; line-height: 1.1; margin-bottom: 5px; font-family: var(--font-woodland); font-weight: 600; text-transform: none; }
-        #internal-card .card-1-gold-line { width: 30px; height: 2px; background: var(--gold); margin: 0; }
-        #internal-card .card-1-quote { font-family: var(--font-amoresa); font-size: 1.2rem; margin-top: 10px; max-width: 60%; line-height: 1.2; }
-        #internal-card .card-1-verse { font-family: var(--font-woodland); font-size: 0.6rem; letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
-        #internal-card .card-1-date { font-family: var(--font-woodland); font-size: 0.7rem; font-weight: 600; letter-spacing: 2px; margin-top: 15px; }
+        #internal-card .card-1-title { 
+            font-size: clamp(1.8rem, 6.5vw, 2.6rem); /* Fluid scaling */
+            line-height: 1.1; 
+            margin-bottom: 2%; 
+            font-family: var(--font-woodland); 
+            font-weight: 600; 
+            text-transform: none; 
+        }
+        #internal-card .card-1-gold-line { 
+            width: 45px; 
+            height: 2px; 
+            background: var(--gold); 
+            margin: 2% 0; 
+        }
+        #internal-card .card-1-quote { 
+            font-family: var(--font-amoresa); 
+            font-size: clamp(1.5rem, 5.5vw, 2.2rem); /* Fluid scaling */
+            margin-top: 4%; 
+            max-width: 80%; /* Opened up from 60% to prevent awful scrunching */
+            line-height: 1.2; 
+        }
+        #internal-card .card-1-verse { 
+            font-family: var(--font-woodland); 
+            font-size: clamp(0.65rem, 2vw, 0.8rem); 
+            letter-spacing: 1px; 
+            margin-top: 2%; 
+            text-transform: uppercase; 
+        }
+        #internal-card .card-1-date { 
+            font-family: var(--font-woodland); 
+            font-size: clamp(0.75rem, 2.5vw, 0.95rem); 
+            font-weight: 600; 
+            letter-spacing: 2px; 
+            margin-top: 8%; 
+        }
         #internal-card .preview-cake { 
             position: absolute; 
-            width: 130px; 
-            right: -10px; 
-            bottom: -10px; 
-            opacity: 0.85; 
+            width: clamp(150px, 45vw, 240px); /* Fluid scaling for the cake */
+            max-height: 85%;
+            right: -5%; 
+            bottom: -5%; 
+            opacity: 0.9;
+            object-fit: contain;
+            object-position: bottom right;
         }
 
         /* ─── Z-AXIS CAMERA DIVE ANIMATION (THE SEAMLESS FIX) ─── */
         .dive-active #landing-screen {
             background-color: transparent !important;
-            transition: background-color 1s ease 0.4s; /* Fades the background to reveal site */
+            transition: background-color 1s ease 0.4s;
         }
         
         .dive-active .envelope-body {
             opacity: 0;
-            transform: translateY(20vh); /* Envelope falls away */
+            transform: translateY(20vh); 
             transition: opacity 0.8s ease, transform 1s ease;
         }
 
         .dive-active .envelope-card-preview {
-            /* Physically scales the card towards the user to fill the screen */
             transform: translateY(-20%) scale(25);
-            opacity: 0; /* Crossfades perfectly into the actual Section 1 */
+            opacity: 0; 
             transition: transform 1.5s cubic-bezier(0.6, 0, 0.2, 1), opacity 0.8s 0.5s ease;
         }
 
         .dive-active .envelope-card-preview * {
-            opacity: 0; /* Instantly hide mini text so it doesn't get blurry when scaling */
+            opacity: 0; 
             transition: opacity 0.2s ease;
         }
 
@@ -158,7 +192,7 @@
         /* ─── CARD 1: GLOBAL STRUCTURE ─── */
         .card-1 { 
             background-color: var(--champagne); 
-            padding: 8vh 10vw; /* Perfect desktop framing */
+            padding: 8vh 10vw; 
             align-items: flex-start;
             justify-content: center;
         }
@@ -171,7 +205,7 @@
             justify-content: center;
             text-align: left; 
             z-index: 2;
-            max-width: 60%; /* DESKTOP FIX: Ensures text never touches the cake */
+            max-width: 60%; 
         }
         
         .card-1-title { font-family: var(--font-woodland); font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1.1; color: var(--paper-navy); margin-bottom: 2vh; text-transform: none; }
@@ -180,13 +214,12 @@
         .card-1-verse { font-family: var(--font-woodland); letter-spacing: 2px; font-size: 1.2rem; margin-top: 1.5vh; text-transform: uppercase; }
         .card-1-date { margin-top: 4vh; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600; text-transform: none; }
 
-        /* DESKTOP FIX: Cake pulled inward and perfectly scaled */
         .cake-img { 
             position: absolute; 
             bottom: 0; 
-            right: 8vw; /* Brings it closer to the text */
+            right: 8vw; 
             width: clamp(300px, 35vw, 600px); 
-            max-height: 85vh; /* Allows it to be tall on desktop */
+            max-height: 85vh; 
             object-fit: contain;
             object-position: bottom right;
             opacity: 0.9; 
@@ -215,10 +248,9 @@
         /* ─── BULLETPROOF MOBILE OVERRIDES ─── */
         @media (max-width: 600px) {
             
-            /* MOBILE FIX: Removes all top-spacing void */
             .card-1 { 
                 padding: 5dvh 6vw; 
-                justify-content: flex-start; /* Pulls text all the way to the top */
+                justify-content: flex-start; 
             } 
             
             .card-1-content-wrapper { 
@@ -231,7 +263,6 @@
             .card-1-verse { margin-top: 1vh; }
             .card-1-date { margin-top: 3vh; z-index: 2; position: relative; }
 
-            /* MOBILE FIX: Strict height limit prevents overlap */
             .cake-img { 
                 width: 85%; 
                 max-height: 45vh; 
