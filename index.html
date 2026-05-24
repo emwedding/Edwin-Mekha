@@ -14,7 +14,7 @@
             --champagne: #F3EFE0;
             --gold: #C8A96B;
             --white: #ffffff;
-            --font-woodland: 'Cormorant Garamond', serif; /* Updated Font */
+            --font-woodland: 'Cormorant Garamond', serif; 
             --font-amoresa: 'Tangerine', cursive;
         }
 
@@ -142,7 +142,7 @@
             z-index: -1; 
         }
 
-        /* MINIATURE SCALE OVERRIDES FOR ENVELOPE PREVIEW */
+        /* MINIATURE SCALE OVERRIDES FOR ENVELOPE PREVIEW (DESKTOP DEFAULT) */
         #internal-card .card-1-content-wrapper { justify-content: center; align-items: center; text-align: center; }
         #internal-card .card-1-title { font-size: clamp(1.4rem, 4vw, 2.4rem); }
         #internal-card .card-1-gold-line { width: 35px; height: 2px; margin: 6px 0; }
@@ -273,42 +273,58 @@
                 text-align: center; 
             }
             
-            #zoom-card-overlay { padding: 40px 10vw; }
+            /* Matched exactly to .card padding to prevent scaling jump */
+            #zoom-card-overlay { padding: 6dvh 5vw; } 
             
             /* CRITICAL: Enforce Left-Alignment on Mobile for Overlay AND Card 1 */
             #zoom-card-overlay .card-1-content-wrapper,
             .card-1 .card-1-content-wrapper { 
-                padding-top: 12dvh;
+                padding-top: 6dvh; /* Reduced from 12dvh to lift text above the cake */
                 justify-content: flex-start;
                 align-items: flex-start;
                 text-align: left;
             }
             
             #zoom-card-overlay .card-1-title,
-            .card-1 .card-1-title { margin-bottom: 2dvh; }
+            .card-1 .card-1-title { margin-bottom: 1.5dvh; }
             
             #zoom-card-overlay .card-1-quote,
             .card-1 .card-1-quote { 
-                margin-top: 4dvh; 
+                margin-top: 2.5dvh; /* Reduced from 4dvh */
                 text-align: left; 
                 line-height: 1.4; 
+                max-width: 90%; 
             }
             
             #zoom-card-overlay .card-1-date,
             .card-1 .card-1-date { 
-                margin-top: 4dvh !important; 
+                margin-top: 2.5dvh !important; /* Reduced from 4dvh */
                 z-index: 2; 
                 position: relative;
             }
 
             .cake-img { 
-                width: 75%; 
-                bottom: 0; 
+                width: 70%; /* Reduced slightly from 75% for extra safety margin */
+                bottom: 2%; /* Lifted slightly */
                 right: -5%; 
                 left: auto; 
                 transform: none; 
                 opacity: 0.85; 
             } 
+            
+            /* CRITICAL FIX FOR JITTER: Ensure the tiny envelope preview matches the left-aligned layout of the main view */
+            #internal-card .card-1-content-wrapper {
+                justify-content: flex-start;
+                align-items: flex-start;
+                text-align: left;
+                padding-top: 10px;
+            }
+            #internal-card .card-1-quote,
+            #internal-card .card-1-verse,
+            #internal-card .card-1-date {
+                text-align: left;
+                width: 100%;
+            }
             
             .card-2 { gap: 4dvh; }
             .card-2 .body-text br { display: none; }
