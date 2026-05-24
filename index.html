@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Mekha & Edwin | Wedding Invitation</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Tangerine:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <!-- Font Swapped to Cormorant Garamond -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Tangerine:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -14,7 +15,7 @@
             --champagne: #F3EFE0;
             --gold: #C8A96B;
             --white: #ffffff;
-            --font-woodland: 'Cinzel', serif;
+            --font-woodland: 'Cormorant Garamond', serif; /* Updated Font */
             --font-amoresa: 'Tangerine', cursive;
         }
 
@@ -228,10 +229,15 @@
             width: 100%;
         }
         .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7vw, 4.5rem); color: var(--gold); margin: 8px 0; }
+        
+        /* Applied Woodland font here globally in CSS, inline toggles added below */
         .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(0.8rem, 2.8vw, 0.95rem); line-height: 1.6; max-width: 90%; margin: 0 auto; }
 
         .card-3 .sub-title { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 6.5vw, 4.2rem); color: var(--gold); }
+        
+        /* Applied Woodland font here globally in CSS, inline toggles added below */
         .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(0.95rem, 3.5vw, 1.3rem); margin-bottom: 15px; line-height: 1.5; }
+        
         .map-btn { display: inline-block; background: var(--paper-navy); color: white; padding: 14px 28px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; }
 
         .rsvp-subtitle { font-family: var(--font-woodland); font-size: clamp(0.7rem, 2.5vw, 0.9rem); margin-bottom: 25px; display: block; }
@@ -346,61 +352,88 @@
 
 <main id="main-content">
     <section class="card card-1">
-        <h1 class="title">Mekha<br>& Edwin</h1> 
+        <!-- text-transform toggle added -->
+        <h1 class="title" style="text-transform: none;">Mekha<br>& Edwin</h1> 
         <div style="width: 50px; height: 3px; background: var(--gold); margin: 12px 0;"></div>
-        <p class="quote">“He has made everything beautiful in its time”</p>
-        <p style="font-family: var(--font-woodland); letter-spacing: 2px; font-size: 0.75rem; margin-top: 8px;">ECCLESIASTES 3:11</p>
-        <p style="margin-top: 25px; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600;">17TH JULY 2026</p>
+        <p class="quote">“He has made everything beautiful in His time”</p>
+        
+        <!-- text-transform toggle added -->
+        <p style="font-family: var(--font-woodland); letter-spacing: 2px; font-size: 0.75rem; margin-top: 8px; text-transform: none;">Ecclesiastes 3:11</p>
+        
+        <!-- text-transform toggle added -->
+        <p style="margin-top: 25px; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600; text-transform: none;">17th July 2026</p>
         <img src="02.png" class="cake-img" alt="Wedding Cake">
     </section>
 
     <section class="card card-2">
         <h1 class="title">You are Invited</h1>
-        <p class="body-text">Reji Thomas Mathew & Lekha Reji Thomas,<br>
+        
+        <!-- text-transform toggle added -->
+        <p class="body-text" style="text-transform: none;">Reji Thomas Mathew & Lekha Reji Thomas,<br>
         HBR Layout, Bangalore (Memuriyil, Elanthoor, Pathanamthitta),<br>
-        request the honour of your presence and prayers at the holy<br>
-        matrimony of their daughter,</p>
+        request the honour of your presence and prayers at the <br>
+        wedding of their daughter,</p>
+        
         <h2 class="names">Mekha Susan Thomas</h2>
-        <p class="body-text">with</p>
+        
+        <!-- text-transform toggle added -->
+        <p class="body-text" style="text-transform: none;">with</p>
+        
         <h2 class="names">Edwin Roger Bright</h2>
-        <p class="body-text">S/O M.J. Bright and Lissy Bright,<br>
+        
+        <!-- text-transform toggle added -->
+        <p class="body-text" style="text-transform: none;">S/O M.J. Bright and Lissy Bright,<br>
         Kamothe, Navi Mumbai</p>
     </section>
 
     <section class="card card-3">
-        <h1 style="font-family: var(--font-woodland); letter-spacing: 4px; margin-bottom: 25px;">THE DETAILS</h1>
+        <!-- text-transform toggle added -->
+        <h1 style="font-family: var(--font-woodland); letter-spacing: 4px; margin-bottom: 25px; text-transform: none;">The Details</h1>
+        
         <div class="details-flex">
             <div class="block">
                 <h2 class="sub-title">Date & Time</h2>
-                <p class="detail-text">July 17, 2026 (Friday)<br>4:30pm — Wedding<br>7:00pm — Reception</p>
+                <!-- text-transform toggle added -->
+                <p class="detail-text" style="text-transform: none;">July 17, 2026 (Friday)<br>4:00pm — Wedding<br>7:00pm — Reception</p>
             </div>
             <div class="block">
                 <h2 class="sub-title">Venue</h2>
-                <p class="detail-text">The Kings Meadows<br>Under the auspices of City Harvest AG Church<br>Bangalore</p>
+                <!-- text-transform toggle added -->
+                <p class="detail-text" style="text-transform: none;">The Kings Meadows<br>Under the auspices of City Harvest AG Church<br>Bangalore</p>
             </div>
         </div>
-        <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="map-btn">VIEW ON MAPS</a>
+        
+        <!-- text-transform toggle added -->
+        <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="map-btn" style="text-transform: none;">View on Maps</a>
     </section>
 
     <section class="card card-4">
-        <h1 class="rsvp-title" style="color: var(--gold); font-family: var(--font-woodland);">RSVP SOON!</h1>
-        <span class="rsvp-subtitle" id="rsvp-status-msg">We can’t wait to celebrate with you!</span>
+        <!-- text-transform toggle added -->
+        <h1 class="rsvp-title" style="color: var(--gold); font-family: var(--font-woodland); text-transform: none;">RSVP Soon!</h1>
+        
+        <!-- text-transform toggle added -->
+        <span class="rsvp-subtitle" id="rsvp-status-msg" style="text-transform: none;">We can’t wait to celebrate with you!</span>
         
         <form id="google-rsvp-form" style="margin: 0 auto; width: 100%; max-width: 280px; text-align: left;">
-            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland);">FULL NAME</label>
+            <!-- text-transform toggle added -->
+            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland); text-transform: none;">Full Name</label>
             <input type="text" id="guest-name-input" style="width:100%; padding: 12px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 15px;" required>
             
-            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland);">NUMBER OF GUESTS</label>
+            <!-- text-transform toggle added -->
+            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland); text-transform: none;">Number of Guests</label>
             <div class="counter-container">
                 <button type="button" class="counter-btn" onclick="updateGuests(-1)">-</button>
                 <div class="guest-num" id="guestCountDisplay">1</div>
                 <button type="button" class="counter-btn" onclick="updateGuests(1)">+</button>
             </div>
-            <button type="submit" class="submit-btn" id="submit-btn-text">SEND RSVP</button>
+            
+            <!-- text-transform toggle added -->
+            <button type="submit" class="submit-btn" id="submit-btn-text" style="text-transform: none;">Send RSVP</button>
         </form>
         
         <div style="margin-top: 25px;">
-            <p style="font-family: var(--font-woodland); font-size: 0.7rem; opacity: 0.7;">WITH BEST COMPLIMENTS FROM</p> 
+            <!-- text-transform toggle added -->
+            <p style="font-family: var(--font-woodland); font-size: 0.7rem; opacity: 0.7; text-transform: none;">With Best Compliments from</p> 
             <p class="footer-name">Shimon Mathew Thomas</p> 
         </div>
     </section>
