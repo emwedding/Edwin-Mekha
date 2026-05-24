@@ -99,7 +99,7 @@
             justify-content: flex-start;
             text-align: left;
             box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            padding: 10vh 8vw;
+            padding: 8vh 8vw;
             opacity: 0;
             pointer-events: none;
             
@@ -120,9 +120,9 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* Forces left alignment globally */
+            align-items: flex-start; 
             justify-content: center;
-            text-align: left; /* Forces left alignment globally */
+            text-align: left; 
             z-index: 2;
         }
         
@@ -132,13 +132,13 @@
         .card-1-verse { font-family: var(--font-woodland); letter-spacing: 2px; font-size: 1.2rem; margin-top: 1vh; text-transform: uppercase; }
         .card-1-date { margin-top: 4vh; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600; text-transform: none; }
 
-        /* The Isolated Cake logic to stop jumping/overlapping */
+        /* DESKTOP CAKE SCALING RESTORED */
         .cake-img { 
             position: absolute; 
-            bottom: 0; 
-            right: 0; 
-            width: clamp(220px, 45vw, 420px); 
-            max-height: 45vh; /* Strictly prevents vertical overlap with text */
+            bottom: 2%; 
+            right: -2%; 
+            width: clamp(280px, 45vw, 550px); 
+            max-height: 75vh; 
             object-fit: contain;
             object-position: bottom right;
             opacity: 0.85; 
@@ -146,14 +146,14 @@
             pointer-events: none;
         }
 
-        /* ─── MINIATURE SCALE OVERRIDES FOR ENVELOPE PREVIEW (PREVENTS PRE-ZOOM OVERLAP) ─── */
+        /* ─── MINIATURE SCALE OVERRIDES FOR ENVELOPE PREVIEW (DESKTOP) ─── */
         #internal-card .card-1-content-wrapper { justify-content: center; }
         #internal-card .card-1-title { font-size: 1.5rem; margin-bottom: 5px; }
         #internal-card .card-1-gold-line { width: 30px; height: 2px; margin: 0; }
         #internal-card .card-1-quote { font-size: 1.2rem; margin-top: 12px; }
         #internal-card .card-1-verse { font-size: 0.6rem; margin-top: 4px; }
         #internal-card .card-1-date { font-size: 0.7rem; margin-top: 15px; }
-        #internal-card .cake-img { width: 140px; right: -5%; bottom: -5%; }
+        #internal-card .cake-img { width: 140px; right: -5%; bottom: -5%; max-height: none; }
 
         /* ─── ENVELOPE PANEL GEOMETRY ─── */
         .flap {
@@ -237,7 +237,7 @@
 
         .card-1 { 
             background-color: var(--champagne); 
-            padding: 10vh 8vw; /* Matches the overlay exactly */
+            padding: 8vh 8vw; /* Matches the overlay exactly */
             align-items: flex-start;
         }
         .card-2 { background-color: var(--deep-dark-navy); color: var(--white); text-align: center; }
@@ -280,14 +280,66 @@
             }
             
             #zoom-card-overlay, .card-1 { 
-                padding: 10dvh 6vw; /* Exact match prevents any layout jump */
+                padding: 5dvh 6vw; 
             } 
             
+            #zoom-card-overlay .card-1-content-wrapper,
+            .card-1 .card-1-content-wrapper { 
+                padding-top: 2dvh; 
+                justify-content: flex-start;
+                align-items: flex-start;
+                text-align: left;
+            }
+            
+            #zoom-card-overlay .card-1-title,
+            .card-1 .card-1-title { margin-bottom: 1.5dvh; }
+            
+            #zoom-card-overlay .card-1-quote,
+            .card-1 .card-1-quote { 
+                margin-top: 2.5dvh; 
+                text-align: left; 
+                line-height: 1.4; 
+                max-width: 90%; 
+            }
+            
+            #zoom-card-overlay .card-1-date,
+            .card-1 .card-1-date { 
+                margin-top: 2.5dvh !important; 
+                z-index: 2; 
+                position: relative;
+            }
+
             .cake-img { 
-                width: 70%; 
-                max-height: 40vh; /* Extremely strict cap on mobile height */
+                width: 75%; 
+                max-height: 45vh; 
+                bottom: 0;
                 right: -5%;
             } 
+            
+            /* FIXED: Strict max-width applied to text to prevent overlap on mobile preview */
+            #internal-card .card-1-content-wrapper {
+                justify-content: flex-start;
+                align-items: flex-start;
+                text-align: left;
+                padding-top: 5px;
+            }
+            #internal-card .card-1-quote {
+                font-size: 0.95rem; /* Shrunk slightly for tiny card */
+                max-width: 55%; /* CRITICAL FIX: Forces text to wrap before hitting cake */
+                text-align: left;
+                line-height: 1.2;
+                margin-top: 8px;
+            }
+            #internal-card .card-1-verse,
+            #internal-card .card-1-date {
+                text-align: left;
+                max-width: 55%; /* Keeps verse and date away from the cake */
+            }
+            #internal-card .cake-img {
+                width: 100px; /* Shrunk slightly to fit narrow mobile preview */
+                right: -2%;
+                bottom: 0%;
+            }
             
             .card-2 { gap: 4dvh; }
             .card-2 .body-text br { display: none; }
