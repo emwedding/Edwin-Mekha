@@ -56,16 +56,16 @@
             background: #030a12;
         }
 
-        /* ─── PHYSICAL INTERNAL POCKET CARD ─── */
+        /* ─── PHYSICAL INTERNAL POCKET CARD (THE MINIATURE) ─── */
         .envelope-card-preview {
             position: absolute;
             inset: 12px;
             background-color: var(--champagne);
-            padding: 10px 20px;
+            padding: 15px 25px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
+            justify-content: flex-start;
+            text-align: left;
             color: var(--paper-navy);
             box-shadow: 0 0 25px rgba(0,0,0,0.35);
             
@@ -96,10 +96,10 @@
             z-index: 3000;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
+            justify-content: flex-start;
+            text-align: left;
             box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            padding: 40px 8vw;
+            padding: 10vh 8vw;
             opacity: 0;
             pointer-events: none;
             
@@ -115,41 +115,45 @@
             pointer-events: auto;
         }
 
-        /* ─── SHARED CARD-1 STRUCTURE (FOR SEAMLESS ZOOM) ─── */
+        /* ─── SHARED CARD-1 STRUCTURE (GLOBAL LEFT-ALIGNMENT) ─── */
         .card-1-content-wrapper {
             width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start; /* Forces left alignment globally */
             justify-content: center;
-            text-align: center;
-            position: relative;
+            text-align: left; /* Forces left alignment globally */
             z-index: 2;
         }
         
-        .card-1-title { font-family: var(--font-woodland); font-size: clamp(2.3rem, 7vw, 4.8rem); line-height: 1.1; color: var(--paper-navy); z-index: 2; text-transform: none; }
-        .card-1-gold-line { width: 50px; height: 3px; background: var(--gold); margin: 12px 0; }
-        .card-1-quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 15px; z-index: 2; }
-        .card-1-verse { font-family: var(--font-woodland); letter-spacing: 2px; font-size: 1.2rem; margin-top: 8px; text-transform: uppercase; }
-        .card-1-date { margin-top: 25px; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600; text-transform: none; }
+        .card-1-title { font-family: var(--font-woodland); font-size: clamp(2.3rem, 7vw, 4.8rem); line-height: 1.1; color: var(--paper-navy); margin-bottom: 2vh; text-transform: none; }
+        .card-1-gold-line { width: 50px; height: 3px; background: var(--gold); margin: 0; }
+        .card-1-quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 4vh; max-width: 90%; line-height: 1.3; }
+        .card-1-verse { font-family: var(--font-woodland); letter-spacing: 2px; font-size: 1.2rem; margin-top: 1vh; text-transform: uppercase; }
+        .card-1-date { margin-top: 4vh; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600; text-transform: none; }
 
+        /* The Isolated Cake logic to stop jumping/overlapping */
         .cake-img { 
             position: absolute; 
-            bottom: 2%; right: -5%; 
-            width: clamp(240px, 55vw, 480px); 
-            opacity: 0.8; 
-            z-index: -1; 
+            bottom: 0; 
+            right: 0; 
+            width: clamp(220px, 45vw, 420px); 
+            max-height: 45vh; /* Strictly prevents vertical overlap with text */
+            object-fit: contain;
+            object-position: bottom right;
+            opacity: 0.85; 
+            z-index: 1; 
+            pointer-events: none;
         }
 
-        /* MINIATURE SCALE OVERRIDES FOR ENVELOPE PREVIEW (DESKTOP DEFAULT) */
-        #internal-card .card-1-content-wrapper { justify-content: center; align-items: center; text-align: center; }
-        #internal-card .card-1-title { font-size: clamp(1.4rem, 4vw, 2.4rem); }
-        #internal-card .card-1-gold-line { width: 35px; height: 2px; margin: 6px 0; }
-        #internal-card .card-1-quote { font-size: clamp(1.2rem, 3vw, 1.8rem); margin-top: 5px; }
+        /* ─── MINIATURE SCALE OVERRIDES FOR ENVELOPE PREVIEW (PREVENTS PRE-ZOOM OVERLAP) ─── */
+        #internal-card .card-1-content-wrapper { justify-content: center; }
+        #internal-card .card-1-title { font-size: 1.5rem; margin-bottom: 5px; }
+        #internal-card .card-1-gold-line { width: 30px; height: 2px; margin: 0; }
+        #internal-card .card-1-quote { font-size: 1.2rem; margin-top: 12px; }
         #internal-card .card-1-verse { font-size: 0.6rem; margin-top: 4px; }
-        #internal-card .card-1-date { font-size: 0.6rem; margin-top: 12px; }
-        #internal-card .cake-img { width: clamp(120px, 30vw, 200px); opacity: 0.6; bottom: -5%; right: -5%; }
+        #internal-card .card-1-date { font-size: 0.7rem; margin-top: 15px; }
+        #internal-card .cake-img { width: 140px; right: -5%; bottom: -5%; }
 
         /* ─── ENVELOPE PANEL GEOMETRY ─── */
         .flap {
@@ -231,7 +235,11 @@
 
         .card.is-visible { opacity: 1; transform: translateY(0); }
 
-        .card-1 { background-color: var(--champagne); }
+        .card-1 { 
+            background-color: var(--champagne); 
+            padding: 10vh 8vw; /* Matches the overlay exactly */
+            align-items: flex-start;
+        }
         .card-2 { background-color: var(--deep-dark-navy); color: var(--white); text-align: center; }
         .card-3 { background-color: var(--champagne); text-align: center; color: var(--paper-navy); }
         .card-4 { background-color: var(--deep-dark-navy); color: var(--white); text-align: center; }
@@ -246,7 +254,6 @@
         .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(1.2rem, 2.8vw, 0.7rem); line-height: 1.5; max-width: 90%; margin: 0 auto; }
 
         .card-3 .sub-title { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 6.5vw, 4.2rem); color: var(--gold); }
-        
         .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(1.5rem, 3.5vw, 1.5rem); margin-bottom: 15px; line-height: 1.5; }
         
         .map-btn { display: inline-block; background: var(--paper-navy); color: white; padding: 14px 28px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; }
@@ -256,7 +263,6 @@
         .counter-btn { width: 50px; height: 50px; font-size: 1.8rem; color: var(--gold); background: none; border: none; cursor: pointer; }
         .guest-num { font-family: var(--font-woodland); font-size: 1.8rem; }
         .submit-btn { background: var(--gold); color: var(--deep-dark-navy); padding: 18px; width: 100%; max-width: 280px; font-weight: bold; border: none; font-family: var(--font-woodland); cursor: pointer; }
-
         .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7.5vw, 3.8rem); color: var(--gold); margin-top: 5px; }
 
         /* ─── MOBILE OVERRIDES (THE BULLETPROOF LAYOUT) ─── */
@@ -273,58 +279,15 @@
                 text-align: center; 
             }
             
-            /* Matched exactly to .card padding to prevent scaling jump */
-            #zoom-card-overlay { padding: 6dvh 5vw; } 
-            
-            /* CRITICAL: Enforce Left-Alignment on Mobile for Overlay AND Card 1 */
-            #zoom-card-overlay .card-1-content-wrapper,
-            .card-1 .card-1-content-wrapper { 
-                padding-top: 6dvh; /* Reduced from 12dvh to lift text above the cake */
-                justify-content: flex-start;
-                align-items: flex-start;
-                text-align: left;
-            }
-            
-            #zoom-card-overlay .card-1-title,
-            .card-1 .card-1-title { margin-bottom: 1.5dvh; }
-            
-            #zoom-card-overlay .card-1-quote,
-            .card-1 .card-1-quote { 
-                margin-top: 2.5dvh; /* Reduced from 4dvh */
-                text-align: left; 
-                line-height: 1.4; 
-                max-width: 90%; 
-            }
-            
-            #zoom-card-overlay .card-1-date,
-            .card-1 .card-1-date { 
-                margin-top: 2.5dvh !important; /* Reduced from 4dvh */
-                z-index: 2; 
-                position: relative;
-            }
-
-            .cake-img { 
-                width: 70%; /* Reduced slightly from 75% for extra safety margin */
-                bottom: 2%; /* Lifted slightly */
-                right: -5%; 
-                left: auto; 
-                transform: none; 
-                opacity: 0.85; 
+            #zoom-card-overlay, .card-1 { 
+                padding: 10dvh 6vw; /* Exact match prevents any layout jump */
             } 
             
-            /* CRITICAL FIX FOR JITTER: Ensure the tiny envelope preview matches the left-aligned layout of the main view */
-            #internal-card .card-1-content-wrapper {
-                justify-content: flex-start;
-                align-items: flex-start;
-                text-align: left;
-                padding-top: 10px;
-            }
-            #internal-card .card-1-quote,
-            #internal-card .card-1-verse,
-            #internal-card .card-1-date {
-                text-align: left;
-                width: 100%;
-            }
+            .cake-img { 
+                width: 70%; 
+                max-height: 40vh; /* Extremely strict cap on mobile height */
+                right: -5%;
+            } 
             
             .card-2 { gap: 4dvh; }
             .card-2 .body-text br { display: none; }
@@ -345,8 +308,8 @@
         <p class="card-1-quote">“He has made everything beautiful in His time”</p>
         <p class="card-1-verse" style="text-transform: uppercase;">Ecclesiastes 3:11</p>
         <p class="card-1-date" style="text-transform: none;">17th July 2026</p>
-        <img src="02.png" class="cake-img" alt="Wedding Cake">
     </div>
+    <img src="02.png" class="cake-img" alt="Wedding Cake">
 </div>
 
 <section id="landing-screen">
@@ -360,8 +323,8 @@
                     <p class="card-1-quote">“He has made everything beautiful in His time”</p>
                     <p class="card-1-verse" style="text-transform: uppercase;">Ecclesiastes 3:11</p>
                     <p class="card-1-date" style="text-transform: none;">17th July 2026</p>
-                    <img src="02.png" class="cake-img" alt="Wedding Cake">
                 </div>
+                <img src="02.png" class="cake-img" alt="Wedding Cake">
             </div>
 
             <div class="flap flap-left"></div>
@@ -384,8 +347,8 @@
             <p class="card-1-quote">“He has made everything beautiful in His time”</p>
             <p class="card-1-verse" style="text-transform: uppercase;">Ecclesiastes 3:11</p>
             <p class="card-1-date" style="text-transform: none;">17th July 2026</p>
-            <img src="02.png" class="cake-img" alt="Wedding Cake">
         </div>
+        <img src="02.png" class="cake-img" alt="Wedding Cake">
     </section>
 
     <section class="card card-2">
@@ -494,7 +457,7 @@
             
             setTimeout(() => {
                 content.style.display = 'block';
-                document.querySelector('.card-1').classList.add('is-visible'); // Pre-reveal card 1 to stop flickering
+                document.querySelector('.card-1').classList.add('is-visible');
                 landing.style.opacity = "0";
                 
                 setTimeout(() => {
