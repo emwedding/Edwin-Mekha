@@ -14,7 +14,7 @@
             --champagne: #F3EFE0;
             --gold: #C8A96B;
             --white: #ffffff;
-            --font-woodland: 'Cormorant Garamond', serif;
+            --font-woodland: 'Cormorant Garamond', serif; /* Updated Font */
             --font-amoresa: 'Tangerine', cursive;
         }
 
@@ -61,7 +61,7 @@
             position: absolute;
             inset: 12px;
             background-color: var(--champagne);
-            padding: 15px; /* Reduced slightly to fit mini-layout */
+            padding: 10px 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -99,7 +99,7 @@
             justify-content: center;
             text-align: center;
             box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            padding: 40px 8vw; /* Matched to main card padding for seamless transition */
+            padding: 40px 8vw;
             opacity: 0;
             pointer-events: none;
             
@@ -115,8 +115,8 @@
             pointer-events: auto;
         }
 
-        /* ─── SHARED CARD 1 CONTENT SYSTEM (Envelope -> Zoom -> Main) ─── */
-        .card-1-content-block {
+        /* ─── SHARED CARD-1 STRUCTURE (FOR SEAMLESS ZOOM) ─── */
+        .card-1-content-wrapper {
             width: 100%;
             height: 100%;
             display: flex;
@@ -127,13 +127,13 @@
             position: relative;
             z-index: 2;
         }
-
-        .card-1-title { font-family: var(--font-woodland); font-size: clamp(2.3rem, 7vw, 4.8rem); line-height: 1.1; color: var(--paper-navy); text-transform: none; }
-        .card-1-gold-line { width: 50px; height: 3px; background: var(--gold); margin: 12px 0; }
-        .card-1-quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 15px; }
-        .card-1-verse { font-family: var(--font-woodland); letter-spacing: 2px; font-size: 0.75rem; margin-top: 8px; text-transform: none; }
-        .card-1-date { margin-top: 25px; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600; text-transform: none; }
         
+        .card-1-title { font-family: var(--font-woodland); font-size: clamp(2.3rem, 7vw, 4.8rem); line-height: 1.1; color: var(--paper-navy); z-index: 2; text-transform: none; }
+        .card-1-gold-line { width: 50px; height: 3px; background: var(--gold); margin: 12px 0; }
+        .card-1-quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 15px; z-index: 2; }
+        .card-1-verse { font-family: var(--font-woodland); letter-spacing: 2px; font-size: 1.2rem; margin-top: 8px; text-transform: uppercase; }
+        .card-1-date { margin-top: 25px; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600; text-transform: none; }
+
         .cake-img { 
             position: absolute; 
             bottom: 2%; right: -5%; 
@@ -142,14 +142,14 @@
             z-index: -1; 
         }
 
-        /* POCKET CARD MINIATURE OVERRIDES (Scales text down for the envelope preview) */
-        #internal-card .card-1-title { font-size: clamp(1.6rem, 4vw, 2.4rem); }
-        #internal-card .card-1-quote { font-size: clamp(1.4rem, 3vw, 1.8rem); margin-top: 8px; }
-        #internal-card .card-1-verse { font-size: 0.55rem; margin-top: 4px; }
-        #internal-card .card-1-date { font-size: 0.65rem; margin-top: 12px; }
-        #internal-card .card-1-gold-line { width: 35px; height: 2px; margin: 8px 0; }
-        #internal-card .cake-img { width: clamp(140px, 35vw, 220px); opacity: 0.5; bottom: -10%; right: -10%; }
-
+        /* MINIATURE SCALE OVERRIDES FOR ENVELOPE PREVIEW */
+        #internal-card .card-1-content-wrapper { justify-content: center; align-items: center; text-align: center; }
+        #internal-card .card-1-title { font-size: clamp(1.4rem, 4vw, 2.4rem); }
+        #internal-card .card-1-gold-line { width: 35px; height: 2px; margin: 6px 0; }
+        #internal-card .card-1-quote { font-size: clamp(1.2rem, 3vw, 1.8rem); margin-top: 5px; }
+        #internal-card .card-1-verse { font-size: 0.6rem; margin-top: 4px; }
+        #internal-card .card-1-date { font-size: 0.6rem; margin-top: 12px; }
+        #internal-card .cake-img { width: clamp(120px, 30vw, 200px); opacity: 0.6; bottom: -5%; right: -5%; }
 
         /* ─── ENVELOPE PANEL GEOMETRY ─── */
         .flap {
@@ -242,13 +242,16 @@
             width: 100%;
         }
         .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7vw, 4.5rem); color: var(--gold); margin: 8px 0; }
-        .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(0.8rem, 2.8vw, 0.95rem); line-height: 1.6; max-width: 90%; margin: 0 auto; }
+        
+        .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(1.2rem, 2.8vw, 0.7rem); line-height: 1.5; max-width: 90%; margin: 0 auto; }
 
         .card-3 .sub-title { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 6.5vw, 4.2rem); color: var(--gold); }
-        .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(0.95rem, 3.5vw, 1.3rem); margin-bottom: 15px; line-height: 1.5; }
+        
+        .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(1.5rem, 3.5vw, 1.5rem); margin-bottom: 15px; line-height: 1.5; }
+        
         .map-btn { display: inline-block; background: var(--paper-navy); color: white; padding: 14px 28px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; }
 
-        .rsvp-subtitle { font-family: var(--font-woodland); font-size: clamp(0.7rem, 2.5vw, 0.9rem); margin-bottom: 25px; display: block; }
+        .rsvp-subtitle { font-family: var(--font-woodland); font-size: clamp(1.5rem, 2.5vw, 1.5rem); margin-bottom: 25px; display: block; }
         .counter-container { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.2); margin: 15px auto; max-width: 280px; }
         .counter-btn { width: 50px; height: 50px; font-size: 1.8rem; color: var(--gold); background: none; border: none; cursor: pointer; }
         .guest-num { font-family: var(--font-woodland); font-size: 1.8rem; }
@@ -270,22 +273,42 @@
                 text-align: center; 
             }
             
-            #zoom-card-overlay { padding: 6dvh 5vw; }
+            #zoom-card-overlay { padding: 40px 10vw; }
             
-            /* Apply mobile left-alignment to the overlay and main card only */
-            #zoom-card-overlay .card-1-content-block,
-            .card-1 .card-1-content-block {
+            /* CRITICAL: Enforce Left-Alignment on Mobile for Overlay AND Card 1 */
+            #zoom-card-overlay .card-1-content-wrapper,
+            .card-1 .card-1-content-wrapper { 
                 padding-top: 12dvh;
                 justify-content: flex-start;
                 align-items: flex-start;
                 text-align: left;
             }
             
-            #zoom-card-overlay .card-1-title, .card-1 .card-1-title { margin-bottom: 2dvh; }
-            #zoom-card-overlay .card-1-quote, .card-1 .card-1-quote { margin-top: 4dvh; text-align: left; line-height: 1.4; }
-            #zoom-card-overlay .card-1-date, .card-1 .card-1-date { margin-top: 4dvh !important; }
+            #zoom-card-overlay .card-1-title,
+            .card-1 .card-1-title { margin-bottom: 2dvh; }
+            
+            #zoom-card-overlay .card-1-quote,
+            .card-1 .card-1-quote { 
+                margin-top: 4dvh; 
+                text-align: left; 
+                line-height: 1.4; 
+            }
+            
+            #zoom-card-overlay .card-1-date,
+            .card-1 .card-1-date { 
+                margin-top: 4dvh !important; 
+                z-index: 2; 
+                position: relative;
+            }
 
-            .cake-img { width: 75%; bottom: 0; right: -5%; left: auto; transform: none; opacity: 0.85; } 
+            .cake-img { 
+                width: 75%; 
+                bottom: 0; 
+                right: -5%; 
+                left: auto; 
+                transform: none; 
+                opacity: 0.85; 
+            } 
             
             .card-2 { gap: 4dvh; }
             .card-2 .body-text br { display: none; }
@@ -300,12 +323,12 @@
 <body>
 
 <div id="zoom-card-overlay">
-    <div class="card-1-content-block">
-        <h1 class="card-1-title">Mekha<br>& Edwin</h1> 
+    <div class="card-1-content-wrapper">
+        <h1 class="card-1-title" style="text-transform: none;">MEKHA<br>& EDWIN</h1> 
         <div class="card-1-gold-line"></div>
         <p class="card-1-quote">“He has made everything beautiful in His time”</p>
-        <p class="card-1-verse">Ecclesiastes 3:11</p>
-        <p class="card-1-date">17th July 2026</p>
+        <p class="card-1-verse" style="text-transform: uppercase;">Ecclesiastes 3:11</p>
+        <p class="card-1-date" style="text-transform: none;">17th July 2026</p>
         <img src="02.png" class="cake-img" alt="Wedding Cake">
     </div>
 </div>
@@ -315,12 +338,12 @@
         <div class="envelope-body" id="envelope">
             
             <div class="envelope-card-preview" id="internal-card">
-                <div class="card-1-content-block">
-                    <h1 class="card-1-title">Mekha<br>& Edwin</h1> 
+                <div class="card-1-content-wrapper">
+                    <h1 class="card-1-title" style="text-transform: none;">MEKHA<br>& EDWIN</h1> 
                     <div class="card-1-gold-line"></div>
                     <p class="card-1-quote">“He has made everything beautiful in His time”</p>
-                    <p class="card-1-verse">Ecclesiastes 3:11</p>
-                    <p class="card-1-date">17th July 2026</p>
+                    <p class="card-1-verse" style="text-transform: uppercase;">Ecclesiastes 3:11</p>
+                    <p class="card-1-date" style="text-transform: none;">17th July 2026</p>
                     <img src="02.png" class="cake-img" alt="Wedding Cake">
                 </div>
             </div>
@@ -339,25 +362,28 @@
 
 <main id="main-content">
     <section class="card card-1">
-        <div class="card-1-content-block">
-            <h1 class="card-1-title">Mekha<br>& Edwin</h1> 
+        <div class="card-1-content-wrapper">
+            <h1 class="card-1-title" style="text-transform: none;">MEKHA<br>& EDWIN</h1> 
             <div class="card-1-gold-line"></div>
             <p class="card-1-quote">“He has made everything beautiful in His time”</p>
-            <p class="card-1-verse">Ecclesiastes 3:11</p>
-            <p class="card-1-date">17th July 2026</p>
+            <p class="card-1-verse" style="text-transform: uppercase;">Ecclesiastes 3:11</p>
+            <p class="card-1-date" style="text-transform: none;">17th July 2026</p>
             <img src="02.png" class="cake-img" alt="Wedding Cake">
         </div>
     </section>
 
     <section class="card card-2">
         <h1 class="title">You are Invited</h1>
+        
         <p class="body-text" style="text-transform: none;">Reji Thomas Mathew & Lekha Reji Thomas,<br>
         HBR Layout, Bangalore (Memuriyil, Elanthoor, Pathanamthitta),<br>
         request the honour of your presence and prayers at the <br>
         wedding of their daughter,</p>
         
         <h2 class="names">Mekha Susan Thomas</h2>
+        
         <p class="body-text" style="text-transform: none;">with</p>
+        
         <h2 class="names">Edwin Roger Bright</h2>
         
         <p class="body-text" style="text-transform: none;">S/O M.J. Bright and Lissy Bright,<br>
@@ -365,7 +391,7 @@
     </section>
 
     <section class="card card-3">
-        <h1 style="font-family: var(--font-woodland); letter-spacing: 4px; margin-bottom: 25px; text-transform: none;">The Details</h1>
+        <h1 style="font-family: var(--font-woodland); letter-spacing: 4px; margin-bottom: 25px; text-transform: none;">DETAILS</h1>
         
         <div class="details-flex">
             <div class="block">
@@ -378,29 +404,30 @@
             </div>
         </div>
         
-        <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="map-btn" style="text-transform: none;">View on Maps</a>
+        <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="map-btn" style="text-transform: none;">VIEW ON MAPS</a>
     </section>
 
     <section class="card card-4">
-        <h1 class="rsvp-title" style="color: var(--gold); font-family: var(--font-woodland); text-transform: none;">RSVP Soon!</h1>
+        <h1 class="rsvp-title" style="color: var(--gold); font-family: var(--font-woodland); text-transform: none;">RSVP SOON!</h1>
+        
         <span class="rsvp-subtitle" id="rsvp-status-msg" style="text-transform: none;">We can’t wait to celebrate with you!</span>
         
         <form id="google-rsvp-form" style="margin: 0 auto; width: 100%; max-width: 280px; text-align: left;">
-            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland); text-transform: none;">Full Name</label>
+            <label style="font-size: 1.5rem; letter-spacing: 1px; font-family: var(--font-woodland); text-transform: none;">FULL NAME</label>
             <input type="text" id="guest-name-input" style="width:100%; padding: 12px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 15px;" required>
             
-            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland); text-transform: none;">Number of Guests</label>
+            <label style="font-size: 1.5rem; letter-spacing: 1px; font-family: var(--font-woodland); text-transform: none;">NUMBER OF GUESTS</label>
             <div class="counter-container">
                 <button type="button" class="counter-btn" onclick="updateGuests(-1)">-</button>
                 <div class="guest-num" id="guestCountDisplay">1</div>
                 <button type="button" class="counter-btn" onclick="updateGuests(1)">+</button>
             </div>
             
-            <button type="submit" class="submit-btn" id="submit-btn-text" style="text-transform: none;">Send RSVP</button>
+            <button type="submit" class="submit-btn" id="submit-btn-text" style="text-transform: none;">SEND RSVP</button>
         </form>
         
         <div style="margin-top: 25px;">
-            <p style="font-family: var(--font-woodland); font-size: 0.7rem; opacity: 0.7; text-transform: none;">With Best Compliments from</p> 
+            <p style="font-family: var(--font-woodland); font-size: 1.5rem; opacity: 0.7; text-transform: none;">With best compliments from</p> 
             <p class="footer-name">Shimon Mathew Thomas</p> 
         </div>
     </section>
@@ -451,7 +478,7 @@
             
             setTimeout(() => {
                 content.style.display = 'block';
-                document.querySelector('.card-1').classList.add('is-visible'); // Pre-reveal card 1 behind overlay to stop flickering
+                document.querySelector('.card-1').classList.add('is-visible'); // Pre-reveal card 1 to stop flickering
                 landing.style.opacity = "0";
                 
                 setTimeout(() => {
