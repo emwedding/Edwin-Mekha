@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Mekha & Edwin | Wedding Invitation</title>
     
-    <!-- Font Swapped to Cormorant Garamond -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Tangerine:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 
     <style>
@@ -15,7 +14,7 @@
             --champagne: #F3EFE0;
             --gold: #C8A96B;
             --white: #ffffff;
-            --font-woodland: 'Cormorant Garamond', serif; /* Updated Font */
+            --font-woodland: 'Cormorant Garamond', serif;
             --font-amoresa: 'Tangerine', cursive;
         }
 
@@ -62,7 +61,7 @@
             position: absolute;
             inset: 12px;
             background-color: var(--champagne);
-            padding: 20px 30px;
+            padding: 15px; /* Reduced slightly to fit mini-layout */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -100,7 +99,7 @@
             justify-content: center;
             text-align: center;
             box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            padding: 40px 10vw;
+            padding: 40px 8vw; /* Matched to main card padding for seamless transition */
             opacity: 0;
             pointer-events: none;
             
@@ -116,17 +115,41 @@
             pointer-events: auto;
         }
 
-        /* HARD-LOCKED TYPOGRAPHY SYSTEM */
-        .invite-text { 
-            font-family: 'Tangerine', cursive !important; 
-            font-size: clamp(1.8rem, 5.2vw, 3.4rem) !important;
-            line-height: 1.3 !important; 
-            font-weight: 700 !important;
-            color: var(--paper-navy) !important;
+        /* ─── SHARED CARD 1 CONTENT SYSTEM (Envelope -> Zoom -> Main) ─── */
+        .card-1-content-block {
             width: 100%;
-            max-width: 90% !important;
-            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
         }
+
+        .card-1-title { font-family: var(--font-woodland); font-size: clamp(2.3rem, 7vw, 4.8rem); line-height: 1.1; color: var(--paper-navy); text-transform: none; }
+        .card-1-gold-line { width: 50px; height: 3px; background: var(--gold); margin: 12px 0; }
+        .card-1-quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 15px; }
+        .card-1-verse { font-family: var(--font-woodland); letter-spacing: 2px; font-size: 0.75rem; margin-top: 8px; text-transform: none; }
+        .card-1-date { margin-top: 25px; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600; text-transform: none; }
+        
+        .cake-img { 
+            position: absolute; 
+            bottom: 2%; right: -5%; 
+            width: clamp(240px, 55vw, 480px); 
+            opacity: 0.8; 
+            z-index: -1; 
+        }
+
+        /* POCKET CARD MINIATURE OVERRIDES (Scales text down for the envelope preview) */
+        #internal-card .card-1-title { font-size: clamp(1.6rem, 4vw, 2.4rem); }
+        #internal-card .card-1-quote { font-size: clamp(1.4rem, 3vw, 1.8rem); margin-top: 8px; }
+        #internal-card .card-1-verse { font-size: 0.55rem; margin-top: 4px; }
+        #internal-card .card-1-date { font-size: 0.65rem; margin-top: 12px; }
+        #internal-card .card-1-gold-line { width: 35px; height: 2px; margin: 8px 0; }
+        #internal-card .cake-img { width: clamp(140px, 35vw, 220px); opacity: 0.5; bottom: -10%; right: -10%; }
+
 
         /* ─── ENVELOPE PANEL GEOMETRY ─── */
         .flap {
@@ -213,34 +236,19 @@
         .card-3 { background-color: var(--champagne); text-align: center; color: var(--paper-navy); }
         .card-4 { background-color: var(--deep-dark-navy); color: var(--white); text-align: center; }
 
-        .card-1 .title { font-family: var(--font-woodland); font-size: clamp(2.3rem, 7vw, 4.8rem); line-height: 1.1; color: var(--paper-navy); z-index: 2; }
-        .card-1 .quote { font-family: var(--font-amoresa); font-size: clamp(2rem, 5vw, 3rem); color: var(--paper-navy); margin-top: 15px; z-index: 2; }
-        .cake-img { 
-            position: absolute; 
-            bottom: 2%; right: -5%; 
-            width: clamp(240px, 55vw, 480px); 
-            opacity: 0.8; 
-            z-index: 1; 
-        }
-
         .card-2 .title, .card-4 .rsvp-title { 
             font-family: var(--font-amoresa); 
             font-size: clamp(3.2rem, 9vw, 6.5rem); 
             width: 100%;
         }
         .card-2 .names { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7vw, 4.5rem); color: var(--gold); margin: 8px 0; }
-        
-        /* Applied Woodland font here globally in CSS, inline toggles added below */
-        .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(1.2rem, 2.8vw, 0.7rem); line-height: 1.5; max-width: 90%; margin: 0 auto; }
+        .card-2 .body-text { font-family: var(--font-woodland); font-size: clamp(0.8rem, 2.8vw, 0.95rem); line-height: 1.6; max-width: 90%; margin: 0 auto; }
 
         .card-3 .sub-title { font-family: var(--font-amoresa); font-size: clamp(2.8rem, 6.5vw, 4.2rem); color: var(--gold); }
-        
-        /* Applied Woodland font here globally in CSS, inline toggles added below */
-        .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(1.5rem, 3.5vw, 1.5rem); margin-bottom: 15px; line-height: 1.5; }
-        
+        .card-3 .detail-text { font-family: var(--font-woodland); font-size: clamp(0.95rem, 3.5vw, 1.3rem); margin-bottom: 15px; line-height: 1.5; }
         .map-btn { display: inline-block; background: var(--paper-navy); color: white; padding: 14px 28px; text-decoration: none; font-family: var(--font-woodland); font-size: 0.8rem; letter-spacing: 2px; }
 
-        .rsvp-subtitle { font-family: var(--font-woodland); font-size: clamp(1.5rem, 2.5vw, 1.5rem); margin-bottom: 25px; display: block; }
+        .rsvp-subtitle { font-family: var(--font-woodland); font-size: clamp(0.7rem, 2.5vw, 0.9rem); margin-bottom: 25px; display: block; }
         .counter-container { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.2); margin: 15px auto; max-width: 280px; }
         .counter-btn { width: 50px; height: 50px; font-size: 1.8rem; color: var(--gold); background: none; border: none; cursor: pointer; }
         .guest-num { font-family: var(--font-woodland); font-size: 1.8rem; }
@@ -251,93 +259,72 @@
         /* ─── MOBILE OVERRIDES (THE BULLETPROOF LAYOUT) ─── */
         @media (max-width: 600px) {
             
-            /* Preserve original perfect mobile emerge height */
             .unfold .envelope-card-preview {
                 transform: translateY(-56%) scale(1);
             }
             
-            /* 1. General card reset */
             .card { 
                 padding: 6dvh 5vw; 
                 justify-content: center; 
                 align-items: center; 
                 text-align: center; 
             }
-            #zoom-card-overlay { padding: 40px 10vw; }
             
-            /* 2. CARD 1: Left-Aligned Editorial Layout with Controlled Top Space */
-            .card-1 { 
-                padding-top: 12dvh; /* Eliminates the huge void by strictly controlling the top margin */
-                justify-content: flex-start; /* Pushes content upward rather than centering it */
-                align-items: flex-start; /* Forces all elements to align left */
-                text-align: left; /* Forces text to align left */
+            #zoom-card-overlay { padding: 6dvh 5vw; }
+            
+            /* Apply mobile left-alignment to the overlay and main card only */
+            #zoom-card-overlay .card-1-content-block,
+            .card-1 .card-1-content-block {
+                padding-top: 12dvh;
+                justify-content: flex-start;
+                align-items: flex-start;
+                text-align: left;
             }
-            .card-1 .title { margin-bottom: 2dvh; }
-            .card-1 .quote { 
-                margin-top: 4dvh; 
-                text-align: left; 
-                line-height: 1.4; 
-            }
-            .card-1 p:nth-of-type(3) { 
-                margin-top: 4dvh !important; 
-                z-index: 2; 
-                position: relative;
-            }
+            
+            #zoom-card-overlay .card-1-title, .card-1 .card-1-title { margin-bottom: 2dvh; }
+            #zoom-card-overlay .card-1-quote, .card-1 .card-1-quote { margin-top: 4dvh; text-align: left; line-height: 1.4; }
+            #zoom-card-overlay .card-1-date, .card-1 .card-1-date { margin-top: 4dvh !important; }
 
-            /* 3. CAKE IMAGE: Restored to Bottom Right & Full Opacity */
-            .cake-img { 
-                width: 75%; 
-                bottom: 0; 
-                right: -5%; 
-                left: auto; 
-                transform: none; 
-                opacity: 0.85; /* Restored elegant opacity */
-            } 
+            .cake-img { width: 75%; bottom: 0; right: -5%; left: auto; transform: none; opacity: 0.85; } 
             
-            /* CARD 2: Rhythmic De-clustering & Line Wrapping Fix */
-            .card-2 { 
-                gap: 4dvh; 
-            }
-            
-            /* Disables the hard HTML line breaks only on narrow mobile screens so the text wraps beautifully on its own */
+            .card-2 { gap: 4dvh; }
             .card-2 .body-text br { display: none; }
-            
             .card-2 .title { margin-bottom: 0; }
             .card-2 .names { margin: 0; }
-            .card-2 .body-text { 
-                margin: 0; 
-                line-height: 1.7; 
-                width: 100%; 
-                max-width: 95%; 
-            }
+            .card-2 .body-text { margin: 0; line-height: 1.7; width: 100%; max-width: 95%; }
 
             .details-flex { display: flex; flex-direction: column; gap: 6dvh; margin: 4dvh 0; }
-            
-            .invite-text { 
-                max-width: 90%; 
-                font-size: clamp(1.6rem, 5.2vw, 2.2rem) !important; 
-                line-height: 1.6 !important; 
-            }
         }
     </style>
 </head>
 <body>
 
-<!-- Mobile Matrix Hardware Acceleration Overlay Layer Frame -->
 <div id="zoom-card-overlay">
-    <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
+    <div class="card-1-content-block">
+        <h1 class="card-1-title">Mekha<br>& Edwin</h1> 
+        <div class="card-1-gold-line"></div>
+        <p class="card-1-quote">“He has made everything beautiful in His time”</p>
+        <p class="card-1-verse">Ecclesiastes 3:11</p>
+        <p class="card-1-date">17th July 2026</p>
+        <img src="02.png" class="cake-img" alt="Wedding Cake">
+    </div>
 </div>
 
 <section id="landing-screen">
     <div class="envelope-container" id="envelope-viewport">
         <div class="envelope-body" id="envelope">
             
-            <!-- Original Card Anchor Preview Frame Element -->
             <div class="envelope-card-preview" id="internal-card">
-                <p class="invite-text">As our next chapter begins, we request the pleasure of your company at our wedding celebration!</p>
+                <div class="card-1-content-block">
+                    <h1 class="card-1-title">Mekha<br>& Edwin</h1> 
+                    <div class="card-1-gold-line"></div>
+                    <p class="card-1-quote">“He has made everything beautiful in His time”</p>
+                    <p class="card-1-verse">Ecclesiastes 3:11</p>
+                    <p class="card-1-date">17th July 2026</p>
+                    <img src="02.png" class="cake-img" alt="Wedding Cake">
+                </div>
             </div>
 
-            <!-- Envelope Panels -->
             <div class="flap flap-left"></div>
             <div class="flap flap-bottom"></div>
             <div class="flap flap-right"></div>
@@ -352,88 +339,68 @@
 
 <main id="main-content">
     <section class="card card-1">
-        <!-- text-transform toggle added -->
-        <h1 class="title" style="text-transform: none;">MEKHA<br>& EDWIN</h1> 
-        <div style="width: 50px; height: 3px; background: var(--gold); margin: 12px 0;"></div>
-        <p class="quote">“He has made everything beautiful in His time”</p>
-        
-        <!-- text-transform toggle added -->
-        <p style="font-family: var(--font-woodland); letter-spacing: 2px; font-size: 1.2rem; margin-top: 8px; text-transform: uppercase;">Ecclesiastes 3:11</p>
-        
-        <!-- text-transform toggle added -->
-        <p style="margin-top: 25px; font-family: var(--font-woodland); letter-spacing: 3px; font-weight: 600; text-transform: none;">17th July 2026</p>
-        <img src="02.png" class="cake-img" alt="Wedding Cake">
+        <div class="card-1-content-block">
+            <h1 class="card-1-title">Mekha<br>& Edwin</h1> 
+            <div class="card-1-gold-line"></div>
+            <p class="card-1-quote">“He has made everything beautiful in His time”</p>
+            <p class="card-1-verse">Ecclesiastes 3:11</p>
+            <p class="card-1-date">17th July 2026</p>
+            <img src="02.png" class="cake-img" alt="Wedding Cake">
+        </div>
     </section>
 
     <section class="card card-2">
         <h1 class="title">You are Invited</h1>
-        
-        <!-- text-transform toggle added -->
         <p class="body-text" style="text-transform: none;">Reji Thomas Mathew & Lekha Reji Thomas,<br>
         HBR Layout, Bangalore (Memuriyil, Elanthoor, Pathanamthitta),<br>
         request the honour of your presence and prayers at the <br>
         wedding of their daughter,</p>
         
         <h2 class="names">Mekha Susan Thomas</h2>
-        
-        <!-- text-transform toggle added -->
         <p class="body-text" style="text-transform: none;">with</p>
-        
         <h2 class="names">Edwin Roger Bright</h2>
         
-        <!-- text-transform toggle added -->
         <p class="body-text" style="text-transform: none;">S/O M.J. Bright and Lissy Bright,<br>
         Kamothe, Navi Mumbai</p>
     </section>
 
     <section class="card card-3">
-        <!-- text-transform toggle added -->
-        <h1 style="font-family: var(--font-woodland); letter-spacing: 4px; margin-bottom: 25px; text-transform: none;">DETAILS</h1>
+        <h1 style="font-family: var(--font-woodland); letter-spacing: 4px; margin-bottom: 25px; text-transform: none;">The Details</h1>
         
         <div class="details-flex">
             <div class="block">
                 <h2 class="sub-title">Date & Time</h2>
-                <!-- text-transform toggle added -->
                 <p class="detail-text" style="text-transform: none;">July 17, 2026 (Friday)<br>4:00pm — Wedding<br>7:00pm — Reception</p>
             </div>
             <div class="block">
                 <h2 class="sub-title">Venue</h2>
-                <!-- text-transform toggle added -->
                 <p class="detail-text" style="text-transform: none;">The Kings Meadows<br>Under the auspices of City Harvest AG Church<br>Bangalore</p>
             </div>
         </div>
         
-        <!-- text-transform toggle added -->
-        <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="map-btn" style="text-transform: none;">VIEW ON MAPS</a>
+        <a href="https://maps.app.goo.gl/U9eYKNXaDM4fjyju7" target="_blank" class="map-btn" style="text-transform: none;">View on Maps</a>
     </section>
 
     <section class="card card-4">
-        <!-- text-transform toggle added -->
-        <h1 class="rsvp-title" style="color: var(--gold); font-family: var(--font-woodland); text-transform: none;">RSVP SOON!</h1>
-        
-        <!-- text-transform toggle added -->
+        <h1 class="rsvp-title" style="color: var(--gold); font-family: var(--font-woodland); text-transform: none;">RSVP Soon!</h1>
         <span class="rsvp-subtitle" id="rsvp-status-msg" style="text-transform: none;">We can’t wait to celebrate with you!</span>
         
         <form id="google-rsvp-form" style="margin: 0 auto; width: 100%; max-width: 280px; text-align: left;">
-            <!-- text-transform toggle added -->
-            <label style="font-size: 1.5rem; letter-spacing: 1px; font-family: var(--font-woodland); text-transform: none;">FULL NAME</label>
+            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland); text-transform: none;">Full Name</label>
             <input type="text" id="guest-name-input" style="width:100%; padding: 12px; background: none; border: 1px solid rgba(255,255,255,0.2); color: white; margin-bottom: 15px;" required>
             
-            <!-- text-transform toggle added -->
-            <label style="font-size: 1.5rem; letter-spacing: 1px; font-family: var(--font-woodland); text-transform: none;">NUMBER OF GUESTS</label>
+            <label style="font-size: 0.7rem; letter-spacing: 1px; font-family: var(--font-woodland); text-transform: none;">Number of Guests</label>
             <div class="counter-container">
                 <button type="button" class="counter-btn" onclick="updateGuests(-1)">-</button>
                 <div class="guest-num" id="guestCountDisplay">1</div>
                 <button type="button" class="counter-btn" onclick="updateGuests(1)">+</button>
             </div>
             
-            <!-- text-transform toggle added -->
-            <button type="submit" class="submit-btn" id="submit-btn-text" style="text-transform: none;">SEND RSVP</button>
+            <button type="submit" class="submit-btn" id="submit-btn-text" style="text-transform: none;">Send RSVP</button>
         </form>
         
         <div style="margin-top: 25px;">
-            <!-- text-transform toggle added -->
-            <p style="font-family: var(--font-woodland); font-size: 1.5rem; opacity: 0.7; text-transform: none;">With best compliments from</p> 
+            <p style="font-family: var(--font-woodland); font-size: 0.7rem; opacity: 0.7; text-transform: none;">With Best Compliments from</p> 
             <p class="footer-name">Shimon Mathew Thomas</p> 
         </div>
     </section>
@@ -484,7 +451,7 @@
             
             setTimeout(() => {
                 content.style.display = 'block';
-                
+                document.querySelector('.card-1').classList.add('is-visible'); // Pre-reveal card 1 behind overlay to stop flickering
                 landing.style.opacity = "0";
                 
                 setTimeout(() => {
