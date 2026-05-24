@@ -242,22 +242,39 @@
 
         .footer-name { font-family: var(--font-amoresa); font-size: clamp(2.3rem, 7.5vw, 3.8rem); color: var(--gold); margin-top: 5px; }
 
+        /* ─── MOBILE OVERRIDES (THE BULLETPROOF LAYOUT) ─── */
         @media (max-width: 600px) {
-            /* Restored centering but controlled the breathing room naturally */
+            
             .card { 
-                padding: 10vh 5vw 18vh; 
+                /* dvh respects the dynamic browser address bar appearing/disappearing */
+                padding: 10dvh 5vw 12dvh; 
                 justify-content: center; 
             }
             #zoom-card-overlay { padding: 40px 10vw; }
             
+            /* CARD 1: Grouped Organic Flexbox Distribution */
+            .card-1 { 
+                justify-content: flex-start; 
+                padding-top: 14dvh; /* Safely clears the top */
+            }
+            .card-1 .title { margin-bottom: 2dvh; }
+            .card-1 .quote { margin-top: 6dvh; }
+            /* 'margin-top: auto' forcefully pushes the date perfectly to the bottom limit, clear of the cake */
+            .card-1 p:nth-of-type(3) { margin-top: auto !important; margin-bottom: 12dvh; z-index: 2; position: relative;}
+
             .cake-img { width: 75%; bottom: 0; right: -5%; opacity: 0.35; } 
             
-            /* Add dynamic margins to create cohesive visual groupings that scale with height */
-            .card-1 .title { margin-bottom: 2vh; }
-            .card-1 .quote { margin-top: 6vh; }
-            .card-1 p:nth-of-type(3) { margin-top: 5vh !important; } /* The Date */
+            /* CARD 2: Rhythmic De-clustering using Flex Gap */
+            .card-2 { 
+                /* Instead of manual margins, 'gap' mathematically injects uniform space between every text block */
+                gap: 3.5dvh; 
+            }
+            /* Nullify the old static margins so the gap takes over cleanly */
+            .card-2 .title { margin-bottom: 0; }
+            .card-2 .names { margin: 0; }
+            .card-2 .body-text { margin: 0; line-height: 1.8; } /* Slight line height increase for readability */
 
-            .details-flex { display: flex; flex-direction: column; gap: 6vh; margin: 4vh 0; }
+            .details-flex { display: flex; flex-direction: column; gap: 6dvh; margin: 4dvh 0; }
             
             .invite-text { 
                 max-width: 90%; 
