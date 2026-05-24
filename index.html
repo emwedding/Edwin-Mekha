@@ -245,31 +245,46 @@
         /* ─── MOBILE OVERRIDES (THE BULLETPROOF LAYOUT) ─── */
         @media (max-width: 600px) {
             
+            /* 1. General card reset to allow natural Flexbox centering without forced blank spaces */
             .card { 
-                padding: 10dvh 5vw 12dvh; 
+                padding: 6dvh 5vw; 
                 justify-content: center; 
-                align-items: center; /* Ensures flex children don't skew horizontally */
+                align-items: center; 
+                text-align: center; /* Fixes general text alignment */
             }
             #zoom-card-overlay { padding: 40px 10vw; }
             
-            /* CARD 1: Grouped Organic Distribution */
+            /* 2. CARD 1: Centralized Cohesive Layout */
             .card-1 { 
-                padding-top: 10dvh;
+                padding-top: 6dvh; /* Reset to normal to eliminate the huge void on top */
             }
-            .card-1 .title { margin-bottom: 3dvh; }
-            .card-1 .quote { margin-top: 5dvh; }
-            
-            /* Replaced 'margin-top: auto' with a natural, cohesive gap */
-            .card-1 p:nth-of-type(3) { margin-top: 5dvh !important; z-index: 2; position: relative;}
+            .card-1 .title { margin-bottom: 2dvh; }
+            .card-1 .quote { 
+                margin-top: 4dvh; 
+                text-align: center; /* Forces multi-line text to center instead of defaulting to left-align */
+                line-height: 1.4; 
+            }
+            .card-1 p:nth-of-type(3) { 
+                margin-top: 4dvh !important; /* Pulls the date back up into the content group */
+                z-index: 2; 
+                position: relative;
+            }
 
-            .cake-img { width: 75%; bottom: 0; right: -5%; opacity: 0.35; } 
+            /* 3. CAKE IMAGE: Perfect Center & Watermark Opacity */
+            .cake-img { 
+                width: 75%; 
+                bottom: 0; 
+                right: auto; /* Removes the old off-center anchor */
+                left: 50%; 
+                transform: translateX(-50%); /* Mathematically centers the image */
+                opacity: 0.20; /* Drops to background so overlapping text remains 100% readable and uncluttered */
+            } 
             
             /* CARD 2: Rhythmic De-clustering & Line Wrapping Fix */
             .card-2 { 
                 gap: 4dvh; 
             }
             
-            /* THIS IS THE FIX FOR THE "BONKERS" ALIGNMENT */
             /* Disables the hard HTML line breaks only on narrow mobile screens so the text wraps beautifully on its own */
             .card-2 .body-text br { display: none; }
             
@@ -279,7 +294,7 @@
                 margin: 0; 
                 line-height: 1.7; 
                 width: 100%; 
-                max-width: 95%; /* Gives the auto-wrapping some gentle padding off the screen edges */
+                max-width: 95%; 
             }
 
             .details-flex { display: flex; flex-direction: column; gap: 6dvh; margin: 4dvh 0; }
