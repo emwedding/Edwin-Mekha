@@ -53,7 +53,9 @@
         .unfold .envelope-card-preview { transform: translateY(-40%) scale(1); opacity: 1; z-index: 15; }
         
         #internal-card .card-1-title { font-size: clamp(2rem, 6.5vw, 3rem); line-height: 1; font-family: var(--font-serif); font-weight: 400; letter-spacing: 2px; }
-        #internal-card .card-1-date { font-family: var(--font-sans); font-size: clamp(0.5rem, 1.5vw, 0.7rem); letter-spacing: 3px; margin-top: 15%; text-transform: uppercase; }
+        
+        /* Fixed margin-top from 15% to 15px so the text centers perfectly */
+        #internal-card .card-1-date { font-family: var(--font-sans); font-size: clamp(0.5rem, 1.5vw, 0.7rem); letter-spacing: 3px; margin-top: 15px; text-transform: uppercase; }
         
         /* ─── PREVIEW CARD IMAGE SCALING & POSITIONING ─── */
         
@@ -83,10 +85,10 @@
         /* Option C: Center Watermark (03.png) */
         #internal-card .preview-center {
             position: absolute; 
-            width: 85%; /* Fits beautifully inside the gold border */
+            width: 85%; 
             top: 50%; 
             left: 50%; 
-            transform: translate(-50%, -50%); /* Perfectly centers the image */
+            transform: translate(-50%, -50%); 
             opacity: var(--flower-opacity-center); 
             object-fit: contain; 
             z-index: 1;
