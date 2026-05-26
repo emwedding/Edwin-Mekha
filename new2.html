@@ -20,6 +20,10 @@
             
             /* -- CUSTOMIZABLE NAME FONT -- */
             --font-custom-names: var(--font-script); 
+            
+            /* -- CUSTOMIZABLE FLOWER OPACITY -- */
+            /* Change this value from 0.1 to 1.0 (e.g., 0.5 is 50% translucent) */
+            --flower-opacity: 0.5; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -53,25 +57,25 @@
         
         /* ─── PREVIEW CARD IMAGE SCALING & POSITIONING ─── */
         
-        /* Option A: Top & Bottom Borders */
+        /* Option A: Top & Bottom Borders (03.png) */
         #internal-card .preview-border-top { 
-            position: absolute; width: 100%; top: -5px; left: 0; 
-            opacity: 0.9; object-fit: contain; z-index: 1; 
-            transform: scaleY(-1); /* Flips the flat base to hug the top edge */
+            position: absolute; width: 100%; top: 0; left: 0; 
+            opacity: var(--flower-opacity); object-fit: contain; object-position: top center; z-index: 1; 
+            transform: scaleY(-1); /* Flips so the flat base hugs the top edge */
         }
         #internal-card .preview-border-bottom { 
-            position: absolute; width: 100%; bottom: -5px; left: 0; 
-            opacity: 0.9; object-fit: contain; z-index: 1; 
+            position: absolute; width: 100%; bottom: 0; left: 0; 
+            opacity: var(--flower-opacity); object-fit: contain; object-position: bottom center; z-index: 1; 
         }
         
-        /* Option B: Corners */
-        internal-card .preview-corner-tl { 
-            position: absolute; width: 45%; max-width: 140px; top: -10px; left: -10px; 
-            opacity: 0.9; object-fit: contain; z-index: 1; 
+        /* Option B: Corners (04.png Top-Right, 05.png Bottom-Left) */
+        #internal-card .preview-corner-tr { 
+            position: absolute; width: clamp(90px, 40vw, 150px); top: 0; right: 0; 
+            opacity: var(--flower-opacity); object-fit: contain; object-position: top right; z-index: 1; 
         }
-        internal-card .preview-corner-br { 
-            position: absolute; width: 45%; max-width: 140px; bottom: -10px; right: -10px; 
-            opacity: 0.9; object-fit: contain; z-index: 1; 
+        #internal-card .preview-corner-bl { 
+            position: absolute; width: clamp(90px, 40vw, 150px); bottom: 0; left: 0; 
+            opacity: var(--flower-opacity); object-fit: contain; object-position: bottom left; z-index: 1; 
         }
 
         .dive-active #landing-screen { background-color: transparent !important; transition: background-color 1s ease 0.4s; }
@@ -97,6 +101,7 @@
         .magic-bg {
             position: fixed; inset: 0; z-index: 0; pointer-events: none;
             background-color: var(--deep-dark-navy);
+            /* Stardust texture */
             background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
             background-size: 50px 50px;
         }
@@ -175,6 +180,7 @@
         .c2-title { font-family: var(--font-script); font-size: clamp(3.5rem, 7vw, 5.5rem); color: var(--gold); margin-bottom: 40px; text-shadow: 0 0 15px rgba(200,169,107,0.5); }
         .c2-body { font-family: var(--font-sans); font-size: clamp(0.8rem, 1.5vw, 1rem); line-height: 2.2; letter-spacing: 3px; color: rgba(255,255,255,0.85); text-transform: uppercase; }
         
+        /* Updated Name Class With Customizable Font */
         .c2-name { font-family: var(--font-custom-names); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--champagne); font-weight: 300; letter-spacing: 2px; margin: 25px 0; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
         .c2-with { font-family: var(--font-script); font-size: clamp(2.5rem, 4vw, 3.5rem); color: var(--gold); }
 
@@ -336,9 +342,18 @@
             
             <div class="envelope-card-preview" id="internal-card">
                 
-                <img src="04.png" class="preview-corner-tl" alt="Top Left Wreath">
-                <img src="05.png" class="preview-corner-br" alt="Bottom Right Wreath">
-                
+                <!-- PREVIEW CARD IMAGE OPTIONS -->
+
+                <!-- OPTION A: Top & Bottom Borders (Currently Commented Out) -->
+                <!--
+                <img src="03.png" class="preview-border-top" alt="Top Border">
+                <img src="03.png" class="preview-border-bottom" alt="Bottom Border">
+                -->
+
+                <!-- OPTION B: Corner Wreaths (Currently Active) -->
+                <img src="04.png" class="preview-corner-tr" alt="Top Right Wreath">
+                <img src="05.png" class="preview-corner-bl" alt="Bottom Left Wreath">
+
                 <div class="preview-frame">
                     <h1 class="card-1-title">MEKHA<br>& EDWIN</h1> 
                     <p class="card-1-date">17th July 2026</p>
