@@ -19,8 +19,7 @@
             --font-sans: 'Montserrat', sans-serif;
             
             /* -- CUSTOMIZABLE NAME FONT -- */
-            /* Change this variable to var(--font-script), var(--font-sans), or add a new font-family entirely */
-            --font-custom-names: var(--font-serif); 
+            --font-custom-names: var(--font-script); 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -52,12 +51,28 @@
         #internal-card .card-1-title { font-size: clamp(2rem, 6.5vw, 3rem); line-height: 1; font-family: var(--font-serif); font-weight: 400; letter-spacing: 2px; }
         #internal-card .card-1-date { font-family: var(--font-sans); font-size: clamp(0.5rem, 1.5vw, 0.7rem); letter-spacing: 3px; margin-top: 15%; text-transform: uppercase; }
         
-        /* PREVIEW CARD IMAGE OPTIONS */
-        #internal-card .preview-border-top { position: absolute; width: 100%; top: -2%; left: 0; opacity: 0.8; object-fit: contain; z-index: 1; }
-        #internal-card .preview-border-bottom { position: absolute; width: 100%; bottom: -2%; left: 0; opacity: 0.8; object-fit: contain; transform: rotate(180deg); z-index: 1; }
+        /* ─── PREVIEW CARD IMAGE SCALING & POSITIONING ─── */
         
-        internal-card .preview-corner-tl { position: absolute; width: clamp(90px, 35vw, 160px); top: -5%; left: -5%; opacity: 0.8; object-fit: contain; z-index: 1; }
-        internal-card .preview-corner-br { position: absolute; width: clamp(90px, 35vw, 160px); bottom: -5%; right: -5%; opacity: 0.8; object-fit: contain; z-index: 1; }
+        /* Option A: Top & Bottom Borders */
+        internal-card .preview-border-top { 
+            position: absolute; width: 100%; top: -5px; left: 0; 
+            opacity: 0.9; object-fit: contain; z-index: 1; 
+            transform: scaleY(-1); /* Flips the flat base to hug the top edge */
+        }
+        #internal-card .preview-border-bottom { 
+            position: absolute; width: 100%; bottom: -5px; left: 0; 
+            opacity: 0.9; object-fit: contain; z-index: 1; 
+        }
+        
+        /* Option B: Corners */
+        #internal-card .preview-corner-tl { 
+            position: absolute; width: 45%; max-width: 140px; top: -10px; left: -10px; 
+            opacity: 0.9; object-fit: contain; z-index: 1; 
+        }
+        #internal-card .preview-corner-br { 
+            position: absolute; width: 45%; max-width: 140px; bottom: -10px; right: -10px; 
+            opacity: 0.9; object-fit: contain; z-index: 1; 
+        }
 
         .dive-active #landing-screen { background-color: transparent !important; transition: background-color 1s ease 0.4s; }
         .dive-active .envelope-body { opacity: 0; transform: translateY(20vh); transition: opacity 0.8s ease, transform 1s ease; }
@@ -82,7 +97,6 @@
         .magic-bg {
             position: fixed; inset: 0; z-index: 0; pointer-events: none;
             background-color: var(--deep-dark-navy);
-            /* Stardust texture */
             background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
             background-size: 50px 50px;
         }
@@ -161,8 +175,7 @@
         .c2-title { font-family: var(--font-script); font-size: clamp(3.5rem, 7vw, 5.5rem); color: var(--gold); margin-bottom: 40px; text-shadow: 0 0 15px rgba(200,169,107,0.5); }
         .c2-body { font-family: var(--font-sans); font-size: clamp(0.8rem, 1.5vw, 1rem); line-height: 2.2; letter-spacing: 3px; color: rgba(255,255,255,0.85); text-transform: uppercase; }
         
-        /* Updated Name Class With Customizable Font */
-        .c2-name { font-family: var(--font-script); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--champagne); font-weight: 300; letter-spacing: 2px; margin: 25px 0; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        .c2-name { font-family: var(--font-custom-names); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--champagne); font-weight: 300; letter-spacing: 2px; margin: 25px 0; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
         .c2-with { font-family: var(--font-script); font-size: clamp(2.5rem, 4vw, 3.5rem); color: var(--gold); }
 
         /* ─── CARD 3: GLOWING DETAILS ─── */
@@ -323,9 +336,9 @@
             
             <div class="envelope-card-preview" id="internal-card">
                 
-                <img src="03.png" class="preview-border-top" alt="Top Border">
-                <img src="03.png" class="preview-border-bottom" alt="Bottom Border">
-
+                <img src="04.png" class="preview-corner-tl" alt="Top Left Wreath">
+                <img src="05.png" class="preview-corner-br" alt="Bottom Right Wreath">
+                
                 <div class="preview-frame">
                     <h1 class="card-1-title">MEKHA<br>& EDWIN</h1> 
                     <p class="card-1-date">17th July 2026</p>
