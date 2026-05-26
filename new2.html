@@ -58,22 +58,22 @@
         /* ─── PREVIEW CARD IMAGE SCALING & POSITIONING ─── */
         
         /* Option A: Top & Bottom Borders (03.png) */
-        internal-card .preview-border-top { 
+        #internal-card .preview-border-top { 
             position: absolute; width: 100%; top: 0; left: 0; 
             opacity: var(--flower-opacity); object-fit: contain; object-position: top center; z-index: 1; 
             transform: scaleY(-1); /* Flips so the flat base hugs the top edge */
         }
-        internal-card .preview-border-bottom { 
+        #internal-card .preview-border-bottom { 
             position: absolute; width: 100%; bottom: 0; left: 0; 
             opacity: var(--flower-opacity); object-fit: contain; object-position: bottom center; z-index: 1; 
         }
         
         /* Option B: Corners (04.png Top-Right, 05.png Bottom-Left) */
-        #internal-card .preview-corner-tr { 
+        internal-card .preview-corner-tr { 
             position: absolute; width: clamp(90px, 40vw, 150px); top: 0; right: 0; 
             opacity: var(--flower-opacity); object-fit: contain; object-position: top right; z-index: 1; 
         }
-        #internal-card .preview-corner-bl { 
+        internal-card .preview-corner-bl { 
             position: absolute; width: clamp(90px, 40vw, 150px); bottom: 0; left: 0; 
             opacity: var(--flower-opacity); object-fit: contain; object-position: bottom left; z-index: 1; 
         }
